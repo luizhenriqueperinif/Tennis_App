@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etapa 1 — Gabriel Loiro (Pegador) & Du — Tecnologias e Banco de Dados</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #1a1a2e;
+            background: #ffffff;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .page { max-width: 800px; margin: 0 auto; padding: 40px 50px; }
+
+        .header {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            color: white;
+            padding: 35px 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        .header::after {
+            content: '💻';
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 60px;
+            opacity: 0.15;
+        }
+        .header .project-name {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            opacity: 0.7;
+            margin-bottom: 8px;
+        }
+        .header h1 { font-size: 26px; font-weight: 800; margin-bottom: 6px; }
+        .header .subtitle { font-size: 15px; font-weight: 300; opacity: 0.9; }
+        .header .meta {
+            margin-top: 15px;
+            display: flex;
+            gap: 25px;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .info-box {
+            background: #e0f7f4;
+            border-left: 4px solid #00b894;
+            padding: 18px 22px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 28px;
+        }
+        .info-box h3 { font-size: 14px; color: #00896e; margin-bottom: 6px; }
+        .info-box p { font-size: 13px; color: #333; }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #00896e;
+            margin: 35px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        h3 { font-size: 16px; font-weight: 600; color: #1a1a2e; margin: 22px 0 10px 0; }
+        p { margin-bottom: 12px; color: #333; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0 20px 0;
+            font-size: 13px;
+        }
+        th {
+            background: #00b894;
+            color: white;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #e8e8e8;
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background: #f8f9fa; }
+
+        .checklist { list-style: none; padding: 0; }
+        .checklist li {
+            padding: 12px 16px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #00b894;
+            font-weight: 500;
+        }
+        .checklist li .task-num {
+            display: inline-block;
+            background: #00b894;
+            color: white;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 26px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+        .checkbox {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #00b894;
+            border-radius: 4px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .alert {
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin: 16px 0;
+            font-size: 13px;
+        }
+        .alert-tip { background: #e6f9ee; border-left: 4px solid #27ae60; color: #1a5c32; }
+        .alert-warning { background: #fff3e0; border-left: 4px solid #f39c12; color: #7a5500; }
+        .alert-important { background: #e0f7f4; border-left: 4px solid #00b894; color: #00634c; }
+        .alert strong { display: block; margin-bottom: 4px; }
+
+        .fill-in {
+            background: #fff9c4;
+            border: 2px dashed #f9a825;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 16px 0;
+            color: #795548;
+            font-style: italic;
+        }
+        .fill-in::before {
+            content: '✏️ VOCÊS PREENCHEM: ';
+            font-weight: 700;
+            font-style: normal;
+            color: #e65100;
+        }
+
+        .example-label {
+            display: inline-block;
+            background: #00b894;
+            color: white;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .think-box {
+            background: #f3e5f5;
+            border-left: 4px solid #9c27b0;
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+            font-size: 13px;
+            color: #4a148c;
+        }
+        .think-box::before {
+            content: '🤔 ';
+        }
+
+        .blank-row td {
+            color: #bbb;
+            font-style: italic;
+            height: 36px;
+        }
+
+        .entregavel {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            color: white;
+            padding: 16px 22px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+        .entregavel strong { font-size: 15px; }
+
+        .entity-card {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            margin: 12px 0;
+            overflow: hidden;
+            background: #fff;
+            min-height: 120px;
+        }
+        .entity-card .entity-header {
+            background: #e0e0e0;
+            color: #555;
+            padding: 10px 16px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .entity-card .entity-body {
+            padding: 14px 16px;
+            font-size: 13px;
+            color: #999;
+            font-style: italic;
+        }
+
+        .entity-example {
+            border: 2px solid #00b894;
+            border-radius: 10px;
+            margin: 12px 0;
+            overflow: hidden;
+        }
+        .entity-example .entity-header {
+            background: #00b894;
+            color: white;
+            padding: 10px 16px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .entity-example .entity-body {
+            padding: 12px 16px;
+            font-size: 13px;
+        }
+        .entity-example .entity-body table { margin: 0; }
+        .entity-example .entity-body th {
+            background: #f0f0f0;
+            color: #333;
+            font-size: 11px;
+        }
+
+        hr { border: none; height: 1px; background: #e0e0e0; margin: 30px 0; }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+        }
+
+        @media print {
+            body { font-size: 12px; }
+            .page { padding: 20px; }
+            .header { break-after: avoid; }
+            h2 { break-after: avoid; }
+            table { break-inside: avoid; }
+            .entity-card { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+
+        <div class="header">
+            <div class="project-name">🎾 Projeto App de Tênis</div>
+            <h1>Tecnologias e Banco de Dados</h1>
+            <div class="subtitle">Dupla: Gabriel Loiro (Pegador) & Du (Eduardo)</div>
+            <div class="meta">
+                <span>📅 Etapa 1 — Planejamento & Fundação</span>
+                <span>⏱️ Prazo: 2 semanas</span>
+                <span>📄 v1.0 — Set/2026</span>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>🎯 Seu papel no projeto</h3>
+            <p>Vocês são a <strong>"engenharia"</strong> do projeto. Vão definir <strong>COM QUÊ</strong> (linguagens, frameworks) e <strong>ONDE</strong> (hospedagem) o app vai ser construído, e desenhar a <strong>estrutura do banco de dados</strong>. Sem o trabalho de vocês, o time não sabe nem por onde começar a programar.</p>
+        </div>
+
+        <div class="entregavel">
+            <strong>📦 Entregável 1:</strong> Documento de Arquitetura → <code>/docs/arquitetura/tecnologias.md</code>
+        </div>
+        <div class="entregavel">
+            <strong>📦 Entregável 2:</strong> Modelo do Banco de Dados (DER) → <code>/docs/arquitetura/banco-de-dados.md</code>
+        </div>
+
+        <h2>📋 Suas 6 Tarefas</h2>
+
+        <ul class="checklist">
+            <li><span class="checkbox"></span><span class="task-num">1</span> Escolher e justificar o Frontend</li>
+            <li><span class="checkbox"></span><span class="task-num">2</span> Escolher e justificar o Backend</li>
+            <li><span class="checkbox"></span><span class="task-num">3</span> Escolher e justificar o Banco de Dados</li>
+            <li><span class="checkbox"></span><span class="task-num">4</span> Desenhar o Modelo Entidade-Relacionamento (DER) com as tabelas necessárias</li>
+            <li><span class="checkbox"></span><span class="task-num">5</span> Criar o diagrama visual em uma ferramenta (dbdiagram.io, draw.io, etc.)</li>
+            <li><span class="checkbox"></span><span class="task-num">6</span> Escrever o documento de justificativa da stack (1-2 páginas)</li>
+        </ul>
+
+        <hr>
+
+        <!-- ===================== TAREFA 1 ===================== -->
+        <h2>Tarefa 1 — Escolher o Frontend</h2>
+
+        <p>Vocês precisam responder: <strong>O app vai ser web, mobile nativo ou híbrido?</strong></p>
+
+        <p>Pesquisem e comparem pelo menos <strong>3 opções</strong> de tecnologia. Para cada uma, listem prós e contras. Algumas opções comuns no mercado:</p>
+        <ul style="margin: 10px 0 15px 25px; color: #555;">
+            <li><strong>React</strong> (web)</li>
+            <li><strong>React Native / Expo</strong> (mobile híbrido)</li>
+            <li><strong>Flutter / Dart</strong> (mobile híbrido)</li>
+            <li><strong>Vue.js</strong> (web)</li>
+            <li><strong>Angular</strong> (web)</li>
+        </ul>
+
+        <div class="fill-in">Pesquisem as opções, comparem e preencham a tabela abaixo. Justifiquem a escolha final.</div>
+
+        <table>
+            <tr><th>Opção</th><th>Tecnologia</th><th>Prós</th><th>Contras</th></tr>
+            <tr class="blank-row"><td>1</td><td></td><td></td><td></td></tr>
+            <tr class="blank-row"><td>2</td><td></td><td></td><td></td></tr>
+            <tr class="blank-row"><td>3</td><td></td><td></td><td></td></tr>
+        </table>
+
+        <p><strong>Escolha final:</strong> _______________________________________</p>
+        <p><strong>Justificativa (por quê?):</strong> ________________________________</p>
+
+        <div class="think-box">
+            <strong>Perguntas para guiar a decisão:</strong><br>
+            — Alguém do time já conhece ou usou alguma dessas tecnologias?<br>
+            — O app PRECISA ficar na loja (Google Play / App Store) ou pode rodar no navegador do celular?<br>
+            — Quanto tempo vocês têm para entregar? Tecnologias mais complexas = mais tempo para aprender<br>
+            — Tem material/tutorial em português? Isso acelera MUITO o aprendizado<br>
+            — Pesquisem o que é um PWA (Progressive Web App) — pode ser um meio-termo interessante
+        </div>
+
+        <hr>
+
+        <!-- ===================== TAREFA 2 ===================== -->
+        <h2>Tarefa 2 — Escolher o Backend</h2>
+
+        <p>O backend é o "cérebro" do sistema — cuida do banco de dados, autenticação (login), e das regras de negócio.</p>
+
+        <p>Pesquisem e comparem pelo menos <strong>3 opções</strong>. Existem duas abordagens:</p>
+        <ul style="margin: 10px 0 15px 25px; color: #555;">
+            <li><strong>Backend tradicional:</strong> vocês criam o servidor do zero (Node.js + Express, NestJS, Django, Spring Boot...)</li>
+            <li><strong>Backend as a Service (BaaS):</strong> usam um serviço que já dá autenticação, banco e API prontos (Supabase, Firebase, Appwrite...)</li>
+        </ul>
+
+        <div class="fill-in">Pesquisem as opções, comparem e preencham a tabela. Pensem no nível de experiência do time e no tempo disponível.</div>
+
+        <table>
+            <tr><th>Opção</th><th>Tecnologia</th><th>Prós</th><th>Contras</th></tr>
+            <tr class="blank-row"><td>1</td><td></td><td></td><td></td></tr>
+            <tr class="blank-row"><td>2</td><td></td><td></td><td></td></tr>
+            <tr class="blank-row"><td>3</td><td></td><td></td><td></td></tr>
+        </table>
+
+        <p><strong>Escolha final:</strong> _______________________________________</p>
+        <p><strong>Justificativa (por quê?):</strong> ________________________________</p>
+
+        <div class="think-box">
+            <strong>Perguntas para guiar a decisão:</strong><br>
+            — O time tem experiência criando APIs e servidores? Se NÃO, um BaaS pode economizar semanas<br>
+            — Quanto custa? Tem plano gratuito suficiente para o projeto da faculdade?<br>
+            — O que ele já oferece pronto? (login? API? painel de admin?)<br>
+            — Pesquisem o que é "Supabase" e "Firebase" — são BaaS populares. Qual dos dois usa banco relacional (SQL)?
+        </div>
+
+        <hr>
+
+        <!-- ===================== TAREFA 3 ===================== -->
+        <h2>Tarefa 3 — Escolher o Banco de Dados</h2>
+
+        <p>O banco de dados é onde ficam guardadas todas as informações do app (usuários, aulas, partidas, etc.).</p>
+
+        <p>Existem dois grandes tipos:</p>
+        <ul style="margin: 10px 0 15px 25px; color: #555;">
+            <li><strong>Relacional (SQL):</strong> dados organizados em tabelas com linhas e colunas, com relacionamentos entre elas (ex.: PostgreSQL, MySQL)</li>
+            <li><strong>Não-relacional (NoSQL):</strong> dados guardados como documentos flexíveis, sem esquema fixo (ex.: MongoDB, Firebase Firestore)</li>
+        </ul>
+
+        <div class="fill-in">Pesquisem pelo menos 2 opções de banco, comparem e justifiquem. Pensem: os dados do nosso app têm muitos relacionamentos entre si (professor-aluno, aula-presença, partida-jogadores)?</div>
+
+        <table>
+            <tr><th>Opção</th><th>Tipo (SQL/NoSQL)</th><th>Prós</th><th>Contras</th></tr>
+            <tr class="blank-row"><td>1</td><td></td><td></td><td></td></tr>
+            <tr class="blank-row"><td>2</td><td></td><td></td><td></td></tr>
+        </table>
+
+        <p><strong>Escolha final:</strong> _______________________________________</p>
+        <p><strong>Justificativa (por quê?):</strong> ________________________________</p>
+
+        <div class="think-box">
+            <strong>Perguntas para guiar a decisão:</strong><br>
+            — Listem os dados do app: usuários, aulas, presenças, avaliações, partidas, grupos... Esses dados se relacionam entre si? (ex.: "uma presença pertence a uma aula que pertence a um professor")<br>
+            — Se a resposta for SIM = banco relacional é mais adequado<br>
+            — Se a resposta for NÃO = banco NoSQL pode funcionar<br>
+            — O backend que vocês escolheram já vem com algum banco incluso?
+        </div>
+
+        <hr>
+
+        <!-- ===================== TAREFA 4 ===================== -->
+        <h2>Tarefa 4 — Modelo Entidade-Relacionamento (DER)</h2>
+
+        <p><strong>O que é:</strong> O DER é o "mapa" do banco de dados. Ele mostra todas as tabelas (entidades), seus campos (atributos) e como elas se conectam (relacionamentos).</p>
+
+        <p><strong>Como fazer:</strong></p>
+        <ol style="margin: 10px 0 15px 25px; color: #333;">
+            <li>Identifiquem as <strong>entidades</strong> (ex.: Usuário, Aula, Partida...)</li>
+            <li>Para cada entidade, listem os <strong>campos</strong> necessários (nome, tipo, se é obrigatório)</li>
+            <li>Definam os <strong>relacionamentos</strong> entre elas (1:1, 1:N, N:N)</li>
+            <li>Identifiquem as <strong>chaves primárias (PK)</strong> e <strong>chaves estrangeiras (FK)</strong></li>
+        </ol>
+
+        <span class="example-label">Exemplo — 1 entidade para vocês entenderem o formato</span>
+        <div class="entity-example">
+            <div class="entity-header">USUARIO</div>
+            <div class="entity-body">
+                <p><strong>Descrição:</strong> Armazena todos os usuários do sistema.</p>
+                <table>
+                    <tr><th>Campo</th><th>Tipo</th><th>Restrição</th><th>Descrição</th></tr>
+                    <tr><td>id</td><td>UUID</td><td>PK</td><td>Identificador único</td></tr>
+                    <tr><td>nome</td><td>VARCHAR(100)</td><td>NOT NULL</td><td>Nome completo</td></tr>
+                    <tr><td>email</td><td>VARCHAR(150)</td><td>UNIQUE, NOT NULL</td><td>E-mail para login</td></tr>
+                    <tr><td>...</td><td>...</td><td>...</td><td>Que outros campos um usuário precisa ter?</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="fill-in">Agora identifiquem TODAS as entidades que o app precisa e detalhem cada uma como no exemplo acima. Olhem os requisitos do Biel & Túlio: cada "coisa" que o sistema armazena provavelmente é uma tabela.</div>
+
+        <div class="think-box">
+            <strong>Perguntas para descobrir as entidades:</strong><br>
+            — O sistema armazena dados de quem? (professores, alunos... são a mesma tabela ou tabelas separadas?)<br>
+            — O professor cria "grupos" de alunos — precisa de uma tabela para isso?<br>
+            — As aulas são guardadas onde? Quais dados de uma aula precisam ser salvos?<br>
+            — O aluno confirma presença — essa informação fica na tabela de aula ou em uma tabela separada?<br>
+            — A avaliação de desempenho é guardada onde? Que campos ela tem?<br>
+            — As partidas entre alunos — quais dados precisam ser registrados?<br>
+            — Se um aluno pode pertencer a vários grupos, como vocês resolvem esse relacionamento N:N? (Dica: pesquisem "tabela associativa" ou "tabela pivô")<br>
+            — Quais tabelas se conectam com quais? Desenhem setas.
+        </div>
+
+        <h3>Suas Entidades</h3>
+
+        <div class="entity-card">
+            <div class="entity-header">Entidade 1: _______________</div>
+            <div class="entity-body">Descrição: _______________<br>Campos: listem todos com tipo e restrições</div>
+        </div>
+        <div class="entity-card">
+            <div class="entity-header">Entidade 2: _______________</div>
+            <div class="entity-body">Descrição: _______________<br>Campos: listem todos com tipo e restrições</div>
+        </div>
+        <div class="entity-card">
+            <div class="entity-header">Entidade 3: _______________</div>
+            <div class="entity-body">Descrição: _______________<br>Campos: listem todos com tipo e restrições</div>
+        </div>
+        <div class="entity-card">
+            <div class="entity-header">Entidade 4: _______________</div>
+            <div class="entity-body">Descrição: _______________<br>Campos: listem todos com tipo e restrições</div>
+        </div>
+        <div class="entity-card">
+            <div class="entity-header">Entidade 5: _______________</div>
+            <div class="entity-body">Descrição: _______________<br>Campos: listem todos com tipo e restrições</div>
+        </div>
+        <div class="entity-card">
+            <div class="entity-header">Entidade 6: _______________</div>
+            <div class="entity-body">Descrição: _______________<br>Campos: listem todos com tipo e restrições</div>
+        </div>
+        <div class="entity-card">
+            <div class="entity-header">Entidade 7: _______________</div>
+            <div class="entity-body">Descrição: _______________<br>Campos: listem todos com tipo e restrições</div>
+        </div>
+
+        <hr>
+
+        <!-- ===================== TAREFA 5 ===================== -->
+        <h2>Tarefa 5 — Diagrama Visual do DER</h2>
+
+        <p>Depois de listar as entidades e campos, usem uma ferramenta para gerar o <strong>diagrama visual</strong> com as setas de relacionamento.</p>
+
+        <h3>Ferramentas gratuitas (escolham uma)</h3>
+        <table>
+            <tr><th>Ferramenta</th><th>Como funciona</th><th>Link</th></tr>
+            <tr><td><strong>dbdiagram.io</strong></td><td>Escrevem as tabelas em texto e ele gera o diagrama automaticamente</td><td>https://dbdiagram.io</td></tr>
+            <tr><td><strong>draw.io</strong></td><td>Arrastar e soltar — mais visual, mais manual</td><td>https://diagrams.net</td></tr>
+            <tr><td><strong>Lucidchart</strong></td><td>Versão gratuita para estudantes, muito usado em empresas</td><td>https://lucidchart.com</td></tr>
+        </table>
+
+        <div class="fill-in">Escolham uma ferramenta, criem o diagrama e exportem como imagem (PNG ou PDF). O diagrama deve mostrar TODAS as tabelas, seus campos e as setas de relacionamento entre elas.</div>
+
+        <div class="alert alert-tip">
+            <strong>💡 Se usarem dbdiagram.io</strong>
+            A sintaxe é simples — pesquisem "dbdiagram.io tutorial" no YouTube. Basicamente vocês escrevem o nome da tabela e os campos, e usam <code>ref: ></code> para criar relacionamentos. O diagrama aparece automaticamente.
+        </div>
+
+        <hr>
+
+        <!-- ===================== TAREFA 6 ===================== -->
+        <h2>Tarefa 6 — Documento de Justificativa da Stack</h2>
+
+        <p>Escrevam um documento simples (1-2 páginas) respondendo <strong>5 perguntas</strong>. A FATEC vai querer saber não apenas O QUE vocês escolheram, mas <strong>POR QUÊ</strong>.</p>
+
+        <div class="fill-in">Para cada pergunta abaixo, escrevam a resposta com justificativa. Não vale "porque achei legal" — mencionem: facilidade de aprendizado, material disponível, custo, adequação ao projeto, experiência do time.</div>
+
+        <table>
+            <tr><th>#</th><th>Pergunta</th><th>Sua resposta + justificativa</th></tr>
+            <tr class="blank-row"><td>1</td><td>Qual tecnologia para o Frontend? Por quê?</td><td></td></tr>
+            <tr class="blank-row"><td>2</td><td>Qual tecnologia para o Backend? Por quê?</td><td></td></tr>
+            <tr class="blank-row"><td>3</td><td>Qual Banco de Dados? Por quê?</td><td></td></tr>
+            <tr class="blank-row"><td>4</td><td>Onde vai ser hospedado? Quanto custa?</td><td></td></tr>
+            <tr class="blank-row"><td>5</td><td>Quais ferramentas de apoio? (versionamento, editor, etc.)</td><td></td></tr>
+        </table>
+
+        <div class="think-box">
+            <strong>Dica para a justificativa:</strong><br>
+            — Pesquisem se a tecnologia tem plano <strong>gratuito</strong> (importante para projeto de faculdade!)<br>
+            — Mencionem se alguém do time já tem experiência com a tecnologia<br>
+            — Busquem dados: "qual framework frontend mais usado em 2026?" ajuda a justificar<br>
+            — Se possível, mostrem um quadro comparativo no documento final
+        </div>
+
+        <hr>
+
+        <!-- ===================== SINCRONIZAÇÃO ===================== -->
+        <h2>🔄 Como vocês se conectam com as outras duplas</h2>
+
+        <table>
+            <tr><th>De quem receber</th><th>O que</th><th>Quando</th></tr>
+            <tr>
+                <td><strong>Biel & Túlio</strong></td>
+                <td>Requisitos Funcionais + Regras de Negócio (para saber quais tabelas criar e quais campos cada uma precisa)</td>
+                <td>Meio da etapa — cobrem!</td>
+            </tr>
+            <tr>
+                <td><strong>Wesley & Teto</strong></td>
+                <td>Link do Figma (para conferir se os campos das telas batem com as colunas das tabelas)</td>
+                <td>Final da etapa</td>
+            </tr>
+        </table>
+
+        <table>
+            <tr><th>Para quem enviar</th><th>O que</th><th>Quando</th></tr>
+            <tr>
+                <td><strong>Todo o time</strong></td>
+                <td>Documento com a stack escolhida e justificada + DER exportado como imagem</td>
+                <td>Final da etapa</td>
+            </tr>
+            <tr>
+                <td><strong>Luiz</strong></td>
+                <td>Confirmação de que a stack está definida para começar a programar na Etapa 2</td>
+                <td>Final da etapa</td>
+            </tr>
+        </table>
+
+        <hr>
+
+        <h2>✅ Checklist final — Posso entregar?</h2>
+        <ul class="checklist">
+            <li><span class="checkbox"></span> Pesquisei e comparei pelo menos 3 opções de Frontend?</li>
+            <li><span class="checkbox"></span> Pesquisei e comparei pelo menos 3 opções de Backend?</li>
+            <li><span class="checkbox"></span> Pesquisei e comparei pelo menos 2 opções de Banco de Dados?</li>
+            <li><span class="checkbox"></span> As escolhas estão JUSTIFICADAS (não só "porque sim")?</li>
+            <li><span class="checkbox"></span> O DER tem todas as entidades necessárias com campos detalhados?</li>
+            <li><span class="checkbox"></span> O DER foi desenhado em uma ferramenta visual e exportado como imagem?</li>
+            <li><span class="checkbox"></span> As tabelas do banco cobrem TODOS os requisitos funcionais do Biel & Túlio?</li>
+            <li><span class="checkbox"></span> Todas as tecnologias escolhidas têm plano gratuito?</li>
+        </ul>
+
+        <div class="footer">
+            🎾 Projeto App de Tênis — FATEC 2026 &nbsp;|&nbsp; Documento gerado em 19/09/2026
+        </div>
+    </div>
+</body>
+</html>

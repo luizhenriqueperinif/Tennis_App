@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etapa 1 — Luiz — Coordenador / Product Owner</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #1a1a2e;
+            background: #ffffff;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .page { max-width: 800px; margin: 0 auto; padding: 40px 50px; }
+
+        .header {
+            background: linear-gradient(135deg, #d4a017 0%, #b8860b 100%);
+            color: white;
+            padding: 35px 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        .header::after {
+            content: '👑';
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 60px;
+            opacity: 0.15;
+        }
+        .header .project-name {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            opacity: 0.7;
+            margin-bottom: 8px;
+        }
+        .header h1 { font-size: 26px; font-weight: 800; margin-bottom: 6px; }
+        .header .subtitle { font-size: 15px; font-weight: 300; opacity: 0.9; }
+        .header .meta {
+            margin-top: 15px;
+            display: flex;
+            gap: 25px;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .info-box {
+            background: #fdf6e3;
+            border-left: 4px solid #d4a017;
+            padding: 18px 22px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 28px;
+        }
+        .info-box h3 { font-size: 14px; color: #b8860b; margin-bottom: 6px; }
+        .info-box p { font-size: 13px; color: #333; }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #b8860b;
+            margin: 35px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        h3 { font-size: 16px; font-weight: 600; color: #1a1a2e; margin: 22px 0 10px 0; }
+        p { margin-bottom: 12px; color: #333; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0 20px 0;
+            font-size: 13px;
+        }
+        th {
+            background: #b8860b;
+            color: white;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #e8e8e8;
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background: #f8f9fa; }
+
+        .checklist { list-style: none; padding: 0; }
+        .checklist li {
+            padding: 12px 16px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #d4a017;
+            font-weight: 500;
+        }
+        .checklist li .task-num {
+            display: inline-block;
+            background: #d4a017;
+            color: white;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 26px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+        .checkbox {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #d4a017;
+            border-radius: 4px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .alert {
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin: 16px 0;
+            font-size: 13px;
+        }
+        .alert-tip { background: #e6f9ee; border-left: 4px solid #27ae60; color: #1a5c32; }
+        .alert-warning { background: #fff3e0; border-left: 4px solid #f39c12; color: #7a5500; }
+        .alert-important { background: #fdf6e3; border-left: 4px solid #d4a017; color: #7a5500; }
+        .alert-danger { background: #fde8e8; border-left: 4px solid #e74c3c; color: #7a1a1a; }
+        .alert strong { display: block; margin-bottom: 4px; }
+
+        .fill-in {
+            background: #fff9c4;
+            border: 2px dashed #f9a825;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 16px 0;
+            color: #795548;
+            font-style: italic;
+        }
+        .fill-in::before {
+            content: '✏️ VOCÊ PREENCHE: ';
+            font-weight: 700;
+            font-style: normal;
+            color: #e65100;
+        }
+
+        .think-box {
+            background: #f3e5f5;
+            border-left: 4px solid #9c27b0;
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+            font-size: 13px;
+            color: #4a148c;
+        }
+        .think-box::before {
+            content: '🤔 ';
+        }
+
+        .blank-row td {
+            color: #bbb;
+            font-style: italic;
+            height: 36px;
+        }
+
+        .entregavel {
+            background: linear-gradient(135deg, #d4a017 0%, #f4c430 100%);
+            color: #1a1a2e;
+            padding: 16px 22px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+        .entregavel strong { font-size: 15px; }
+
+        .code-block {
+            background: #1a1a2e;
+            color: #f4c430;
+            padding: 18px 22px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            margin: 12px 0 20px 0;
+            white-space: pre;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin: 20px 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #d4a017;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding: 14px 18px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 18px;
+            width: 13px;
+            height: 13px;
+            background: #d4a017;
+            border-radius: 50%;
+            border: 3px solid white;
+        }
+        .timeline-item h4 {
+            font-size: 14px;
+            color: #b8860b;
+            margin: 0 0 4px 0;
+        }
+        .timeline-item p {
+            font-size: 13px;
+            color: #555;
+            margin: 0;
+        }
+
+        .blank-card {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 12px 0;
+            background: #fff;
+            min-height: 80px;
+        }
+        .blank-card h4 {
+            color: #999;
+            margin: 0 0 8px 0;
+            font-size: 14px;
+        }
+        .blank-card p {
+            color: #bbb;
+            font-style: italic;
+            font-size: 13px;
+        }
+
+        .kanban-preview {
+            display: flex;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .kanban-col {
+            flex: 1;
+            background: #f0f0f0;
+            border-radius: 8px;
+            padding: 12px;
+            min-height: 120px;
+        }
+        .kanban-col h4 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #777;
+            text-align: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #ddd;
+        }
+        .kanban-card-blank {
+            background: white;
+            border: 1px dashed #ccc;
+            border-radius: 6px;
+            padding: 8px 10px;
+            margin: 6px 0;
+            font-size: 11px;
+            color: #bbb;
+            font-style: italic;
+        }
+
+        hr { border: none; height: 1px; background: #e0e0e0; margin: 30px 0; }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+        }
+
+        @media print {
+            body { font-size: 12px; }
+            .page { padding: 20px; }
+            .header { break-after: avoid; }
+            h2 { break-after: avoid; }
+            table { break-inside: avoid; }
+            .kanban-preview { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+
+        <div class="header">
+            <div class="project-name">🎾 Projeto App de Tênis</div>
+            <h1>Coordenador / Product Owner</h1>
+            <div class="subtitle">Luiz Henrique</div>
+            <div class="meta">
+                <span>📅 Etapa 1 — Planejamento & Fundação</span>
+                <span>⏱️ Prazo: 2 semanas</span>
+                <span>📄 v1.0 — Set/2026</span>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>🎯 Seu papel no projeto</h3>
+            <p>Você é o <strong>"dono do produto"</strong>. Não faz o trabalho técnico das duplas, mas é responsável por garantir que <strong>elas estão alinhadas</strong>, que <strong>os entregáveis conversam entre si</strong>, e que <strong>o projeto não desanda</strong>. Se uma dupla trava, é você quem destrava. Se duas entregas se contradizem, é você quem percebe e corrige. Você também é quem monta a apresentação para a FATEC.</p>
+        </div>
+
+        <div class="alert alert-danger">
+            <strong>🚨 O erro mais comum de um coordenador</strong>
+            Achar que é só "delegar e esperar". Se você não cobrar, não alinhar e não validar, vai chegar no final da etapa com 3 entregas que não combinam entre si. O trabalho do coordenador é <strong>invisível quando dá certo</strong> e <strong>muito visível quando dá errado</strong>.
+        </div>
+
+        <h2>📋 Suas 6 Tarefas</h2>
+
+        <ul class="checklist">
+            <li><span class="checkbox"></span><span class="task-num">1</span> Criar e organizar o repositório do projeto no GitHub</li>
+            <li><span class="checkbox"></span><span class="task-num">2</span> Montar o quadro de tarefas (Kanban) e criar os cards</li>
+            <li><span class="checkbox"></span><span class="task-num">3</span> Definir o cronograma da Etapa 1 com marcos e prazos</li>
+            <li><span class="checkbox"></span><span class="task-num">4</span> Conduzir a reunião de alinhamento no meio da etapa</li>
+            <li><span class="checkbox"></span><span class="task-num">5</span> Validar a coerência dos 3 entregáveis no final da etapa</li>
+            <li><span class="checkbox"></span><span class="task-num">6</span> Montar a apresentação da Etapa 1 para a FATEC</li>
+        </ul>
+
+        <hr>
+
+        <!-- ===================== TAREFA 1 ===================== -->
+        <h2>Tarefa 1 — Criar o Repositório no GitHub</h2>
+
+        <p><strong>O que é:</strong> O repositório (repo) é onde TODO o projeto vai morar — código, documentos, protótipos, tudo. Centralizar no GitHub garante que ninguém perde arquivo e que todo mundo tem acesso.</p>
+
+        <div class="fill-in">Crie o repositório no GitHub e defina a estrutura de pastas. Pense: onde cada dupla vai colocar seus arquivos? Como organizar para que seja fácil de encontrar?</div>
+
+        <div class="think-box">
+            <strong>Perguntas para montar a estrutura:</strong><br>
+            — O repo vai ser público ou privado?<br>
+            — Quantas pastas principais vocês precisam? (Dica: uma para cada tipo de entregável)<br>
+            — Onde vai ficar o código quando começarem a programar na Etapa 2?<br>
+            — Precisa de um README.md explicando o que é o projeto? O que ele deve conter?<br>
+            — Todos os membros do time já têm conta no GitHub? Todos foram adicionados como colaboradores?
+        </div>
+
+        <div class="blank-card">
+            <h4>📁 Minha estrutura de pastas:</h4>
+            <p>Desenhe aqui como vai organizar as pastas do repositório...</p>
+        </div>
+
+        <div class="alert alert-tip">
+            <strong>💡 Dica</strong>
+            Pesquise "como criar repositório no GitHub" se nunca fez. É simples: github.com → New Repository → preencha o nome → crie. Depois vá em Settings → Collaborators e adicione o e-mail/username de cada membro.
+        </div>
+
+        <hr>
+
+        <!-- ===================== TAREFA 2 ===================== -->
+        <h2>Tarefa 2 — Montar o Quadro Kanban</h2>
+
+        <p><strong>O que é:</strong> Um quadro visual onde todas as tarefas do time ficam organizadas em colunas que mostram o status de cada uma. Assim todo mundo sabe o que está sendo feito, o que está travado e o que já foi entregue.</p>
+
+        <p><strong>Onde criar:</strong> Escolha uma ferramenta. Algumas opções gratuitas:</p>
+        <ul style="margin: 10px 0 15px 25px; color: #555;">
+            <li><strong>GitHub Projects</strong> — já fica dentro do repo, integrado</li>
+            <li><strong>Trello</strong> — mais visual, fácil de usar</li>
+            <li><strong>Notion</strong> — mais completo, mas mais complexo</li>
+        </ul>
+
+        <h3>Estrutura básica do Kanban</h3>
+
+        <div class="kanban-preview">
+            <div class="kanban-col">
+                <h4>📋 A Fazer</h4>
+                <div class="kanban-card-blank">tarefas que ainda ninguém começou...</div>
+            </div>
+            <div class="kanban-col">
+                <h4>🔨 Fazendo</h4>
+                <div class="kanban-card-blank">tarefas em andamento...</div>
+            </div>
+            <div class="kanban-col">
+                <h4>👀 Revisão</h4>
+                <div class="kanban-card-blank">esperando alguém validar...</div>
+            </div>
+            <div class="kanban-col">
+                <h4>✅ Feito</h4>
+                <div class="kanban-card-blank">entregues e validadas...</div>
+            </div>
+        </div>
+
+        <div class="fill-in">Crie o quadro e popule com os cards de tarefas. Cada tarefa de cada dupla vira um card. Atribua responsáveis e prazos.</div>
+
+        <div class="think-box">
+            <strong>Perguntas para criar os cards:</strong><br>
+            — Quantas tarefas o Biel & Túlio têm? Cada uma vira um card?<br>
+            — E o Wesley & Teto? E o Gabriel Pegador & Du?<br>
+            — Cada card deve ter: título, responsável(is), prazo e descrição curta<br>
+            — Quais tarefas DEPENDEM de outras? (ex.: protótipos dependem dos requisitos)<br>
+            — Vocês vão revisar o quadro em que frequência? (diário? a cada 2 dias?)
+        </div>
+
+        <hr>
+
+        <!-- ===================== TAREFA 3 ===================== -->
+        <h2>Tarefa 3 — Definir o Cronograma da Etapa 1</h2>
+
+        <p><strong>O que é:</strong> Um calendário simples que diz QUANDO cada entrega precisa estar pronta. Sem isso, todo mundo deixa para a última hora.</p>
+
+        <div class="fill-in">Monte o cronograma da Etapa 1 definindo datas concretas para cada marco. Lembrem-se que a etapa tem ~2 semanas.</div>
+
+        <div class="think-box">
+            <strong>Perguntas para montar o cronograma:</strong><br>
+            — Qual a data de entrega final da Etapa 1?<br>
+            — Se a etapa tem 2 semanas, qual é a data limite para cada dupla entregar o rascunho (não a versão final)?<br>
+            — Quando vai ser a reunião de alinhamento no meio? (Dica: entre os dias 5-7 da etapa)<br>
+            — Quanto tempo VOCÊ precisa no final para validar tudo e montar a apresentação?<br>
+            — O que acontece se uma dupla atrasar? Qual o plano B?
+        </div>
+
+        <h3>Seu cronograma</h3>
+
+        <table>
+            <tr><th>Data</th><th>Marco / Evento</th><th>Responsável</th><th>Status</th></tr>
+            <tr class="blank-row"><td>__/__</td><td>Repo criado e time adicionado</td><td>Luiz</td><td></td></tr>
+            <tr class="blank-row"><td>__/__</td><td>Kanban criado com todos os cards</td><td>Luiz</td><td></td></tr>
+            <tr class="blank-row"><td>__/__</td><td></td><td></td><td></td></tr>
+            <tr class="blank-row"><td>__/__</td><td>Reunião de alinhamento</td><td>Todos</td><td></td></tr>
+            <tr class="blank-row"><td>__/__</td><td></td><td></td><td></td></tr>
+            <tr class="blank-row"><td>__/__</td><td></td><td></td><td></td></tr>
+            <tr class="blank-row"><td>__/__</td><td></td><td></td><td></td></tr>
+            <tr class="blank-row"><td>__/__</td><td>Validação final de todos os entregáveis</td><td>Luiz</td><td></td></tr>
+            <tr class="blank-row"><td>__/__</td><td>Apresentação na FATEC (se houver)</td><td>Todos</td><td></td></tr>
+        </table>
+
+        <hr>
+
+        <!-- ===================== TAREFA 4 ===================== -->
+        <h2>Tarefa 4 — Reunião de Alinhamento (meio da etapa)</h2>
+
+        <p><strong>O que é:</strong> Uma reunião rápida (15-20 min) com todo o time para verificar se as 3 frentes estão caminhando na mesma direção. O maior risco em projetos com duplas paralelas é cada um criar algo que não encaixa com o dos outros.</p>
+
+        <div class="alert alert-warning">
+            <strong>⚠️ Sem essa reunião, o risco é alto</strong>
+            Exemplo do que pode dar errado: o Biel & Túlio definem que a aula tem um campo "quadra" nos requisitos, o Wesley & Teto colocam esse campo na tela do Figma, mas o Gabriel Pegador & Du não criaram a coluna "quadra" na tabela do banco. Resultado: retrabalho.
+        </div>
+
+        <div class="fill-in">Prepare uma pauta para a reunião. O que você vai perguntar para cada dupla? O que você precisa verificar?</div>
+
+        <div class="think-box">
+            <strong>Pauta sugerida — mas adapte com as suas dúvidas reais:</strong><br><br>
+            <strong>Para Biel & Túlio (Requisitos):</strong><br>
+            — Quantos RFs vocês já têm? Estão separados por professor e aluno?<br>
+            — As regras de negócio já foram DECIDIDAS ou ainda são perguntas abertas?<br>
+            — Tem alguma dúvida que precisa da minha opinião para desempatar?<br><br>
+            <strong>Para Wesley & Teto (Protótipos):</strong><br>
+            — Vocês já receberam os requisitos do Biel & Túlio?<br>
+            — O User Flow está pronto? Posso ver?<br>
+            — Quantas telas já estão no Figma?<br><br>
+            <strong>Para Gabriel Pegador & Du (Tecnologia):</strong><br>
+            — Já definiram a stack? Quais opções estão considerando?<br>
+            — Começaram o DER? Quantas entidades identificaram?<br>
+            — Vocês já olharam os requisitos do Biel & Túlio para validar as tabelas?<br><br>
+            <strong>Verificação cruzada (o mais importante!):</strong><br>
+            — Os campos que aparecem nos requisitos são os mesmos campos que aparecem nas telas?<br>
+            — Os campos que aparecem nas telas são os mesmos campos que existem nas tabelas do banco?
+        </div>
+
+        <div class="blank-card">
+            <h4>📝 Minha pauta da reunião:</h4>
+            <p>Anote aqui os pontos que você quer cobrir...</p>
+        </div>
+
+        <div class="blank-card">
+            <h4>📝 Anotações da reunião (preencher durante):</h4>
+            <p>O que foi discutido? Que decisões foram tomadas? Quem ficou devendo o quê?</p>
+        </div>
+
+        <hr>
+
+        <!-- ===================== TAREFA 5 ===================== -->
+        <h2>Tarefa 5 — Validação Final dos Entregáveis</h2>
+
+        <p><strong>O que é:</strong> Antes de dar a etapa como concluída, você precisa pegar os 3 entregáveis (requisitos + protótipos + banco/stack) e verificar se eles formam um todo coerente.</p>
+
+        <div class="fill-in">Monte uma tabela de checagem cruzada. Para cada funcionalidade do app, verifique se ela aparece nos 3 entregáveis.</div>
+
+        <h3>Tabela de Checagem Cruzada</h3>
+
+        <p>Para cada funcionalidade, marque se ela está presente nos requisitos, no protótipo e no banco:</p>
+
+        <table>
+            <tr>
+                <th>Funcionalidade</th>
+                <th>Tem RF?<br>(Biel & Túlio)</th>
+                <th>Tem tela?<br>(Wesley & Teto)</th>
+                <th>Tem tabela/campo?<br>(Gabriel & Du)</th>
+                <th>OK?</th>
+            </tr>
+            <tr class="blank-row"><td>Cadastro do professor</td><td></td><td></td><td></td><td></td></tr>
+            <tr class="blank-row"><td>Cadastro do aluno</td><td></td><td></td><td></td><td></td></tr>
+            <tr class="blank-row"><td>Criação de aula</td><td></td><td></td><td></td><td></td></tr>
+            <tr class="blank-row"><td>Calendário de aulas</td><td></td><td></td><td></td><td></td></tr>
+            <tr class="blank-row"><td>Presença/ausência</td><td></td><td></td><td></td><td></td></tr>
+            <tr class="blank-row"><td>Avaliação de desempenho</td><td></td><td></td><td></td><td></td></tr>
+            <tr class="blank-row"><td>Definição de nível</td><td></td><td></td><td></td><td></td></tr>
+            <tr class="blank-row"><td>Registro de partida</td><td></td><td></td><td></td><td></td></tr>
+            <tr class="blank-row"><td>Ranking</td><td></td><td></td><td></td><td></td></tr>
+            <tr class="blank-row"><td>Desafio entre alunos</td><td></td><td></td><td></td><td></td></tr>
+            <tr class="blank-row"><td>Vínculo professor-aluno</td><td></td><td></td><td></td><td></td></tr>
+            <tr class="blank-row"><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr class="blank-row"><td></td><td></td><td></td><td></td><td></td></tr>
+        </table>
+
+        <div class="alert alert-danger">
+            <strong>🚨 Se alguma linha tiver coluna vazia = PROBLEMA</strong>
+            Se uma funcionalidade tem requisito mas não tem tela, o Wesley & Teto esqueceram algo. Se tem tela mas não tem tabela no banco, o Gabriel Pegador & Du esqueceram algo. Resolva ANTES de fechar a etapa.
+        </div>
+
+        <hr>
+
+        <!-- ===================== TAREFA 6 ===================== -->
+        <h2>Tarefa 6 — Apresentação para a FATEC</h2>
+
+        <p><strong>O que é:</strong> Se a disciplina exigir uma apresentação da Etapa 1, você é responsável por consolidar o trabalho de todo o time em slides claros e objetivos.</p>
+
+        <div class="fill-in">Monte a estrutura da apresentação. Quantos slides? O que cada slide mostra? Quem apresenta cada parte?</div>
+
+        <div class="think-box">
+            <strong>Estrutura sugerida de slides (adapte conforme a disciplina):</strong><br><br>
+            1. <strong>Capa</strong> — Nome do projeto, nome do time, disciplina<br>
+            2. <strong>O problema</strong> — Que dor vocês estão resolvendo?<br>
+            3. <strong>A solução</strong> — O que o app faz em 2-3 frases<br>
+            4. <strong>Público-alvo</strong> — Para quem é o app?<br>
+            5. <strong>Funcionalidades principais</strong> — O que o professor faz? O que o aluno faz?<br>
+            6. <strong>Protótipo</strong> — Mostrar 3-4 telas do Figma<br>
+            7. <strong>Tecnologias escolhidas</strong> — Stack e banco de dados (com justificativa)<br>
+            8. <strong>Modelo de dados</strong> — Mostrar o DER<br>
+            9. <strong>Equipe e divisão</strong> — Quem faz o quê<br>
+            10. <strong>Cronograma</strong> — As 5 etapas do projeto<br>
+            11. <strong>Próximos passos</strong> — O que vem na Etapa 2<br><br>
+            Quantos desses slides se aplicam à sua disciplina? Remova o que não faz sentido e adicione o que estiver faltando.
+        </div>
+
+        <div class="blank-card">
+            <h4>📊 Estrutura dos meus slides:</h4>
+            <p>Liste os slides que você vai criar e quem apresenta cada um...</p>
+        </div>
+
+        <div class="blank-card">
+            <h4>🎤 Divisão da apresentação:</h4>
+            <p>Quem fala o quê? Quanto tempo cada um tem?</p>
+        </div>
+
+        <hr>
+
+        <!-- ===================== PAPEL DO LÍDER ===================== -->
+        <h2>💡 O dia a dia do coordenador durante a Etapa 1</h2>
+
+        <p>Além das 6 tarefas acima, seu trabalho diário é garantir que ninguém está travado. Aqui vai um guia prático:</p>
+
+        <h3>O que fazer a cada 2-3 dias</h3>
+
+        <table>
+            <tr><th>Ação</th><th>Como</th></tr>
+            <tr>
+                <td>Checar o Kanban</td>
+                <td>Algum card está parado em "Fazendo" há mais de 3 dias? Se sim, pergunte o que está travando</td>
+            </tr>
+            <tr>
+                <td>Perguntar para cada dupla</td>
+                <td>Mensagem rápida no WhatsApp: <em>"E aí, como tá o progresso? Precisa de algo?"</em></td>
+            </tr>
+            <tr>
+                <td>Destravar decisões</td>
+                <td>Se uma dupla está em dúvida sobre alguma regra de negócio, dê sua opinião e bata o martelo. Decisão ruim é melhor que indecisão</td>
+            </tr>
+            <tr>
+                <td>Verificar dependências</td>
+                <td>O Wesley & Teto já receberam os requisitos do Biel & Túlio? Se não, cobre!</td>
+            </tr>
+        </table>
+
+        <div class="think-box">
+            <strong>Reflexão de líder:</strong><br>
+            — Qual dupla do time tem mais risco de atrasar? Por quê? O que você pode fazer para ajudar?<br>
+            — Você está cobrando ou está esperando que as coisas aconteçam sozinhas?<br>
+            — Se uma dupla entregar algo ruim, você consegue dar feedback construtivo sem desmotivar?<br>
+            — Você sabe o que cada dupla está fazendo AGORA ou só vai descobrir na data de entrega?
+        </div>
+
+        <hr>
+
+        <!-- ===================== CHECKLIST FINAL ===================== -->
+        <h2>✅ Checklist final — A Etapa 1 está concluída?</h2>
+
+        <h3>Suas entregas pessoais</h3>
+        <ul class="checklist">
+            <li><span class="checkbox"></span> O repositório está criado e todos os membros foram adicionados?</li>
+            <li><span class="checkbox"></span> O Kanban está montado com os cards de todas as duplas?</li>
+            <li><span class="checkbox"></span> O cronograma está definido com datas concretas?</li>
+            <li><span class="checkbox"></span> A reunião de alinhamento aconteceu e foi documentada?</li>
+            <li><span class="checkbox"></span> A apresentação da FATEC está pronta (se aplicável)?</li>
+        </ul>
+
+        <h3>Validação das entregas do time</h3>
+        <ul class="checklist">
+            <li><span class="checkbox"></span> Os requisitos do Biel & Túlio têm pelo menos 15 RFs?</li>
+            <li><span class="checkbox"></span> As regras de negócio estão DECIDIDAS (e não são perguntas)?</li>
+            <li><span class="checkbox"></span> O protótipo do Wesley & Teto tem pelo menos 11 telas navegáveis?</li>
+            <li><span class="checkbox"></span> O Gabriel Pegador & Du escolheram a stack e justificaram por escrito?</li>
+            <li><span class="checkbox"></span> O DER cobre todas as funcionalidades listadas nos requisitos?</li>
+            <li><span class="checkbox"></span> A tabela de checagem cruzada está toda preenchida sem buracos?</li>
+            <li><span class="checkbox"></span> Todos do time sabem o que vai ser construído na Etapa 2?</li>
+        </ul>
+
+        <div class="footer">
+            🎾 Projeto App de Tênis — FATEC 2026 &nbsp;|&nbsp; Documento gerado em 19/09/2026
+        </div>
+    </div>
+</body>
+</html>

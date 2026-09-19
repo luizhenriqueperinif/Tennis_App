@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roadmap Completo — Projeto App de Tênis</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #1a1a2e;
+            background: #ffffff;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .page { max-width: 850px; margin: 0 auto; padding: 40px 50px; }
+
+        /* Cover */
+        .cover {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            padding: 60px 50px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .cover::before {
+            content: '🎾';
+            position: absolute;
+            left: -20px;
+            top: -20px;
+            font-size: 150px;
+            opacity: 0.05;
+        }
+        .cover::after {
+            content: '🏆';
+            position: absolute;
+            right: -20px;
+            bottom: -20px;
+            font-size: 150px;
+            opacity: 0.05;
+        }
+        .cover .emoji-title { font-size: 50px; margin-bottom: 15px; }
+        .cover h1 { font-size: 32px; font-weight: 800; margin-bottom: 8px; }
+        .cover .subtitle { font-size: 16px; font-weight: 300; opacity: 0.8; margin-bottom: 25px; }
+        .cover .meta-line {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            font-size: 12px;
+            opacity: 0.6;
+        }
+        .cover .version {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            margin-top: 15px;
+        }
+
+        /* TOC */
+        .toc {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px 30px;
+            margin-bottom: 35px;
+        }
+        .toc h2 {
+            font-size: 16px;
+            color: #1a1a2e;
+            margin-bottom: 12px;
+            border: none;
+            padding: 0;
+        }
+        .toc ol { padding-left: 20px; }
+        .toc li {
+            margin: 6px 0;
+            font-size: 13px;
+            color: #555;
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0f3460;
+            margin: 40px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 3px solid #e0e0e0;
+        }
+        h3 { font-size: 17px; font-weight: 600; color: #1a1a2e; margin: 25px 0 10px 0; }
+        h4 { font-size: 14px; font-weight: 600; color: #555; margin: 18px 0 8px 0; }
+        p { margin-bottom: 12px; color: #333; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0 20px 0;
+            font-size: 13px;
+        }
+        th {
+            background: #0f3460;
+            color: white;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #e8e8e8;
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background: #f8f9fa; }
+
+        .alert {
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin: 16px 0;
+            font-size: 13px;
+        }
+        .alert-tip { background: #e6f9ee; border-left: 4px solid #27ae60; color: #1a5c32; }
+        .alert-warning { background: #fff3e0; border-left: 4px solid #f39c12; color: #7a5500; }
+        .alert-important { background: #e8eaf6; border-left: 4px solid #3f51b5; color: #1a237e; }
+        .alert-danger { background: #fde8e8; border-left: 4px solid #e74c3c; color: #7a1a1a; }
+        .alert strong { display: block; margin-bottom: 4px; }
+
+        /* Stage cards */
+        .stage-card {
+            border-radius: 12px;
+            margin: 16px 0;
+            overflow: hidden;
+            border: 2px solid #e0e0e0;
+        }
+        .stage-header {
+            padding: 16px 22px;
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .stage-header .stage-num {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        .stage-body {
+            padding: 18px 22px;
+            font-size: 13px;
+        }
+        .stage-body h4 { margin: 0 0 8px 0; color: #333; font-size: 14px; }
+        
+        .stage-1 .stage-header { background: linear-gradient(135deg, #6c5ce7, #a855f7); }
+        .stage-2 .stage-header { background: linear-gradient(135deg, #0f4c75, #3282b8); }
+        .stage-3 .stage-header { background: linear-gradient(135deg, #00b894, #00cec9); }
+        .stage-4 .stage-header { background: linear-gradient(135deg, #f39c12, #e67e22); }
+        .stage-5 .stage-header { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+
+        /* Team cards */
+        .team-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin: 16px 0;
+        }
+        .team-card {
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #e0e0e0;
+        }
+        .team-card-header {
+            padding: 12px 16px;
+            color: white;
+            font-weight: 700;
+            font-size: 13px;
+        }
+        .team-card-body {
+            padding: 14px 16px;
+            font-size: 12px;
+            color: #555;
+        }
+        .team-card-body ul {
+            list-style: none;
+            padding: 0;
+        }
+        .team-card-body li {
+            padding: 3px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .team-card-body li:last-child { border-bottom: none; }
+
+        .tc-gold .team-card-header { background: linear-gradient(135deg, #d4a017, #b8860b); }
+        .tc-blue .team-card-header { background: linear-gradient(135deg, #0f4c75, #1b262c); }
+        .tc-purple .team-card-header { background: linear-gradient(135deg, #6c5ce7, #a855f7); }
+        .tc-green .team-card-header { background: linear-gradient(135deg, #00b894, #00cec9); }
+
+        /* Scope section */
+        .scope-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin: 16px 0;
+        }
+        .scope-card {
+            border-radius: 10px;
+            padding: 18px;
+            border: 2px solid #e0e0e0;
+            background: #fafafa;
+        }
+        .scope-card h4 {
+            margin: 0 0 10px 0;
+            font-size: 15px;
+        }
+        .scope-card ul {
+            padding-left: 18px;
+            font-size: 13px;
+            color: #555;
+        }
+        .scope-card li { margin: 5px 0; }
+
+        /* Flow diagram */
+        .flow-box {
+            background: #1a1a2e;
+            color: #a8d8ea;
+            padding: 22px 28px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            margin: 16px 0;
+            white-space: pre;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+
+        /* Page break helper */
+        .page-break { page-break-before: always; }
+
+        hr { border: none; height: 2px; background: linear-gradient(90deg, #0f3460, #a855f7, #00b894); margin: 40px 0; border-radius: 2px; }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+        }
+
+        @media print {
+            body { font-size: 12px; }
+            .page { padding: 20px; }
+            .cover { break-after: page; }
+            h2 { break-after: avoid; }
+            .stage-card { break-inside: avoid; }
+            .team-grid { break-inside: avoid; }
+            table { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+
+        <!-- ==================== CAPA ==================== -->
+        <div class="cover">
+            <div class="emoji-title">🎾</div>
+            <h1>Roadmap do Projeto</h1>
+            <div class="subtitle">App de Tênis — Gestão de Aulas, Desempenho & Ranking</div>
+            <div class="meta-line">
+                <span>📅 Setembro 2026</span>
+                <span>👥 7 membros — 3 duplas + coordenador</span>
+                <span>🏫 FATEC</span>
+            </div>
+            <div class="version">v1.1 — Atualizado em 19/09/2026</div>
+        </div>
+
+        <!-- ==================== SUMÁRIO ==================== -->
+        <div class="toc">
+            <h2>📌 Sumário</h2>
+            <ol>
+                <li>Visão Geral do Projeto</li>
+                <li>Equipe e Divisão de Responsabilidades</li>
+                <li>Escopo do MVP</li>
+                <li>Etapas do Projeto (Roadmap)</li>
+                <li>Etapa 1 — Detalhamento</li>
+                <li>Fluxo de Sincronização entre Duplas</li>
+                <li>Checklist de Validação</li>
+                <li>Prévia das Próximas Etapas</li>
+            </ol>
+        </div>
+
+        <!-- ==================== 1. VISÃO GERAL ==================== -->
+        <h2>1. Visão Geral do Projeto</h2>
+
+        <h3>O Problema</h3>
+        <p>Professores de tênis gerenciam alunos, aulas, avaliações e partidas de forma manual — papel, WhatsApp, planilhas. Alunos não têm visibilidade da sua evolução, não sabem quando são as aulas e não têm motivação competitiva para continuar treinando.</p>
+
+        <h3>A Solução</h3>
+        <p>Um aplicativo que centraliza a gestão do professor e engaja o aluno com:</p>
+        <ul style="margin: 8px 0 16px 25px; color: #555;">
+            <li>Cadastro e organização de aulas com controle de presença</li>
+            <li>Avaliações de desempenho estruturadas por fundamentos do tênis</li>
+            <li>Sistema de níveis (Iniciante → Intermediário → Avançado → Semiprofissional)</li>
+            <li>Ranking por grupo, desafios entre alunos e comunidade (Teams)</li>
+        </ul>
+
+        <h3>Público-Alvo</h3>
+        <table>
+            <tr><th>Ator</th><th>Quem é</th><th>O que quer</th></tr>
+            <tr><td>👨‍🏫 Professor</td><td>Professor de tênis com 5-50+ alunos</td><td>Organizar aulas, avaliar alunos, motivar pela competição</td></tr>
+            <tr><td>🎾 Aluno</td><td>Praticante de tênis vinculado a um professor</td><td>Saber quando treina, ver sua evolução, competir com colegas</td></tr>
+        </table>
+
+        <hr>
+
+        <!-- ==================== 2. EQUIPE ==================== -->
+        <h2>2. Equipe e Divisão de Responsabilidades</h2>
+
+        <div class="team-grid">
+            <div class="team-card tc-gold">
+                <div class="team-card-header">👑 Luiz — Coordenador / PO</div>
+                <div class="team-card-body">
+                    <ul>
+                        <li>Gestão do backlog e prioridades</li>
+                        <li>Alinhamento entre as duplas</li>
+                        <li>Validação cruzada dos entregáveis</li>
+                        <li>Apresentação para a FATEC</li>
+                        <li>Repositório e Kanban</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="team-card tc-blue">
+                <div class="team-card-header">📋 Biel Cabeludo & Túlio — Requisitos</div>
+                <div class="team-card-body">
+                    <ul>
+                        <li>Requisitos Funcionais (RFs)</li>
+                        <li>Requisitos Não Funcionais (RNFs)</li>
+                        <li>Regras de Negócio (RNs)</li>
+                        <li>Histórias de Usuário</li>
+                        <li>Diagrama de Casos de Uso</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="team-card tc-purple">
+                <div class="team-card-header">🎨 Wesley & Gabriel Marini (Teto) — Protótipos</div>
+                <div class="team-card-body">
+                    <ul>
+                        <li>User Flow (fluxo de navegação)</li>
+                        <li>Wireframes no Figma (11+ telas)</li>
+                        <li>Protótipo navegável</li>
+                        <li>Identidade visual básica</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="team-card tc-green">
+                <div class="team-card-header">💻 Gabriel Pegador & Du — Tecnologia</div>
+                <div class="team-card-body">
+                    <ul>
+                        <li>Escolha e justificativa do Frontend</li>
+                        <li>Escolha e justificativa do Backend</li>
+                        <li>Escolha e justificativa do Banco de Dados</li>
+                        <li>Modelo Entidade-Relacionamento (DER)</li>
+                        <li>Documento de arquitetura</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- ==================== 3. ESCOPO MVP ==================== -->
+        <h2>3. Escopo do MVP</h2>
+
+        <div class="scope-grid">
+            <div class="scope-card">
+                <h4>👨‍🏫 Para o Professor</h4>
+                <ul>
+                    <li>Cadastro de conta e login</li>
+                    <li>Cadastro e gestão de alunos</li>
+                    <li>Criação de grupos (Teams)</li>
+                    <li>Código de convite para alunos</li>
+                    <li>Cadastro de aulas (individual/grupo)</li>
+                    <li>Controle de presença</li>
+                    <li>Avaliação de desempenho por fundamentos</li>
+                    <li>Definição de nível do aluno</li>
+                    <li>Registro de partidas</li>
+                    <li>Visualização do ranking</li>
+                </ul>
+            </div>
+            <div class="scope-card">
+                <h4>🎾 Para o Aluno</h4>
+                <ul>
+                    <li>Cadastro via código de convite</li>
+                    <li>Calendário de aulas do mês</li>
+                    <li>Confirmação/aviso de presença</li>
+                    <li>Visualização das avaliações</li>
+                    <li>Acompanhamento de evolução e nível</li>
+                    <li>Ranking do grupo</li>
+                    <li>Desafio entre alunos</li>
+                    <li>Confirmação de resultado de partida</li>
+                    <li>Perfil pessoal</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>🚫 Fora do MVP (fases futuras)</h3>
+        <table>
+            <tr><th>Funcionalidade</th><th>Motivo do adiamento</th></tr>
+            <tr><td>Torneios com chaveamento automático</td><td>Complexidade alta — exige lógica de eliminatórias/grupos</td></tr>
+            <tr><td>Sistema de patentes para campeonatos</td><td>Depende dos torneios funcionarem</td></tr>
+            <tr><td>Notificações push avançadas</td><td>Requer configuração nativa (FCM/APNs)</td></tr>
+            <tr><td>Chat entre alunos</td><td>Escopo de rede social, fora do foco do MVP</td></tr>
+            <tr><td>Reserva de quadras</td><td>Gestão de infraestrutura física — complexo demais para o MVP</td></tr>
+        </table>
+
+        <hr>
+
+        <!-- ==================== 4. ROADMAP ==================== -->
+        <h2>4. Etapas do Projeto (Roadmap)</h2>
+
+        <div class="alert alert-important">
+            <strong>📌 Regra de ouro</strong>
+            Cada etapa só começa quando a anterior estiver concluída e validada pelo time. Não pulem etapas — a maior causa de projetos de faculdade darem errado é querer programar antes de ter os requisitos e protótipos prontos.
+        </div>
+
+        <div class="stage-card stage-1">
+            <div class="stage-header">
+                🔍 Planejamento & Fundação
+                <span class="stage-num">ETAPA 1 — ATUAL</span>
+            </div>
+            <div class="stage-body">
+                <h4>Foco: Requisitos, protótipos e decisões técnicas</h4>
+                <p><strong>Entregáveis:</strong> Documento de requisitos completo, protótipo navegável no Figma, stack definida com justificativa, DER com todas as entidades do MVP.</p>
+                <p><strong>Prazo:</strong> ~2 semanas</p>
+            </div>
+        </div>
+
+        <div class="stage-card stage-2">
+            <div class="stage-header">
+                🏗️ Estrutura & Base de Código
+                <span class="stage-num">ETAPA 2</span>
+            </div>
+            <div class="stage-body">
+                <h4>Foco: Montar o esqueleto do projeto e as fundações</h4>
+                <p><strong>Entregáveis:</strong> Repositório configurado com a stack escolhida, banco de dados criado com as tabelas do DER, autenticação (login/cadastro) funcionando, navegação básica do app (rotas e telas vazias).</p>
+                <p><strong>Quem:</strong> Todos codificam nesta etapa.</p>
+            </div>
+        </div>
+
+        <div class="stage-card stage-3">
+            <div class="stage-header">
+                ⚙️ MVP — Funcionalidades Essenciais
+                <span class="stage-num">ETAPA 3</span>
+            </div>
+            <div class="stage-body">
+                <h4>Foco: As funcionalidades que fazem o app ser útil no dia a dia</h4>
+                <p><strong>Entregáveis:</strong> Professor cria aulas e cadastra alunos, aluno vê calendário e confirma presença, professor avalia desempenho do aluno, aluno vê suas avaliações e nível, conexão professor-aluno via código de convite.</p>
+            </div>
+        </div>
+
+        <div class="stage-card stage-4">
+            <div class="stage-header">
+                🎮 Ranking, Desafios & Comunidade
+                <span class="stage-num">ETAPA 4</span>
+            </div>
+            <div class="stage-body">
+                <h4>Foco: O diferencial competitivo — gamificação e engajamento</h4>
+                <p><strong>Entregáveis:</strong> Sistema de pontos e ranking por grupo, desafio entre alunos, registro de partida com confirmação por ambos, contestação vai para o professor, grupos/Teams funcionando.</p>
+            </div>
+        </div>
+
+        <div class="stage-card stage-5">
+            <div class="stage-header">
+                🚀 Polimento, Testes & Entrega
+                <span class="stage-num">ETAPA 5</span>
+            </div>
+            <div class="stage-body">
+                <h4>Foco: Garantir que tudo funciona e preparar a entrega final</h4>
+                <p><strong>Entregáveis:</strong> Testes de usabilidade com usuários reais, correção de bugs e ajustes visuais, documentação técnica e acadêmica completa, apresentação final para a FATEC.</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- ==================== 5. ETAPA 1 DETALHAMENTO ==================== -->
+        <h2>5. Etapa 1 — Detalhamento</h2>
+
+        <p>A Etapa 1 produz <strong>4 entregas concretas</strong> que, juntas, devem formar um todo coerente:</p>
+
+        <table>
+            <tr><th>Responsável</th><th>Entregável</th><th>Onde salvar</th></tr>
+            <tr>
+                <td>👑 <strong>Luiz</strong></td>
+                <td>Repo configurado, Kanban com cards, cronograma, validação cruzada</td>
+                <td>GitHub + ferramenta de Kanban</td>
+            </tr>
+            <tr>
+                <td>📋 <strong>Biel & Túlio</strong></td>
+                <td>Documento de Requisitos (RFs, RNFs, RNs, User Stories, Casos de Uso)</td>
+                <td><code>/docs/requisitos/</code></td>
+            </tr>
+            <tr>
+                <td>🎨 <strong>Wesley & Teto</strong></td>
+                <td>Protótipo navegável no Figma (11+ telas) + identidade visual</td>
+                <td><code>/docs/prototipos/</code></td>
+            </tr>
+            <tr>
+                <td>💻 <strong>Gabriel Pegador & Du</strong></td>
+                <td>Stack justificada + DER completo com diagrama visual</td>
+                <td><code>/docs/arquitetura/</code></td>
+            </tr>
+        </table>
+
+        <h3>Resumo de tarefas por responsável</h3>
+
+        <table>
+            <tr><th>#</th><th>👑 Luiz (6 tarefas)</th></tr>
+            <tr><td>1</td><td>Criar e organizar o repositório no GitHub (pastas, README, colaboradores)</td></tr>
+            <tr><td>2</td><td>Montar o Kanban com cards para todas as tarefas de todas as duplas</td></tr>
+            <tr><td>3</td><td>Definir cronograma da Etapa 1 com datas e marcos concretos</td></tr>
+            <tr><td>4</td><td>Conduzir reunião de alinhamento no meio da etapa</td></tr>
+            <tr><td>5</td><td>Fazer a checagem cruzada dos 3 entregáveis (tabela de validação)</td></tr>
+            <tr><td>6</td><td>Montar a apresentação para a FATEC</td></tr>
+        </table>
+
+        <table>
+            <tr><th>#</th><th>📋 Biel & Túlio (5 tarefas)</th></tr>
+            <tr><td>1</td><td>Listar Requisitos Funcionais — mínimo 15 (professor + aluno + sistema)</td></tr>
+            <tr><td>2</td><td>Listar Requisitos Não Funcionais — mínimo 4 (segurança, desempenho, etc.)</td></tr>
+            <tr><td>3</td><td>Definir e DECIDIR as Regras de Negócio — batendo o martelo em cada uma</td></tr>
+            <tr><td>4</td><td>Escrever Histórias de Usuário — mínimo 8 (4 professor + 4 aluno)</td></tr>
+            <tr><td>5</td><td>Criar o Diagrama de Casos de Uso (UML) no draw.io</td></tr>
+        </table>
+
+        <table>
+            <tr><th>#</th><th>🎨 Wesley & Teto (4 tarefas)</th></tr>
+            <tr><td>1</td><td>Desenhar o User Flow completo (professor + aluno) no papel ou FigJam</td></tr>
+            <tr><td>2</td><td>Criar wireframes no Figma — mínimo 11 telas (6 professor + 5 aluno)</td></tr>
+            <tr><td>3</td><td>Tornar o protótipo navegável (links entre telas no Figma)</td></tr>
+            <tr><td>4</td><td>Definir identidade visual básica (paleta de cores, tipografia, nome do app)</td></tr>
+        </table>
+
+        <table>
+            <tr><th>#</th><th>💻 Gabriel Pegador & Du (6 tarefas)</th></tr>
+            <tr><td>1</td><td>Pesquisar, comparar e escolher o Frontend (mínimo 3 opções avaliadas)</td></tr>
+            <tr><td>2</td><td>Pesquisar, comparar e escolher o Backend (mínimo 3 opções avaliadas)</td></tr>
+            <tr><td>3</td><td>Pesquisar, comparar e escolher o Banco de Dados (mínimo 2 opções)</td></tr>
+            <tr><td>4</td><td>Desenhar o DER com todas as entidades, campos, tipos e relacionamentos</td></tr>
+            <tr><td>5</td><td>Criar o diagrama visual em ferramenta (dbdiagram.io, draw.io ou Lucidchart)</td></tr>
+            <tr><td>6</td><td>Escrever documento de justificativa da stack (1-2 páginas com os "porquês")</td></tr>
+        </table>
+
+        <hr>
+
+        <!-- ==================== 6. SINCRONIZAÇÃO ==================== -->
+        <h2>6. Fluxo de Sincronização entre Duplas</h2>
+
+        <p>As duplas NÃO trabalham isoladas — existe uma ordem natural de dependência:</p>
+
+        <div class="flow-box">
+                              ┌──────────────────┐
+                              │   👑 LUIZ         │
+                              │   Coordenação     │
+                              │   Validação       │
+                              └────────┬──────────┘
+                                       │
+                        ┌──────────────┼──────────────┐
+                        │              │              │
+                        ▼              ▼              ▼
+               ┌────────────┐  ┌────────────┐  ┌────────────┐
+               │ 📋 BIEL &  │  │ 🎨 WESLEY  │  │ 💻 GABRIEL │
+               │    TÚLIO   │  │   & TETO   │  │  PEG & DU  │
+               │ Requisitos │  │ Protótipos │  │ Tecnologia │
+               └─────┬──────┘  └─────▲──────┘  └─────▲──────┘
+                     │               │               │
+                     │    envia RFs  │   envia RFs   │
+                     ├───────────────┘               │
+                     └───────────────────────────────┘
+
+Ordem:
+  1. Biel & Túlio definem os requisitos e regras
+  2. Enviam para Wesley & Teto (para saber quais telas criar)
+  3. Enviam para Gabriel & Du (para saber quais tabelas criar)
+  4. Luiz valida se os 3 entregáveis são coerentes entre si</div>
+
+        <div class="alert alert-warning">
+            <strong>⚠️ O gargalo é a Dupla 1 (Requisitos)</strong>
+            Se o Biel & Túlio atrasarem os requisitos, as outras duas duplas ficam sem saber o que fazer. Por isso, os requisitos devem ser a PRIMEIRA entrega da etapa. Wesley & Teto podem começar pelas telas óbvias (Login, Dashboard) enquanto esperam, mas o grosso depende dos RFs.
+        </div>
+
+        <hr>
+
+        <!-- ==================== 7. CHECKLIST ==================== -->
+        <h2>7. Checklist de Validação — Etapa 1 Concluída?</h2>
+
+        <p>Antes de avançar para a Etapa 2, o time inteiro deve responder <strong>SIM</strong> para todas:</p>
+
+        <h3>Entregas das Duplas</h3>
+        <table>
+            <tr><th>✓</th><th>Critério</th><th>Responsável</th></tr>
+            <tr><td>☐</td><td>Pelo menos 15 requisitos funcionais escritos e organizados?</td><td>Biel & Túlio</td></tr>
+            <tr><td>☐</td><td>Pelo menos 4 requisitos não funcionais?</td><td>Biel & Túlio</td></tr>
+            <tr><td>☐</td><td>Regras de negócio DECIDIDAS (não são perguntas abertas)?</td><td>Biel & Túlio</td></tr>
+            <tr><td>☐</td><td>Pelo menos 8 histórias de usuário?</td><td>Biel & Túlio</td></tr>
+            <tr><td>☐</td><td>Diagrama de Casos de Uso desenhado?</td><td>Biel & Túlio</td></tr>
+            <tr><td>☐</td><td>User Flow desenhado (professor + aluno)?</td><td>Wesley & Teto</td></tr>
+            <tr><td>☐</td><td>Pelo menos 11 telas no Figma (6 professor + 5 aluno)?</td><td>Wesley & Teto</td></tr>
+            <tr><td>☐</td><td>Protótipo é navegável (botões levam para outra tela)?</td><td>Wesley & Teto</td></tr>
+            <tr><td>☐</td><td>Identidade visual básica definida (cores, fonte)?</td><td>Wesley & Teto</td></tr>
+            <tr><td>☐</td><td>Stack escolhida e justificada por escrito?</td><td>Gabriel Pegador & Du</td></tr>
+            <tr><td>☐</td><td>DER com todas as entidades necessárias e campos detalhados?</td><td>Gabriel Pegador & Du</td></tr>
+            <tr><td>☐</td><td>Diagrama visual do DER exportado como imagem?</td><td>Gabriel Pegador & Du</td></tr>
+        </table>
+
+        <h3>Coordenação</h3>
+        <table>
+            <tr><th>✓</th><th>Critério</th><th>Responsável</th></tr>
+            <tr><td>☐</td><td>Repo criado e todos os membros adicionados?</td><td>Luiz</td></tr>
+            <tr><td>☐</td><td>Kanban montado com cards de todas as duplas?</td><td>Luiz</td></tr>
+            <tr><td>☐</td><td>Reunião de alinhamento aconteceu e foi documentada?</td><td>Luiz</td></tr>
+            <tr><td>☐</td><td>Checagem cruzada feita (cada funcionalidade tem RF + tela + tabela)?</td><td>Luiz</td></tr>
+            <tr><td>☐</td><td>Apresentação da FATEC montada (se aplicável)?</td><td>Luiz</td></tr>
+            <tr><td>☐</td><td>Todo o time sabe o que será construído na Etapa 2?</td><td>Todos</td></tr>
+        </table>
+
+        <hr>
+
+        <!-- ==================== 8. PRÓXIMAS ETAPAS ==================== -->
+        <h2>8. Prévia das Próximas Etapas</h2>
+
+        <h3>Etapa 2 — Estrutura & Base de Código</h3>
+        <ul style="margin: 8px 0 20px 25px; color: #555;">
+            <li>Configurar o projeto com a stack escolhida pela Dupla 3</li>
+            <li>Criar o banco de dados com as tabelas do DER</li>
+            <li>Implementar autenticação (login / cadastro de professor e aluno)</li>
+            <li>Montar a navegação básica do app (rotas e telas vazias)</li>
+            <li><strong>Todos codificam nesta etapa</strong></li>
+        </ul>
+
+        <h3>Etapa 3 — MVP Funcionalidades Essenciais</h3>
+        <ul style="margin: 8px 0 20px 25px; color: #555;">
+            <li>Professor: CRUD de aulas, cadastro de alunos, avaliação de desempenho</li>
+            <li>Aluno: calendário de aulas, confirmação de presença, visualização de avaliações</li>
+            <li>Conexão professor-aluno via código de convite</li>
+        </ul>
+
+        <h3>Etapa 4 — Ranking, Desafios & Comunidade</h3>
+        <ul style="margin: 8px 0 20px 25px; color: #555;">
+            <li>Sistema de pontos e ranking por grupo</li>
+            <li>Desafio entre alunos e registro de partidas</li>
+            <li>Confirmação de resultado por ambos + contestação para o professor</li>
+        </ul>
+
+        <h3>Etapa 5 — Polimento, Testes & Entrega</h3>
+        <ul style="margin: 8px 0 20px 25px; color: #555;">
+            <li>Testes de usabilidade com usuários reais</li>
+            <li>Correção de bugs e ajustes visuais</li>
+            <li>Documentação técnica e acadêmica completa</li>
+            <li>Apresentação final para a FATEC</li>
+        </ul>
+
+        <div class="footer">
+            🎾 Projeto App de Tênis — FATEC 2026<br>
+            Roadmap v1.1 — Atualizado em 19/09/2026<br>
+            Coordenador: Luiz Henrique
+        </div>
+    </div>
+</body>
+</html>

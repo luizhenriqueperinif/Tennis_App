@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etapa 1 — Biel Cabeludo & Túlio — Requisitos e Regras de Negócio</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #1a1a2e;
+            background: #ffffff;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .page { max-width: 800px; margin: 0 auto; padding: 40px 50px; }
+
+        .header {
+            background: linear-gradient(135deg, #0f4c75 0%, #1b262c 100%);
+            color: white;
+            padding: 35px 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        .header::after {
+            content: '📋';
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 60px;
+            opacity: 0.15;
+        }
+        .header .project-name {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            opacity: 0.7;
+            margin-bottom: 8px;
+        }
+        .header h1 { font-size: 26px; font-weight: 800; margin-bottom: 6px; }
+        .header .subtitle { font-size: 15px; font-weight: 300; opacity: 0.9; }
+        .header .meta {
+            margin-top: 15px;
+            display: flex;
+            gap: 25px;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .info-box {
+            background: #e8f4f8;
+            border-left: 4px solid #0f4c75;
+            padding: 18px 22px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 28px;
+        }
+        .info-box h3 { font-size: 14px; color: #0f4c75; margin-bottom: 6px; }
+        .info-box p { font-size: 13px; color: #333; }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0f4c75;
+            margin: 35px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        h3 { font-size: 16px; font-weight: 600; color: #1a1a2e; margin: 22px 0 10px 0; }
+        p { margin-bottom: 12px; color: #333; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0 20px 0;
+            font-size: 13px;
+        }
+        th {
+            background: #0f4c75;
+            color: white;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #e8e8e8;
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background: #f8f9fa; }
+
+        .checklist { list-style: none; padding: 0; }
+        .checklist li {
+            padding: 12px 16px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #0f4c75;
+            font-weight: 500;
+        }
+        .checklist li .task-num {
+            display: inline-block;
+            background: #0f4c75;
+            color: white;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 26px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+        .checkbox {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #0f4c75;
+            border-radius: 4px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .alert {
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin: 16px 0;
+            font-size: 13px;
+        }
+        .alert-tip { background: #e6f9ee; border-left: 4px solid #27ae60; color: #1a5c32; }
+        .alert-warning { background: #fff3e0; border-left: 4px solid #f39c12; color: #7a5500; }
+        .alert-important { background: #e8eaf6; border-left: 4px solid #3f51b5; color: #1a237e; }
+        .alert strong { display: block; margin-bottom: 4px; }
+
+        .fill-in {
+            background: #fff9c4;
+            border: 2px dashed #f9a825;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 16px 0;
+            color: #795548;
+            font-style: italic;
+        }
+        .fill-in::before {
+            content: '✏️ VOCÊS PREENCHEM: ';
+            font-weight: 700;
+            font-style: normal;
+            color: #e65100;
+        }
+
+        .example-label {
+            display: inline-block;
+            background: #0f4c75;
+            color: white;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .blank-row td {
+            color: #bbb;
+            font-style: italic;
+            height: 36px;
+        }
+
+        .entregavel {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px 22px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+        .entregavel strong { font-size: 15px; }
+
+        .story-card {
+            background: #fffde7;
+            border: 1px solid #f0e68c;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin: 8px 0;
+            font-style: italic;
+            font-size: 13px;
+            color: #555;
+        }
+        .story-blank {
+            background: #fff;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin: 8px 0;
+            font-style: italic;
+            font-size: 13px;
+            color: #bbb;
+            min-height: 50px;
+        }
+
+        .think-box {
+            background: #f3e5f5;
+            border-left: 4px solid #9c27b0;
+            padding: 14px 18px;
+            border-radius: 0 8px 8px 0;
+            margin: 16px 0;
+            font-size: 13px;
+            color: #4a148c;
+        }
+        .think-box::before {
+            content: '🤔 ';
+        }
+
+        hr { border: none; height: 1px; background: #e0e0e0; margin: 30px 0; }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+        }
+
+        @media print {
+            body { font-size: 12px; }
+            .page { padding: 20px; }
+            .header { break-after: avoid; }
+            h2 { break-after: avoid; }
+            table { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+
+        <div class="header">
+            <div class="project-name">🎾 Projeto App de Tênis</div>
+            <h1>Requisitos e Regras de Negócio</h1>
+            <div class="subtitle">Dupla: Biel Cabeludo & Túlio</div>
+            <div class="meta">
+                <span>📅 Etapa 1 — Planejamento & Fundação</span>
+                <span>⏱️ Prazo: 2 semanas</span>
+                <span>📄 v1.0 — Set/2026</span>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>🎯 Seu papel no projeto</h3>
+            <p>Vocês são os <strong>"tradutores"</strong> do time — pegam a ideia do grupo e transformam em regras escritas tão claras que qualquer pessoa de fora entenderia o que o app faz. Sem o trabalho de vocês, quem vai prototipar e quem vai modelar o banco não sabe o que construir.</p>
+        </div>
+
+        <div class="entregavel">
+            <strong>📦 Entregável:</strong> Documento de Requisitos completo — salvar em <code>/docs/requisitos/requisitos.md</code> no GitHub
+        </div>
+
+        <h2>📋 Suas 5 Tarefas</h2>
+
+        <ul class="checklist">
+            <li><span class="checkbox"></span><span class="task-num">1</span> Listar os Requisitos Funcionais (RFs) — mínimo 15</li>
+            <li><span class="checkbox"></span><span class="task-num">2</span> Listar os Requisitos Não Funcionais (RNFs) — mínimo 4</li>
+            <li><span class="checkbox"></span><span class="task-num">3</span> Definir e DECIDIR as Regras de Negócio (RNs)</li>
+            <li><span class="checkbox"></span><span class="task-num">4</span> Escrever as Histórias de Usuário (User Stories) — mínimo 8</li>
+            <li><span class="checkbox"></span><span class="task-num">5</span> Criar o Diagrama de Casos de Uso (UML)</li>
+        </ul>
+
+        <hr>
+
+        <!-- ===================== TAREFA 1 ===================== -->
+        <h2>Tarefa 1 — Requisitos Funcionais (RFs)</h2>
+
+        <p><strong>O que é:</strong> Um Requisito Funcional descreve algo que o sistema DEVE FAZER. Cada funcionalidade do app vira um RF.</p>
+        <p><strong>Como escrever:</strong> Sempre comece com <em>"O sistema deve..."</em> e separe por ator (Professor / Aluno / Sistema).</p>
+
+        <div class="alert alert-tip">
+            <strong>💡 Meta</strong>
+            Vocês devem ter entre <strong>15 e 25 requisitos</strong> no total. Pensem em tudo que o professor e o aluno precisam fazer dentro do app.
+        </div>
+
+        <span class="example-label">Exemplo para entender o formato</span>
+        <table>
+            <tr><th>ID</th><th>Ator</th><th>Requisito</th></tr>
+            <tr><td>RF01</td><td>Professor</td><td>O sistema deve permitir que o professor crie uma conta com nome, e-mail, telefone e senha</td></tr>
+            <tr><td>RF02</td><td>Aluno</td><td>O sistema deve permitir que o aluno visualize suas aulas do mês em formato de calendário</td></tr>
+        </table>
+
+        <div class="fill-in">Agora listem TODOS os requisitos funcionais do app. Pensem em: o que o professor faz? O que o aluno faz? O que o sistema faz automaticamente? Cubram cadastro, aulas, avaliações, partidas, ranking, presença...</div>
+
+        <table>
+            <tr><th>ID</th><th>Ator</th><th>Requisito</th></tr>
+            <tr class="blank-row"><td>RF01</td><td></td><td></td></tr>
+            <tr class="blank-row"><td>RF02</td><td></td><td></td></tr>
+            <tr class="blank-row"><td>RF03</td><td></td><td></td></tr>
+            <tr class="blank-row"><td>RF04</td><td></td><td></td></tr>
+            <tr class="blank-row"><td>RF05</td><td></td><td></td></tr>
+            <tr class="blank-row"><td>RF06</td><td></td><td></td></tr>
+            <tr class="blank-row"><td>RF07</td><td></td><td></td></tr>
+            <tr class="blank-row"><td>RF08</td><td></td><td></td></tr>
+            <tr class="blank-row"><td>RF09</td><td></td><td></td></tr>
+            <tr class="blank-row"><td>RF10</td><td></td><td></td></tr>
+            <tr class="blank-row"><td>RF11</td><td></td><td></td></tr>
+            <tr class="blank-row"><td>RF12</td><td></td><td></td></tr>
+            <tr class="blank-row"><td>RF13</td><td></td><td></td></tr>
+            <tr class="blank-row"><td>RF14</td><td></td><td></td></tr>
+            <tr class="blank-row"><td>RF15</td><td></td><td></td></tr>
+            <tr class="blank-row"><td>...</td><td></td><td></td></tr>
+        </table>
+
+        <div class="think-box">
+            <strong>Perguntas para guiar vocês:</strong><br>
+            — Como o aluno se vincula ao professor? É por código, link, ou o professor cadastra manualmente?<br>
+            — O professor consegue ver quais alunos confirmaram presença antes da aula?<br>
+            — O aluno consegue ver QUEM ele vai jogar contra no desafio?<br>
+            — E se um aluno quiser sair de um grupo do professor?<br>
+            — Quem pode lançar o resultado de uma partida? Só o professor? Qualquer um dos dois jogadores?
+        </div>
+
+        <hr>
+
+        <!-- ===================== TAREFA 2 ===================== -->
+        <h2>Tarefa 2 — Requisitos Não Funcionais (RNFs)</h2>
+
+        <p><strong>O que é:</strong> NÃO são funcionalidades — são <strong>qualidades e restrições</strong> do sistema. Definem COMO ele deve funcionar (velocidade, segurança, compatibilidade).</p>
+
+        <span class="example-label">Exemplo para entender o formato</span>
+        <table>
+            <tr><th>ID</th><th>Categoria</th><th>Requisito</th></tr>
+            <tr><td>RNF01</td><td>Usabilidade</td><td>O sistema deve ser responsivo e funcionar em telas de celular (mobile-first)</td></tr>
+        </table>
+
+        <div class="fill-in">Listem pelo menos 4 RNFs. Pensem em: segurança (como as senhas são guardadas?), desempenho (quanto tempo pode demorar para carregar?), compatibilidade (roda em quais navegadores/celulares?), disponibilidade (precisa ficar no ar 24h?).</div>
+
+        <table>
+            <tr><th>ID</th><th>Categoria</th><th>Requisito</th></tr>
+            <tr class="blank-row"><td>RNF01</td><td></td><td></td></tr>
+            <tr class="blank-row"><td>RNF02</td><td></td><td></td></tr>
+            <tr class="blank-row"><td>RNF03</td><td></td><td></td></tr>
+            <tr class="blank-row"><td>RNF04</td><td></td><td></td></tr>
+            <tr class="blank-row"><td>...</td><td></td><td></td></tr>
+        </table>
+
+        <hr>
+
+        <!-- ===================== TAREFA 3 ===================== -->
+        <h2>Tarefa 3 — Regras de Negócio (RNs)</h2>
+
+        <p><strong>O que é:</strong> As regras de negócio são as <strong>decisões de produto</strong> que definem COMO as funcionalidades se comportam nos detalhes. Não basta dizer "o aluno confirma presença" — a regra define com quantas horas de antecedência, o que acontece se não confirmar, etc.</p>
+
+        <div class="alert alert-warning">
+            <strong>⚠️ Atenção — Vocês precisam DECIDIR, não apenas listar</strong>
+            Cada regra abaixo precisa de uma resposta definitiva. Se ficarem em dúvida, conversem com o Luiz e escolham a opção mais simples para o MVP.
+        </div>
+
+        <span class="example-label">Exemplo para entender o formato</span>
+        <table>
+            <tr><th>ID</th><th>Regra de Negócio</th></tr>
+            <tr><td>RN01</td><td>O aluno só pode acessar o app se estiver vinculado a pelo menos um professor</td></tr>
+        </table>
+
+        <div class="fill-in">Definam as regras do sistema. Para cada pergunta abaixo, escrevam uma RN clara e definitiva.</div>
+
+        <div class="think-box">
+            <strong>Perguntas que PRECISAM virar regras escritas:</strong><br><br>
+            1. Como o aluno entra no grupo do professor? (código de convite? link? cadastro pelo professor?)<br>
+            2. O aluno pode pertencer a mais de um professor/grupo ao mesmo tempo?<br>
+            3. Quem define o nível do aluno? O professor decide manualmente ou o sistema calcula automaticamente por pontuação?<br>
+            4. Um desafio só pode acontecer entre alunos do mesmo grupo ou pode ser entre grupos diferentes?<br>
+            5. O resultado de uma partida precisa ser confirmado por ambos os jogadores? E se um contestar?<br>
+            6. Com quantas horas de antecedência o aluno pode cancelar presença na aula?<br>
+            7. Tem limite de alunos por aula em grupo? Qual?<br>
+            8. O ranking é por grupo ou é global (todos os alunos do app)?<br>
+            9. O ranking zera periodicamente (mensal? semestral?) ou é acumulativo para sempre?<br>
+            10. Quem pode registrar o placar de uma partida? Só o professor? Os dois jogadores? Qualquer um dos dois?
+        </div>
+
+        <table>
+            <tr><th>ID</th><th>Regra de Negócio</th></tr>
+            <tr class="blank-row"><td>RN01</td><td></td></tr>
+            <tr class="blank-row"><td>RN02</td><td></td></tr>
+            <tr class="blank-row"><td>RN03</td><td></td></tr>
+            <tr class="blank-row"><td>RN04</td><td></td></tr>
+            <tr class="blank-row"><td>RN05</td><td></td></tr>
+            <tr class="blank-row"><td>RN06</td><td></td></tr>
+            <tr class="blank-row"><td>RN07</td><td></td></tr>
+            <tr class="blank-row"><td>RN08</td><td></td></tr>
+            <tr class="blank-row"><td>RN09</td><td></td></tr>
+            <tr class="blank-row"><td>RN10</td><td></td></tr>
+        </table>
+
+        <hr>
+
+        <!-- ===================== TAREFA 4 ===================== -->
+        <h2>Tarefa 4 — Histórias de Usuário (User Stories)</h2>
+
+        <p><strong>O que é:</strong> As histórias descrevem funcionalidades do ponto de vista de QUEM VAI USAR. Elas ajudam a entender o PORQUÊ de cada funcionalidade existir.</p>
+
+        <p><strong>Formato obrigatório:</strong></p>
+        <p style="background: #1a1a2e; color: #a8d8ea; padding: 14px 20px; border-radius: 8px; font-family: monospace; font-size: 14px;">"Como [quem sou], eu quero [o que quero fazer] para [por que quero fazer]."</p>
+
+        <span class="example-label">Exemplo</span>
+        <div class="story-card">📝 "Como professor, eu quero cadastrar meus alunos pelo app para não precisar anotar em papel."</div>
+
+        <div class="fill-in">Escrevam pelo menos 8 histórias (mínimo 4 do professor + 4 do aluno). Cada história deve cobrir uma funcionalidade diferente do app.</div>
+
+        <div class="story-blank">1. "Como __________, eu quero __________ para __________."</div>
+        <div class="story-blank">2. "Como __________, eu quero __________ para __________."</div>
+        <div class="story-blank">3. "Como __________, eu quero __________ para __________."</div>
+        <div class="story-blank">4. "Como __________, eu quero __________ para __________."</div>
+        <div class="story-blank">5. "Como __________, eu quero __________ para __________."</div>
+        <div class="story-blank">6. "Como __________, eu quero __________ para __________."</div>
+        <div class="story-blank">7. "Como __________, eu quero __________ para __________."</div>
+        <div class="story-blank">8. "Como __________, eu quero __________ para __________."</div>
+
+        <hr>
+
+        <!-- ===================== TAREFA 5 ===================== -->
+        <h2>Tarefa 5 — Diagrama de Casos de Uso (UML)</h2>
+
+        <p><strong>O que é:</strong> Um diagrama que mostra visualmente QUEM usa o sistema (atores) e O QUE cada um pode fazer (casos de uso).</p>
+
+        <p><strong>Como fazer:</strong></p>
+        <ul style="margin: 10px 0 10px 25px; color: #333;">
+            <li>Usem o <strong>draw.io</strong> (diagrams.net) — gratuito, roda no navegador</li>
+            <li>Os <strong>atores</strong> são representados como bonequinhos-palito na lateral</li>
+            <li>Os <strong>casos de uso</strong> são elipses no centro</li>
+            <li>Linhas conectam cada ator aos casos de uso que ele utiliza</li>
+            <li>Pesquisem "diagrama de casos de uso UML exemplo" no Google Imagens para referência visual</li>
+        </ul>
+
+        <div class="fill-in">Identifiquem os atores do sistema e listem todos os casos de uso de cada um. Depois desenhem o diagrama no draw.io.</div>
+
+        <div class="think-box">
+            <strong>Para montar o diagrama, respondam:</strong><br>
+            — Quantos atores o sistema tem? (Dica: são pelo menos 2)<br>
+            — O que cada ator pode fazer? (Olhem os RFs que vocês escreveram na Tarefa 1 — cada RF vira um caso de uso)<br>
+            — Existe algum caso de uso que AMBOS os atores compartilham? (ex.: fazer login)
+        </div>
+
+        <hr>
+
+        <!-- ===================== SINCRONIZAÇÃO ===================== -->
+        <h2>🔄 Como vocês se conectam com as outras duplas</h2>
+
+        <table>
+            <tr><th>Para quem</th><th>O que enviar</th><th>Quando</th></tr>
+            <tr>
+                <td><strong>Wesley & Teto</strong> (Protótipos)</td>
+                <td>A lista de RFs — eles precisam saber quais telas desenhar e quais campos colocar</td>
+                <td>Assim que terminarem a Tarefa 1</td>
+            </tr>
+            <tr>
+                <td><strong>Gabriel Pegador & Du</strong> (Banco)</td>
+                <td>Os RFs + Regras de Negócio — eles precisam saber quais tabelas e campos criar no banco</td>
+                <td>Assim que terminarem as Tarefas 1 e 3</td>
+            </tr>
+            <tr>
+                <td><strong>Luiz</strong> (Coordenador)</td>
+                <td>Dúvidas sobre regras que vocês não conseguem decidir sozinhos</td>
+                <td>A qualquer momento</td>
+            </tr>
+        </table>
+
+        <hr>
+
+        <h2>✅ Checklist final — Posso entregar?</h2>
+        <ul class="checklist">
+            <li><span class="checkbox"></span> Tenho pelo menos 15 requisitos funcionais?</li>
+            <li><span class="checkbox"></span> Os RFs cobrem TODAS as funcionalidades do professor E do aluno?</li>
+            <li><span class="checkbox"></span> Tenho pelo menos 4 requisitos não funcionais?</li>
+            <li><span class="checkbox"></span> As regras de negócio estão DECIDIDAS (não são perguntas abertas)?</li>
+            <li><span class="checkbox"></span> Tenho pelo menos 8 user stories (4 professor + 4 aluno)?</li>
+            <li><span class="checkbox"></span> O diagrama de casos de uso está desenhado no draw.io?</li>
+            <li><span class="checkbox"></span> Enviei os RFs para Wesley & Teto e Gabriel Pegador & Du?</li>
+        </ul>
+
+        <div class="footer">
+            🎾 Projeto App de Tênis — FATEC 2026 &nbsp;|&nbsp; Documento gerado em 19/09/2026
+        </div>
+    </div>
+</body>
+</html>

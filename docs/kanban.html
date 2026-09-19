@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quadro Kanban — Projeto Tennis App (FATEC)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0f172a;
+            color: #f1f5f9;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Header */
+        header {
+            background: #1e293b;
+            border-bottom: 1px solid #334155;
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .brand-icon {
+            font-size: 28px;
+            background: #334155;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+        }
+        .brand h1 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #f8fafc;
+        }
+        .brand span {
+            font-size: 12px;
+            color: #94a3b8;
+            display: block;
+        }
+
+        /* Stats & Controls */
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover {
+            color: #f8fafc;
+        }
+        .filter-btn.active {
+            background: #38bdf8;
+            color: #0f172a;
+        }
+
+        .btn-action {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: opacity 0.2s;
+        }
+        .btn-action:hover { opacity: 0.9; }
+
+        .btn-reset {
+            background: #334155;
+            color: #94a3b8;
+            border: none;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-reset:hover {
+            color: #ef4444;
+            background: #1e293b;
+        }
+
+        /* Progress Bar */
+        .progress-bar-container {
+            background: #1e293b;
+            padding: 10px 30px;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .progress-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            white-space: nowrap;
+        }
+        .progress-track {
+            flex: 1;
+            height: 8px;
+            background: #334155;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #38bdf8, #10b981);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Board */
+        .board-container {
+            flex: 1;
+            padding: 25px 30px;
+            overflow-x: auto;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(280px, 1fr));
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .column {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            max-height: calc(100vh - 190px);
+            transition: background-color 0.2s;
+        }
+        .column.drag-over {
+            background: #253349;
+            border-color: #38bdf8;
+        }
+
+        .column-header {
+            padding: 16px 18px;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .column-title {
+            font-size: 14px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .column-count {
+            background: #334155;
+            color: #94a3b8;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        .cards-list {
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+            min-height: 100px;
+            flex: 1;
+        }
+
+        /* Card */
+        .card {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 14px;
+            cursor: grab;
+            transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+            user-select: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .card:hover {
+            border-color: #475569;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .card.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .tag-responsible {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tag-luiz { background: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.4); }
+        .tag-requisitos { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); }
+        .tag-prototipos { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); }
+        .tag-tecnologia { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+
+        .card-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #f1f5f9;
+            line-height: 1.4;
+        }
+
+        .card-desc {
+            font-size: 11px;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 6px;
+            border-top: 1px solid #1e293b;
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .card-id {
+            font-family: monospace;
+            font-size: 10px;
+        }
+
+        .btn-card-del {
+            background: transparent;
+            border: none;
+            color: #475569;
+            cursor: pointer;
+            font-size: 13px;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        .btn-card-del:hover {
+            color: #ef4444;
+            background: #1e293b;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.active { display: flex; }
+
+        .modal {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 440px;
+            padding: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        .modal h3 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: #f8fafc;
+        }
+        .form-group {
+            margin-bottom: 14px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 6px;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: white;
+            font-family: inherit;
+            font-size: 13px;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .btn-secondary {
+            background: #334155;
+            color: #cbd5e1;
+            border: none;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 900px) {
+            .board { grid-template-columns: 1fr; }
+            .column { max-height: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <div class="brand-icon">🎾</div>
+            <div>
+                <h1>Quadro Kanban — Tennis App</h1>
+                <span>Etapa 1: Planejamento & Fundação (FATEC)</span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="filter-group">
+                <button class="filter-btn active" onclick="setFilter('all')">Todos</button>
+                <button class="filter-btn" onclick="setFilter('luiz')">👑 Luiz</button>
+                <button class="filter-btn" onclick="setFilter('requisitos')">📋 Biel & Túlio</button>
+                <button class="filter-btn" onclick="setFilter('prototipos')">🎨 Wesley & Teto</button>
+                <button class="filter-btn" onclick="setFilter('tecnologia')">💻 Pegador & Du</button>
+            </div>
+
+            <button class="btn-action" onclick="openNewCardModal()">➕ Nova Tarefa</button>
+            <button class="btn-reset" onclick="resetBoard()" title="Restaura os cards padrões da Etapa 1">↺ Restaurar</button>
+        </div>
+    </header>
+
+    <div class="progress-bar-container">
+        <span class="progress-text" id="progress-label">Progresso: 0% Concluído</span>
+        <div class="progress-track">
+            <div class="progress-fill" id="progress-bar"></div>
+        </div>
+    </div>
+
+    <div class="board-container">
+        <div class="board">
+
+            <!-- Coluna: A Fazer -->
+            <div class="column" data-status="todo" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event, 'todo')">
+                <div class="column-header">
+                    <span class="column-title">📋 A Fazer</span>
+                    <span class="column-count" id="count-todo">0</span>
+                </div>
+                <div class="cards-list" id="list-todo"></div>
+            </div>
+
+            <!-- Coluna: Em Andamento -->
+            <div class="column" data-status="in_progress" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event, 'in_progress')">
+                <div class="column-header">
+                    <span class="column-title">🔨 Em Andamento</span>
+                    <span class="column-count" id="count-in_progress">0</span>
+                </div>
+                <div class="cards-list" id="list-in_progress"></div>
+            </div>
+
+            <!-- Coluna: Em Revisão -->
+            <div class="column" data-status="review" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event, 'review')">
+                <div class="column-header">
+                    <span class="column-title">👀 Em Revisão</span>
+                    <span class="column-count" id="count-review">0</span>
+                </div>
+                <div class="cards-list" id="list-review"></div>
+            </div>
+
+            <!-- Coluna: Concluído -->
+            <div class="column" data-status="done" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event, 'done')">
+                <div class="column-header">
+                    <span class="column-title">✅ Concluído</span>
+                    <span class="column-count" id="count-done">0</span>
+                </div>
+                <div class="cards-list" id="list-done"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal Nova Tarefa -->
+    <div class="modal-overlay" id="modal-new-card">
+        <div class="modal">
+            <h3>Nova Tarefa</h3>
+            <div class="form-group">
+                <label>Título da Tarefa</label>
+                <input type="text" id="inp-title" placeholder="Ex.: Mapear requisitos de presença">
+            </div>
+            <div class="form-group">
+                <label>Responsável</label>
+                <select id="inp-responsible">
+                    <option value="luiz">👑 Luiz (Coordenação)</option>
+                    <option value="requisitos">📋 Biel & Túlio (Requisitos)</option>
+                    <option value="prototipos">🎨 Wesley & Teto (Protótipos)</option>
+                    <option value="tecnologia">💻 Gabriel Pegador & Du (Tecnologia/Banco)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Coluna Inicial</label>
+                <select id="inp-status">
+                    <option value="todo">📋 A Fazer</option>
+                    <option value="in_progress">🔨 Em Andamento</option>
+                    <option value="review">👀 Em Revisão</option>
+                    <option value="done">✅ Concluído</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Descrição curta (opcional)</label>
+                <textarea id="inp-desc" placeholder="Detalhes, links ou observações da entrega"></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeNewCardModal()">Cancelar</button>
+                <button class="btn-action" onclick="saveNewCard()">Salvar Tarefa</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const DEFAULT_CARDS = [
+            // Luiz
+            { id: 'LZ-01', title: 'Criar repositório no GitHub e convidar time', desc: 'Pastas docs/, src/, README e permissões para todos', responsible: 'luiz', status: 'done' },
+            { id: 'LZ-02', title: 'Montar o quadro Kanban com as tarefas', desc: 'Subir o quadro e alinhar as colunas com a equipe', responsible: 'luiz', status: 'done' },
+            { id: 'LZ-03', title: 'Definir datas e marcos no cronograma', desc: 'Preencher a tabela de datas para as 2 semanas', responsible: 'luiz', status: 'in_progress' },
+            { id: 'LZ-04', title: 'Conduzir reunião de alinhamento intermediária', desc: 'Checar dependências entre duplas no meio da etapa', responsible: 'luiz', status: 'todo' },
+            { id: 'LZ-05', title: 'Checagem cruzada dos entregáveis', desc: 'Verificar se cada funcionalidade tem RF + Tela + Tabela', responsible: 'luiz', status: 'todo' },
+            { id: 'LZ-06', title: 'Consolidar apresentação da Etapa 1 para a FATEC', desc: 'Montar slides: Problema, Solução, Protótipo e DER', responsible: 'luiz', status: 'todo' },
+
+            // Biel & Túlio
+            { id: 'REQ-01', title: 'Mapear Requisitos Funcionais (mínimo 15)', desc: 'Dividir em Professor, Aluno e Sistema', responsible: 'requisitos', status: 'todo' },
+            { id: 'REQ-02', title: 'Definir Requisitos Não Funcionais (mínimo 4)', desc: 'Desempenho, segurança de senha, mobile-first', responsible: 'requisitos', status: 'todo' },
+            { id: 'REQ-03', title: 'Bater o martelo nas 10 Regras de Negócio', desc: 'Vínculo por código, contestação de placar, inatividade', responsible: 'requisitos', status: 'todo' },
+            { id: 'REQ-04', title: 'Escrever 8 Histórias de Usuário', desc: '4 do Professor e 4 do Aluno (Como... quero... para...)', responsible: 'requisitos', status: 'todo' },
+            { id: 'REQ-05', title: 'Criar Diagrama de Casos de Uso no draw.io', desc: 'Atores Professor e Aluno conectados aos casos de uso', responsible: 'requisitos', status: 'todo' },
+
+            // Wesley & Teto
+            { id: 'UI-01', title: 'Desenhar User Flow no papel ou FigJam', desc: 'Caminho das telas do login até o final (prof e aluno)', responsible: 'prototipos', status: 'todo' },
+            { id: 'UI-02', title: 'Wireframes das 6 telas do Professor', desc: 'Login, Dashboard, Alunos, Criar Aula, Avaliação, Partida', responsible: 'prototipos', status: 'todo' },
+            { id: 'UI-03', title: 'Wireframes das 5 telas do Aluno', desc: 'Login/Código, Home, Calendário, Desempenho, Ranking', responsible: 'prototipos', status: 'todo' },
+            { id: 'UI-04', title: 'Conectar links navegáveis no Figma', desc: 'Simular navegação clicável para a apresentação', responsible: 'prototipos', status: 'todo' },
+            { id: 'UI-05', title: 'Definir identidade visual básica', desc: 'Paleta esportiva, tipografia legível e nome do app', responsible: 'prototipos', status: 'todo' },
+
+            // Gabriel Pegador & Du
+            { id: 'TEC-01', title: 'Pesquisar e comparar 3 opções de Frontend', desc: 'Comparar React Web, React Native e Flutter', responsible: 'tecnologia', status: 'todo' },
+            { id: 'TEC-02', title: 'Pesquisar e comparar 3 opções de Backend', desc: 'Comparar Node/Express, NestJS e BaaS (Supabase)', responsible: 'tecnologia', status: 'todo' },
+            { id: 'TEC-03', title: 'Escolher e justificar Banco Relacional (SQL)', desc: 'Comparar PostgreSQL com MySQL e justificar por que não NoSQL', responsible: 'tecnologia', status: 'todo' },
+            { id: 'TEC-04', title: 'Modelar conceitualmente as 7 tabelas do DER', desc: 'Usuario, Grupo, AlunoGrupo, Aula, Presenca, Avaliacao, Partida', responsible: 'tecnologia', status: 'todo' },
+            { id: 'TEC-05', title: 'Desenhar diagrama visual do DER', desc: 'Montar no dbdiagram.io ou draw.io com chaves PK/FK', responsible: 'tecnologia', status: 'todo' },
+            { id: 'TEC-06', title: 'Escrever documento de justificativa da stack', desc: '1-2 páginas justificando facilidade, custo grátis e adequação', responsible: 'tecnologia', status: 'todo' }
+        ];
+
+        let cards = [];
+        let currentFilter = 'all';
+
+        function loadCards() {
+            const saved = localStorage.getItem('tennis_kanban_cards');
+            if (saved) {
+                cards = JSON.parse(saved);
+            } else {
+                cards = [...DEFAULT_CARDS];
+                saveCards();
+            }
+            renderBoard();
+        }
+
+        function saveCards() {
+            localStorage.setItem('tennis_kanban_cards', JSON.stringify(cards));
+            updateProgress();
+        }
+
+        function resetBoard() {
+            if (confirm('Deseja restaurar as tarefas originais da Etapa 1? Suas alterações serão substituídas.')) {
+                cards = [...DEFAULT_CARDS];
+                saveCards();
+                renderBoard();
+            }
+        }
+
+        function renderBoard() {
+            const cols = ['todo', 'in_progress', 'review', 'done'];
+            cols.forEach(col => {
+                const listEl = document.getElementById(`list-${col}`);
+                listEl.innerHTML = '';
+            });
+
+            const filtered = currentFilter === 'all' 
+                ? cards 
+                : cards.filter(c => c.responsible === currentFilter);
+
+            filtered.forEach(card => {
+                const cardEl = createCardElement(card);
+                const listEl = document.getElementById(`list-${card.status}`);
+                if (listEl) listEl.appendChild(cardEl);
+            });
+
+            cols.forEach(col => {
+                const count = filtered.filter(c => c.status === col).length;
+                document.getElementById(`count-${col}`).textContent = count;
+            });
+
+            updateProgress();
+        }
+
+        function getResponsibleMeta(resp) {
+            switch(resp) {
+                case 'luiz': return { name: '👑 Luiz', class: 'tag-luiz' };
+                case 'requisitos': return { name: '📋 Biel & Túlio', class: 'tag-requisitos' };
+                case 'prototipos': return { name: '🎨 Wesley & Teto', class: 'tag-prototipos' };
+                case 'tecnologia': return { name: '💻 Pegador & Du', class: 'tag-tecnologia' };
+                default: return { name: resp, class: 'tag-luiz' };
+            }
+        }
+
+        function createCardElement(card) {
+            const el = document.createElement('div');
+            el.className = 'card';
+            el.draggable = true;
+            el.id = `card-${card.id}`;
+            el.ondragstart = (e) => onDragStart(e, card.id);
+            el.ondragend = onDragEnd;
+
+            const meta = getResponsibleMeta(card.responsible);
+
+            el.innerHTML = `
+                <div class="card-header">
+                    <span class="tag-responsible ${meta.class}">${meta.name}</span>
+                    <button class="btn-card-del" onclick="deleteCard('${card.id}')" title="Excluir tarefa">✕</button>
+                </div>
+                <div class="card-title">${card.title}</div>
+                ${card.desc ? `<div class="card-desc">${card.desc}</div>` : ''}
+                <div class="card-footer">
+                    <span class="card-id">#${card.id}</span>
+                </div>
+            `;
+            return el;
+        }
+
+        /* Drag & Drop */
+        let draggedCardId = null;
+
+        function onDragStart(e, id) {
+            draggedCardId = id;
+            e.target.classList.add('dragging');
+            e.dataTransfer.setData('text/plain', id);
+        }
+
+        function onDragEnd(e) {
+            e.target.classList.remove('dragging');
+            document.querySelectorAll('.column').forEach(c => c.classList.remove('drag-over'));
+        }
+
+        function onDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('drag-over');
+        }
+
+        function onDragLeave(e) {
+            e.currentTarget.classList.remove('drag-over');
+        }
+
+        function onDrop(e, targetStatus) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('drag-over');
+            if (!draggedCardId) return;
+
+            const card = cards.find(c => c.id === draggedCardId);
+            if (card && card.status !== targetStatus) {
+                card.status = targetStatus;
+                saveCards();
+                renderBoard();
+            }
+            draggedCardId = null;
+        }
+
+        /* Filter */
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderBoard();
+        }
+
+        /* Progress Bar */
+        function updateProgress() {
+            const total = cards.length;
+            const done = cards.filter(c => c.status === 'done').length;
+            const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+
+            document.getElementById('progress-bar').style.width = `${pct}%`;
+            document.getElementById('progress-label').textContent = `Progresso: ${pct}% Concluído (${done} de ${total} tarefas)`;
+        }
+
+        /* Delete */
+        function deleteCard(id) {
+            if (confirm('Deseja excluir esta tarefa?')) {
+                cards = cards.filter(c => c.id !== id);
+                saveCards();
+                renderBoard();
+            }
+        }
+
+        /* Modal */
+        function openNewCardModal() {
+            document.getElementById('modal-new-card').classList.add('active');
+            document.getElementById('inp-title').value = '';
+            document.getElementById('inp-desc').value = '';
+            document.getElementById('inp-title').focus();
+        }
+
+        function closeNewCardModal() {
+            document.getElementById('modal-new-card').classList.remove('active');
+        }
+
+        function saveNewCard() {
+            const title = document.getElementById('inp-title').value.trim();
+            if (!title) {
+                alert('Digite um título para a tarefa!');
+                return;
+            }
+
+            const responsible = document.getElementById('inp-responsible').value;
+            const status = document.getElementById('inp-status').value;
+            const desc = document.getElementById('inp-desc').value.trim();
+            const id = 'TASK-' + Math.floor(100 + Math.random() * 900);
+
+            cards.push({ id, title, desc, responsible, status });
+            saveCards();
+            renderBoard();
+            closeNewCardModal();
+        }
+
+        // Initialize
+        loadCards();
+    </script>
+</body>
+</html>
