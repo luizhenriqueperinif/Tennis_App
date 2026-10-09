@@ -17,8 +17,19 @@
 
 ## 📊 Gestão e Acompanhamento
 
-- 📋 **Quadro Kanban Interativo:** Abra o arquivo [`kanban.html`](./kanban.html) diretamente no seu navegador para acompanhar o progresso das tarefas de cada dupla em tempo real com drag-and-drop!
-- 🗺️ **Roadmap Geral:** [`docs/ROADMAP.md`](./docs/ROADMAP.md) ou versão visual em [`docs/etapa1/Roadmap_Completo_Projeto.html`](./docs/etapa1/Roadmap_Completo_Projeto.html)
+- 📋 **Quadro de Tarefas (Jira):** [tennisappfatec.atlassian.net — projeto KAN](https://tennisappfatec.atlassian.net/jira/software/projects/KAN/boards/1)
+- 🗺️ **Roadmap Geral:** [`Roadmap Completo — Projeto App de Tênis.pdf`](./Roadmap%20Completo%20%E2%80%94%20Projeto%20App%20de%20T%C3%AAnis.pdf)
+
+---
+
+## 🛠️ Stack Tecnológica
+
+| Camada | Tecnologia |
+|:---|:---|
+| **Frontend (mobile)** | Flutter (Dart) |
+| **Backend** | Supabase (Auth, API, Realtime) + Edge Functions em TypeScript |
+| **Banco de Dados** | PostgreSQL (via Supabase), com Row Level Security |
+| **Gestão** | Jira + Git/GitHub |
 
 ---
 
@@ -26,32 +37,18 @@
 
 ```text
 Tennis_App/
-├── kanban.html                     ← Quadro Kanban visual interativo da equipe
-├── README.md                       ← Este arquivo
-├── .gitignore                      ← Arquivos ignorados pelo Git
+├── README.md                                       ← Este arquivo
+├── Roadmap Completo — Projeto App de Tênis.pdf     ← Roadmap das 5 etapas do projeto
+├── .gitignore                                      ← Arquivos ignorados pelo Git
 │
-├── docs/                           ← Documentação completa do projeto
-│   ├── ROADMAP.md                  ← Roadmap das 5 etapas do projeto
-│   │
-│   ├── etapa1/                     ← Guias detalhados da Etapa 1 (em HTML / PDF)
-│   │   ├── Roadmap_Completo_Projeto.html
-│   │   ├── Coordenador_Luiz_ProductOwner.html
-│   │   ├── Dupla1_Biel_Tulio_Requisitos.html
-│   │   ├── Dupla2_Wesley_Teto_Prototipos.html
-│   │   └── Dupla3_GabrielPegador_Du_Tecnologias.html
-│   │
-│   ├── requisitos/                 ← [Biel & Túlio] Entregáveis de requisitos
-│   │   └── requisitos.md
-│   │
-│   ├── prototipos/                 ← [Wesley & Teto] Links e imagens do Figma
-│   │   └── link-figma.md
-│   │
-│   └── arquitetura/                ← [Gabriel Pegador & Du] Stack e DER
-│       ├── tecnologias.md
-│       └── banco-de-dados.md
-│
-└── src/                            ← Código-fonte da aplicação (inicia na Etapa 2)
+└── docs/                                           ← Documentação do projeto
+    ├── Requisitos_RegrasDeNegocio.docx.pdf         ← [Biel & Túlio] RFs, RNFs, RNs, histórias e casos de uso
+    ├── Arquivo de pesquisas - Tecnologias e BD.pdf ← [Pegador & Du] Comparativo e justificativa da stack
+    └── reunioes/                                   ← Pautas e atas de reuniões
+        └── Reuniao_Alinhamento_Etapa1_09_Out_26.pdf
 ```
+
+> A pasta `src/`, com o código-fonte da aplicação, será criada na Etapa 2.
 
 ---
 
