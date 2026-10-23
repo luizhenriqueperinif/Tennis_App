@@ -43,6 +43,8 @@ const so_data = (iso) => new Date(iso).toLocaleDateString('pt-BR', { day: '2-dig
 const iniciais = (nome) => nome.split(' ').map((p) => p[0]).slice(0, 2).join('').toUpperCase();
 const agora = () => Date.parse(ui.estado.agora);
 const nome = (id) => ui.estado.nomes[id] || 'Professor';
+// Na barra de presenças conta quem confirmou e quem o professor já marcou como presente.
+const ocupaVaga = (p) => !!p && ['confirmado', 'presente'].includes(p.status);
 const placar = (p) => p.sets.map((s) => s.join('-')).join(' · ');
 function vencedor(p) {
   let a = 0, b = 0;
@@ -278,7 +280,7 @@ function profDashboard() {
   let h = topo('Olá, ' + e.usuario.nome, { sub: '<span class="ao-vivo">Atualiza sozinho</span>', direita: '<button class="sair" data-acao="sair">Sair</button>' }) + '<main class="conteudo">';
   if (prox) {
     const t = e.turmas.find((x) => x.id === prox.turmaId);
-    const conf = t.membros.filter((m) => prox.presencas[m] && prox.presencas[m].status === 'confirmado').length;
+    const conf = t.membros.filter((m) => ocupaVaga(prox.presencas[m])).length;
     h += '<section class="card"><div class="linha"><h2>Próxima aula</h2><span class="selo bola">' + dataHora(prox.inicio) + '</span></div>' +
       '<span class="muted">' + esc(t.nome) + ' · ' + esc(prox.quadra) + (prox.tema ? ' · ' + esc(prox.tema) : '') + '</span>' +
       '<div class="linha" style="font-size:13px"><span>Presenças confirmadas</span><strong>' + conf + ' de ' + prox.vagas + '</strong></div>' +
@@ -417,7 +419,7 @@ function alunoHome() {
     const limite = Date.parse(prox.inicio) - 4 * HORA;
     const pode = agora() < limite;
     const hl = new Date(limite).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-    const conf = Object.values(prox.presencas).filter((p) => p.status === 'confirmado').length;
+    const conf = Object.values(prox.presencas).filter(ocupaVaga).length;
     h += '<section class="card"><div class="linha"><h2>Próxima aula</h2><span class="selo bola">' + dataHora(prox.inicio) + '</span></div>' +
       '<span class="muted">' + esc(prox.quadra) + (prox.tema ? ' · ' + esc(prox.tema) : '') + ' · ' + conf + ' de ' + prox.vagas + ' vagas</span>';
     if (status === 'confirmado' && !ui.cancelando) {
