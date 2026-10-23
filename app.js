@@ -175,6 +175,8 @@ async function entrar(email, senha) {
 function sair(chamarApi = true) {
   // scope 'local': sai só desta aba, sem derrubar o mesmo usuário em outros aparelhos.
   if (chamarApi) sb.auth.signOut({ scope: 'local' }).catch(() => {});
+  canalAtual = null;
+  clearTimeout(timerReconexao);
   sb.removeAllChannels();
   ui.estado = null; ui.turmaSel = null; ui.ultimoJson = '';
   location.hash = '#/login';
@@ -182,15 +184,24 @@ function sair(chamarApi = true) {
 }
 
 // Tempo real: o Supabase avisa quando uma tabela muda e a tela recarrega (agrupando avisos próximos).
-let timerRecarga;
+let timerRecarga, timerReconexao, canalAtual = null;
 function ouvirMudancas() {
+  clearTimeout(timerReconexao);
+  canalAtual = null;
   sb.removeAllChannels();
-  sb.channel('mudancas')
+  const canal = sb.channel('mudancas')
     .on('postgres_changes', { event: '*', schema: 'public' }, () => {
       clearTimeout(timerRecarga);
       timerRecarga = setTimeout(() => atualizar().catch(() => {}), 300);
     })
-    .subscribe();
+    .subscribe((status) => {
+      // Se o canal cair (rede, token renovado...), tenta de novo em 3s e recarrega o que perdeu.
+      // Avisos de canais antigos (fechados por nós mesmos) são ignorados.
+      if (canal !== canalAtual || !['CHANNEL_ERROR', 'TIMED_OUT', 'CLOSED'].includes(status) || !ui.estado) return;
+      clearTimeout(timerReconexao);
+      timerReconexao = setTimeout(() => { if (ui.estado) { ouvirMudancas(); atualizar().catch(() => {}); } }, 3000);
+    });
+  canalAtual = canal;
 }
 
 // Reserva: se o tempo real cair, a tela ainda se atualiza a cada 10s.
