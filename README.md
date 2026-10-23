@@ -18,7 +18,8 @@
 ## 📊 Gestão e Acompanhamento
 
 - 📋 **Quadro de Tarefas (Jira):** [tennisappfatec.atlassian.net — projeto KAN](https://tennisappfatec.atlassian.net/jira/software/projects/KAN/boards/1)
-- 🗺️ **Roadmap Geral:** [`Roadmap Completo — Projeto App de Tênis.pdf`](./Roadmap%20Completo%20%E2%80%94%20Projeto%20App%20de%20T%C3%AAnis.pdf)
+- 🗺️ **Roadmap Geral:** [`Roadmap Completo — Projeto App de Tênis.pdf`](./docs/gestao/Roadmap%20Completo%20%E2%80%94%20Projeto%20App%20de%20T%C3%AAnis.pdf)
+- 📁 **Índice da documentação:** [`docs/README.md`](./docs/README.md)
 
 ---
 
@@ -37,22 +38,21 @@
 
 ```text
 Tennis_App/
-├── README.md                                       ← Este arquivo
-├── Roadmap Completo — Projeto App de Tênis.pdf     ← Roadmap das 5 etapas do projeto
-├── .gitignore                                      ← Arquivos ignorados pelo Git
+├── README.md                     ← Este arquivo
+├── .gitignore
 │
-├── docs/                                           ← Documentação do projeto
-│   ├── Requisitos_RegrasDeNegocio.pdf              ← [Biel & Túlio] RFs, RNFs, RNs, histórias e casos de uso
-│   ├── Arquivo de pesquisas - Tecnologias e BD.pdf ← [Pegador & Du] Comparativo e justificativa da stack
-│   ├── Secao_Hospedagem_Stack.docx                 ← [Pegador & Du] Hospedagem e distribuição (Supabase)
-│   └── reunioes/                                   ← Pautas e atas de reuniões
-│       └── Reuniao_Alinhamento_Etapa1_09_Out_26.pdf
+├── docs/                         ← Documentação do projeto (índice em docs/README.md)
+│   ├── gestao/                   ← [Luiz] Roadmap e checagem cruzada dos entregáveis
+│   ├── requisitos/               ← [Biel & Túlio] RFs, RNs, histórias de usuário e diagrama de casos de uso
+│   ├── arquitetura/              ← [Pegador & Du] Stack, banco de dados e hospedagem
+│   ├── prototipo/                ← Guias de teste e de apresentação do protótipo
+│   └── reunioes/                 ← Pautas e atas de reuniões
 │
-├── prototipo-supabase/                             ← Protótipo funcional da Etapa 1 no Supabase (versão online)
-│                                                      Configuração e regras: prototipo-supabase/README.md
+├── prototipo-supabase/           ← Protótipo funcional da Etapa 1 no Supabase (versão online)
+│                                    Configuração e regras: prototipo-supabase/README.md
 │
-└── prototipo-local/                                ← Mesmo protótipo com servidor local (plano B, sem internet)
-                                                       Como rodar e usuários de teste: prototipo-local/README.md
+└── prototipo-local/              ← Mesmo protótipo com servidor local (plano B, sem internet)
+                                     Como rodar: prototipo-local/README.md
 ```
 
 > 🎾 **Protótipo online:** https://luizhenriqueperinif.github.io/Tennis_App/ (publicado a partir da branch `gh-pages`)
