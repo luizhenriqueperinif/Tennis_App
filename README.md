@@ -41,12 +41,21 @@ Tennis_App/
 ├── Roadmap Completo — Projeto App de Tênis.pdf     ← Roadmap das 5 etapas do projeto
 ├── .gitignore                                      ← Arquivos ignorados pelo Git
 │
-└── docs/                                           ← Documentação do projeto
-    ├── Requisitos_RegrasDeNegocio.docx.pdf         ← [Biel & Túlio] RFs, RNFs, RNs, histórias e casos de uso
-    ├── Arquivo de pesquisas - Tecnologias e BD.pdf ← [Pegador & Du] Comparativo e justificativa da stack
-    └── reunioes/                                   ← Pautas e atas de reuniões
-        └── Reuniao_Alinhamento_Etapa1_09_Out_26.pdf
+├── docs/                                           ← Documentação do projeto
+│   ├── Requisitos_RegrasDeNegocio.pdf              ← [Biel & Túlio] RFs, RNFs, RNs, histórias e casos de uso
+│   ├── Arquivo de pesquisas - Tecnologias e BD.pdf ← [Pegador & Du] Comparativo e justificativa da stack
+│   ├── Secao_Hospedagem_Stack.docx                 ← [Pegador & Du] Hospedagem e distribuição (Supabase)
+│   └── reunioes/                                   ← Pautas e atas de reuniões
+│       └── Reuniao_Alinhamento_Etapa1_09_Out_26.pdf
+│
+├── prototipo-supabase/                             ← Protótipo funcional da Etapa 1 no Supabase (versão online)
+│                                                      Configuração e regras: prototipo-supabase/README.md
+│
+└── prototipo-local/                                ← Mesmo protótipo com servidor local (plano B, sem internet)
+                                                       Como rodar e usuários de teste: prototipo-local/README.md
 ```
+
+> 🎾 **Protótipo online:** https://luizhenriqueperinif.github.io/Tennis_App/ (publicado a partir da branch `gh-pages`)
 
 > A pasta `src/`, com o código-fonte da aplicação, será criada na Etapa 2.
 

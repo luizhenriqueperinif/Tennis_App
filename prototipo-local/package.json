@@ -1,0 +1,12 @@
+{
+  "name": "matchpoint-prototipo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Protótipo funcional do MatchPoint para a apresentação da Etapa 1 (sem dependências).",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
