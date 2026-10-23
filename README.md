@@ -41,11 +41,15 @@ Tennis_App/
 ├── Roadmap Completo — Projeto App de Tênis.pdf     ← Roadmap das 5 etapas do projeto
 ├── .gitignore                                      ← Arquivos ignorados pelo Git
 │
-└── docs/                                           ← Documentação do projeto
-    ├── Requisitos_RegrasDeNegocio.docx.pdf         ← [Biel & Túlio] RFs, RNFs, RNs, histórias e casos de uso
-    ├── Arquivo de pesquisas - Tecnologias e BD.pdf ← [Pegador & Du] Comparativo e justificativa da stack
-    └── reunioes/                                   ← Pautas e atas de reuniões
-        └── Reuniao_Alinhamento_Etapa1_09_Out_26.pdf
+├── docs/                                           ← Documentação do projeto
+│   ├── Requisitos_RegrasDeNegocio.pdf              ← [Biel & Túlio] RFs, RNFs, RNs, histórias e casos de uso
+│   ├── Arquivo de pesquisas - Tecnologias e BD.pdf ← [Pegador & Du] Comparativo e justificativa da stack
+│   ├── Secao_Hospedagem_Stack.docx                 ← [Pegador & Du] Hospedagem e distribuição (Supabase)
+│   └── reunioes/                                   ← Pautas e atas de reuniões
+│       └── Reuniao_Alinhamento_Etapa1_09_Out_26.pdf
+│
+└── prototipo-local/                                ← Protótipo funcional da Etapa 1 (Node, sem dependências)
+                                                       Como rodar e usuários de teste: prototipo-local/README.md
 ```
 
 > A pasta `src/`, com o código-fonte da aplicação, será criada na Etapa 2.
