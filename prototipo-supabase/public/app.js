@@ -168,13 +168,15 @@ async function entrar(email, senha) {
     if (error) throw new Error(error.message === 'Invalid login credentials' ? 'E-mail ou senha incorretos.' : error.message);
     await atualizar(true);
     location.hash = ui.estado.usuario.papel === 'professor' ? '#/prof' : '#/aluno';
-    ouvirMudancas();
+    ouvirMudancas().catch(() => {});
   } catch (e) { aviso(e.message, true); }
 }
 
 function sair(chamarApi = true) {
   // scope 'local': sai só desta aba, sem derrubar o mesmo usuário em outros aparelhos.
   if (chamarApi) sb.auth.signOut({ scope: 'local' }).catch(() => {});
+  canalAtual = null;
+  clearTimeout(timerReconexao);
   sb.removeAllChannels();
   ui.estado = null; ui.turmaSel = null; ui.ultimoJson = '';
   location.hash = '#/login';
@@ -182,15 +184,29 @@ function sair(chamarApi = true) {
 }
 
 // Tempo real: o Supabase avisa quando uma tabela muda e a tela recarrega (agrupando avisos próximos).
-let timerRecarga;
-function ouvirMudancas() {
-  sb.removeAllChannels();
-  sb.channel('mudancas')
+let timerRecarga, timerReconexao, canalAtual = null;
+async function ouvirMudancas() {
+  clearTimeout(timerReconexao);
+  canalAtual = null;
+  await sb.removeAllChannels();
+  // O canal precisa do token do usuário logado: com a chave publicável o servidor recusa a inscrição.
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session || !ui.estado) return;
+  await sb.realtime.setAuth(session.access_token);
+  // Nome novo a cada vez: com o mesmo nome a biblioteca devolveria o canal antigo, ainda com erro.
+  const canal = sb.channel('mudancas-' + Date.now())
     .on('postgres_changes', { event: '*', schema: 'public' }, () => {
       clearTimeout(timerRecarga);
       timerRecarga = setTimeout(() => atualizar().catch(() => {}), 300);
     })
-    .subscribe();
+    .subscribe((status) => {
+      // Se o canal cair (rede, token renovado...), tenta de novo em 3s e recarrega o que perdeu.
+      // Avisos de canais antigos (fechados por nós mesmos) são ignorados.
+      if (canal !== canalAtual || !['CHANNEL_ERROR', 'TIMED_OUT', 'CLOSED'].includes(status) || !ui.estado) return;
+      clearTimeout(timerReconexao);
+      timerReconexao = setTimeout(() => { if (ui.estado) { ouvirMudancas().catch(() => {}); atualizar().catch(() => {}); } }, 3000);
+    });
+  canalAtual = canal;
 }
 
 // Reserva: se o tempo real cair, a tela ainda se atualiza a cada 10s.
@@ -625,7 +641,7 @@ document.addEventListener('submit', async (ev) => {
 (async () => {
   try {
     await atualizar(true);
-    if (ui.estado) ouvirMudancas();
+    if (ui.estado) ouvirMudancas().catch(() => {});
   } catch (e) { ui.estado = null; aviso(e.message, true); }
   render();
 })();
