@@ -45,7 +45,8 @@ Tennis_App/
 │   ├── gestao/                   ← [Luiz] Roadmap e checagem cruzada dos entregáveis
 │   ├── requisitos/               ← [Biel & Túlio] RFs, RNs, histórias de usuário e diagrama de casos de uso
 │   ├── arquitetura/              ← [Pegador & Du] Stack, banco de dados e hospedagem
-│   ├── prototipo/                ← Guias de teste e de apresentação do protótipo
+│   ├── prototipo/                ← Guia de teste do protótipo
+│   ├── apresentacoes/            ← Slides e guia da apresentação de cada etapa
 │   └── reunioes/                 ← Pautas e atas de reuniões
 │
 ├── prototipo-supabase/           ← Protótipo funcional da Etapa 1 no Supabase (versão online)

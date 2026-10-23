@@ -11,7 +11,8 @@
 | `arquitetura/` | [Arquivo de pesquisas - Tecnologias e BD.pdf](./arquitetura/Arquivo%20de%20pesquisas%20-%20Tecnologias%20e%20BD.pdf): comparativo e justificativa da stack | Pegador & Du | KAN-27 |
 | `arquitetura/` | [Secao_Hospedagem_Stack.docx](./arquitetura/Secao_Hospedagem_Stack.docx): hospedagem e distribuição (Supabase) | Pegador & Du | — |
 | `prototipo/` | [Guia_Teste_Prototipo_MatchPoint.pdf](./prototipo/Guia_Teste_Prototipo_MatchPoint.pdf): roteiro de teste do protótipo online | Luiz | — |
-| `prototipo/` | [Guia_Apresentacao_Prototipo_MatchPoint.pdf](./prototipo/Guia_Apresentacao_Prototipo_MatchPoint.pdf): roteiro da apresentação e glossário | Luiz | KAN-9 |
+| `apresentacoes/` | [Apresentacao_Etapa1_MatchPoint.pptx](./apresentacoes/Apresentacao_Etapa1_MatchPoint.pptx): slides da apresentação da Etapa 1 na FATEC | Luiz | KAN-9 |
+| `apresentacoes/` | [Guia_Apresentacao_Prototipo_MatchPoint.pdf](./apresentacoes/Guia_Apresentacao_Prototipo_MatchPoint.pdf): roteiro da demonstração, perguntas da banca e glossário | Luiz | KAN-9 |
 | `reunioes/` | [Reuniao_Alinhamento_Etapa1_09_Out_26.pdf](./reunioes/Reuniao_Alinhamento_Etapa1_09_Out_26.pdf) | Luiz | — |
 
 > 🔒 O repositório é público. As senhas dos usuários de teste **não** ficam aqui: peça ao Luiz.
