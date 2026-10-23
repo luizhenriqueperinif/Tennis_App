@@ -48,9 +48,14 @@ Tennis_App/
 │   └── reunioes/                                   ← Pautas e atas de reuniões
 │       └── Reuniao_Alinhamento_Etapa1_09_Out_26.pdf
 │
-└── prototipo-local/                                ← Protótipo funcional da Etapa 1 (Node, sem dependências)
+├── prototipo-supabase/                             ← Protótipo funcional da Etapa 1 no Supabase (versão online)
+│                                                      Configuração e regras: prototipo-supabase/README.md
+│
+└── prototipo-local/                                ← Mesmo protótipo com servidor local (plano B, sem internet)
                                                        Como rodar e usuários de teste: prototipo-local/README.md
 ```
+
+> 🎾 **Protótipo online:** https://luizhenriqueperinif.github.io/Tennis_App/ (publicado a partir da branch `gh-pages`)
 
 > A pasta `src/`, com o código-fonte da aplicação, será criada na Etapa 2.
 
