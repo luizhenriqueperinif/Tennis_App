@@ -12,6 +12,7 @@
 | `arquitetura/` | [DER.png](./arquitetura/DER.png): diagrama do banco (16 tabelas e a view do ranking) | Pegador & Du | KAN-24 |
 | `arquitetura/` | [DER.sql](./arquitetura/DER.sql): script do banco, pronto para o Supabase | Pegador & Du | KAN-23 |
 | `arquitetura/` | [Secao_Hospedagem_Stack.docx](./arquitetura/Secao_Hospedagem_Stack.docx): hospedagem e distribuição (Supabase) | Pegador & Du | — |
+| `design/` | [Brandbook_Teste_MatchPoint.pdf](./design/Brandbook_Teste_MatchPoint.pdf): **versão de teste** do guia de marca (logo, cores, fontes, componentes e tom de voz) | Luiz | KAN-33 |
 | `prototipo/` | [Guia_Teste_Prototipo_MatchPoint.pdf](./prototipo/Guia_Teste_Prototipo_MatchPoint.pdf): roteiro de teste do protótipo online | Luiz | — |
 | `apresentacoes/` | [Apresentacao_Etapa1_MatchPoint.pptx](./apresentacoes/Apresentacao_Etapa1_MatchPoint.pptx): slides da apresentação da Etapa 1 na FATEC | Luiz | KAN-9 |
 | `apresentacoes/` | [Roteiro_Apresentacao_Etapa1.docx](./apresentacoes/Roteiro_Apresentacao_Etapa1.docx): quem fala o quê, dados do tênis e perguntas da banca | Luiz | KAN-9 |
