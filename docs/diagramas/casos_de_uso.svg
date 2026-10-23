@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="1010" viewBox="0 0 920 1010" font-family="Segoe UI, Arial, sans-serif">
+<rect width="920" height="1010" fill="#fff"/>
+<rect x="150" y="128" width="620" height="742" rx="14" fill="none" stroke="#1F6F43" stroke-width="2.4"/>
+<text x="166" y="154" font-size="16" font-weight="700" fill="#1F6F43">App MatchPoint</text>
+<g stroke="#1d2b24" stroke-width="2.4" fill="none"><circle cx="460" cy="14" r="14"/><line x1="460" y1="28" x2="460" y2="70"/><line x1="434" y1="42" x2="486" y2="42"/><line x1="460" y1="70" x2="438" y2="102"/><line x1="460" y1="70" x2="482" y2="102"/></g>
+<text x="460" y="124" text-anchor="middle" font-size="17" font-weight="700" fill="#1d2b24"></text>
+<text x="484" y="20" font-size="17" font-weight="700" fill="#1d2b24">Usuário</text>
+<ellipse cx="255" cy="212" rx="92" ry="30" fill="#F3F7F1" stroke="#1F6F43" stroke-width="2"/>
+<text x="255" y="208" text-anchor="middle" font-size="15" font-weight="600" fill="#1d2b24">Criar conta e entrar</text>
+<text x="255" y="226" text-anchor="middle" font-size="13" font-weight="400" fill="#4a5a51">RF01, RF10, RF26</text>
+<line x1="460" y1="102" x2="255" y2="182" stroke="#1d2b24" stroke-width="1.5"/>
+<ellipse cx="460" cy="212" rx="92" ry="30" fill="#F3F7F1" stroke="#1F6F43" stroke-width="2"/>
+<text x="460" y="208" text-anchor="middle" font-size="15" font-weight="600" fill="#1d2b24">Consultar agenda</text>
+<text x="460" y="226" text-anchor="middle" font-size="13" font-weight="400" fill="#4a5a51">RF04, RF17, RF27</text>
+<line x1="460" y1="102" x2="460" y2="182" stroke="#1d2b24" stroke-width="1.5"/>
+<ellipse cx="665" cy="212" rx="92" ry="30" fill="#F3F7F1" stroke="#1F6F43" stroke-width="2"/>
+<text x="665" y="208" text-anchor="middle" font-size="15" font-weight="600" fill="#1d2b24">Ver ranking da turma</text>
+<text x="665" y="226" text-anchor="middle" font-size="13" font-weight="400" fill="#4a5a51">RF15</text>
+<line x1="460" y1="102" x2="665" y2="182" stroke="#1d2b24" stroke-width="1.5"/>
+<g stroke="#1d2b24" stroke-width="2.4" fill="none"><circle cx="62" cy="478.0" r="14"/><line x1="62" y1="492.0" x2="62" y2="534.0"/><line x1="36" y1="506.0" x2="88" y2="506.0"/><line x1="62" y1="534.0" x2="40" y2="566.0"/><line x1="62" y1="534.0" x2="84" y2="566.0"/></g>
+<text x="62" y="588.0" text-anchor="middle" font-size="17" font-weight="700" fill="#1d2b24">Professor</text>
+<g stroke="#1d2b24" stroke-width="2.4" fill="none"><circle cx="858" cy="478.0" r="14"/><line x1="858" y1="492.0" x2="858" y2="534.0"/><line x1="832" y1="506.0" x2="884" y2="506.0"/><line x1="858" y1="534.0" x2="836" y2="566.0"/><line x1="858" y1="534.0" x2="880" y2="566.0"/></g>
+<text x="858" y="588.0" text-anchor="middle" font-size="17" font-weight="700" fill="#1d2b24">Aluno</text>
+<ellipse cx="318" cy="300.0" rx="130" ry="30" fill="#F3F7F1" stroke="#1F6F43" stroke-width="2"/>
+<text x="318" y="296.0" text-anchor="middle" font-size="15" font-weight="600" fill="#1d2b24">Gerenciar turmas</text>
+<text x="318" y="314.0" text-anchor="middle" font-size="13" font-weight="400" fill="#4a5a51">RF02</text>
+<line x1="88" y1="518.0" x2="188" y2="300.0" stroke="#1d2b24" stroke-width="1.5"/>
+<ellipse cx="318" cy="374.6666666666667" rx="130" ry="30" fill="#F3F7F1" stroke="#1F6F43" stroke-width="2"/>
+<text x="318" y="370.6666666666667" text-anchor="middle" font-size="15" font-weight="600" fill="#1d2b24">Criar e editar aulas</text>
+<text x="318" y="388.6666666666667" text-anchor="middle" font-size="13" font-weight="400" fill="#4a5a51">RF03, RF04, RF06</text>
+<line x1="88" y1="518.0" x2="188" y2="374.6666666666667" stroke="#1d2b24" stroke-width="1.5"/>
+<ellipse cx="318" cy="449.33333333333337" rx="130" ry="30" fill="#F3F7F1" stroke="#1F6F43" stroke-width="2"/>
+<text x="318" y="445.33333333333337" text-anchor="middle" font-size="15" font-weight="600" fill="#1d2b24">Convidar alunos (código)</text>
+<text x="318" y="463.33333333333337" text-anchor="middle" font-size="13" font-weight="400" fill="#4a5a51">RF05</text>
+<line x1="88" y1="518.0" x2="188" y2="449.33333333333337" stroke="#1d2b24" stroke-width="1.5"/>
+<ellipse cx="318" cy="524.0" rx="130" ry="30" fill="#F3F7F1" stroke="#1F6F43" stroke-width="2"/>
+<text x="318" y="520.0" text-anchor="middle" font-size="15" font-weight="600" fill="#1d2b24">Registrar presença</text>
+<text x="318" y="538.0" text-anchor="middle" font-size="13" font-weight="400" fill="#4a5a51">RF08</text>
+<line x1="88" y1="518.0" x2="188" y2="524.0" stroke="#1d2b24" stroke-width="1.5"/>
+<ellipse cx="318" cy="598.6666666666667" rx="130" ry="30" fill="#F3F7F1" stroke="#1F6F43" stroke-width="2"/>
+<text x="318" y="594.6666666666667" text-anchor="middle" font-size="15" font-weight="600" fill="#1d2b24">Avaliar fundamentos</text>
+<text x="318" y="612.6666666666667" text-anchor="middle" font-size="13" font-weight="400" fill="#4a5a51">RF09</text>
+<line x1="88" y1="518.0" x2="188" y2="598.6666666666667" stroke="#1d2b24" stroke-width="1.5"/>
+<ellipse cx="318" cy="673.3333333333333" rx="130" ry="30" fill="#F3F7F1" stroke="#1F6F43" stroke-width="2"/>
+<text x="318" y="669.3333333333333" text-anchor="middle" font-size="15" font-weight="600" fill="#1d2b24">Comentar aulas realizadas</text>
+<text x="318" y="687.3333333333333" text-anchor="middle" font-size="13" font-weight="400" fill="#4a5a51">RF07</text>
+<line x1="88" y1="518.0" x2="188" y2="673.3333333333333" stroke="#1d2b24" stroke-width="1.5"/>
+<ellipse cx="318" cy="748.0" rx="130" ry="30" fill="#F3F7F1" stroke="#1F6F43" stroke-width="2"/>
+<text x="318" y="744.0" text-anchor="middle" font-size="15" font-weight="600" fill="#1d2b24">Validar ou corrigir placar</text>
+<text x="318" y="762.0" text-anchor="middle" font-size="13" font-weight="400" fill="#4a5a51">RF28</text>
+<line x1="88" y1="518.0" x2="188" y2="748.0" stroke="#1d2b24" stroke-width="1.5"/>
+<ellipse cx="602" cy="300" rx="136" ry="30" fill="#F3F7F1" stroke="#1F6F43" stroke-width="2"/>
+<text x="602" y="296" text-anchor="middle" font-size="15" font-weight="600" fill="#1d2b24">Entrar na turma por convite</text>
+<text x="602" y="314" text-anchor="middle" font-size="13" font-weight="400" fill="#4a5a51">RF16</text>
+<line x1="832" y1="518.0" x2="738" y2="300" stroke="#1d2b24" stroke-width="1.5"/>
+<ellipse cx="602" cy="364" rx="136" ry="30" fill="#F3F7F1" stroke="#1F6F43" stroke-width="2"/>
+<text x="602" y="360" text-anchor="middle" font-size="15" font-weight="600" fill="#1d2b24">Confirmar presença</text>
+<text x="602" y="378" text-anchor="middle" font-size="13" font-weight="400" fill="#4a5a51">RF11</text>
+<line x1="832" y1="518.0" x2="738" y2="364" stroke="#1d2b24" stroke-width="1.5"/>
+<ellipse cx="602" cy="428" rx="136" ry="30" fill="#F3F7F1" stroke="#1F6F43" stroke-width="2"/>
+<text x="602" y="424" text-anchor="middle" font-size="15" font-weight="600" fill="#1d2b24">Desafiar colega</text>
+<text x="602" y="442" text-anchor="middle" font-size="13" font-weight="400" fill="#4a5a51">RF12</text>
+<line x1="832" y1="518.0" x2="738" y2="428" stroke="#1d2b24" stroke-width="1.5"/>
+<ellipse cx="602" cy="492" rx="136" ry="30" fill="#F3F7F1" stroke="#1F6F43" stroke-width="2"/>
+<text x="602" y="488" text-anchor="middle" font-size="15" font-weight="600" fill="#1d2b24">Registrar placar</text>
+<text x="602" y="506" text-anchor="middle" font-size="13" font-weight="400" fill="#4a5a51">RF13</text>
+<line x1="832" y1="518.0" x2="738" y2="492" stroke="#1d2b24" stroke-width="1.5"/>
+<ellipse cx="602" cy="556" rx="136" ry="30" fill="#F3F7F1" stroke="#1F6F43" stroke-width="2"/>
+<text x="602" y="552" text-anchor="middle" font-size="15" font-weight="600" fill="#1d2b24">Confirmar ou contestar placar</text>
+<text x="602" y="570" text-anchor="middle" font-size="13" font-weight="400" fill="#4a5a51">RF14</text>
+<line x1="832" y1="518.0" x2="738" y2="556" stroke="#1d2b24" stroke-width="1.5"/>
+<ellipse cx="602" cy="620" rx="136" ry="30" fill="#F3F7F1" stroke="#1F6F43" stroke-width="2"/>
+<text x="602" y="616" text-anchor="middle" font-size="15" font-weight="600" fill="#1d2b24">Ver minha avaliação</text>
+<text x="602" y="634" text-anchor="middle" font-size="13" font-weight="400" fill="#4a5a51">RF19</text>
+<line x1="832" y1="518.0" x2="738" y2="620" stroke="#1d2b24" stroke-width="1.5"/>
+<ellipse cx="602" cy="684" rx="136" ry="30" fill="#F3F7F1" stroke="#1F6F43" stroke-width="2"/>
+<text x="602" y="680" text-anchor="middle" font-size="15" font-weight="600" fill="#1d2b24">Anotações, conteúdo e atividades</text>
+<text x="602" y="698" text-anchor="middle" font-size="13" font-weight="400" fill="#4a5a51">RF20, RF21, RF22</text>
+<line x1="832" y1="518.0" x2="738" y2="684" stroke="#1d2b24" stroke-width="1.5"/>
+<ellipse cx="602" cy="748" rx="136" ry="30" fill="#F3F7F1" stroke="#1F6F43" stroke-width="2"/>
+<text x="602" y="744" text-anchor="middle" font-size="15" font-weight="600" fill="#1d2b24">Sair da turma</text>
+<text x="602" y="762" text-anchor="middle" font-size="13" font-weight="400" fill="#4a5a51">RF18</text>
+<line x1="832" y1="518.0" x2="738" y2="748" stroke="#1d2b24" stroke-width="1.5"/>
+<polyline points="62,460.0 62,50 420,50" fill="none" stroke="#1d2b24" stroke-width="1.5"/>
+<polygon points="420,50 404,41 404,59" fill="#fff" stroke="#1d2b24" stroke-width="1.5"/>
+<polyline points="858,460.0 858,50 500,50" fill="none" stroke="#1d2b24" stroke-width="1.5"/>
+<polygon points="500,50 516,41 516,59" fill="#fff" stroke="#1d2b24" stroke-width="1.5"/>
+<ellipse cx="330" cy="830" rx="120" ry="30" fill="#EEF2F6" stroke="#4b6478" stroke-width="2"/>
+<text x="330" y="826" text-anchor="middle" font-size="15" font-weight="600" fill="#1d2b24">Enviar notificações</text>
+<text x="330" y="844" text-anchor="middle" font-size="13" font-weight="400" fill="#4a5a51">RF25</text>
+<ellipse cx="590" cy="830" rx="120" ry="30" fill="#EEF2F6" stroke="#4b6478" stroke-width="2"/>
+<text x="590" y="826" text-anchor="middle" font-size="15" font-weight="600" fill="#1d2b24">Calcular ranking e prazos</text>
+<text x="590" y="844" text-anchor="middle" font-size="13" font-weight="400" fill="#4a5a51">RF27, RF28 (24h)</text>
+<g stroke="#1d2b24" stroke-width="2.4" fill="none"><circle cx="460" cy="896" r="14"/><line x1="460" y1="910" x2="460" y2="952"/><line x1="434" y1="924" x2="486" y2="924"/><line x1="460" y1="952" x2="438" y2="984"/><line x1="460" y1="952" x2="482" y2="984"/></g>
+<text x="460" y="1006" text-anchor="middle" font-size="17" font-weight="700" fill="#1d2b24"></text>
+<text x="486" y="920" font-size="17" font-weight="700" fill="#1d2b24">Sistema</text>
+<line x1="460" y1="882" x2="330" y2="860" stroke="#1d2b24" stroke-width="1.5"/>
+<line x1="460" y1="882" x2="590" y2="860" stroke="#1d2b24" stroke-width="1.5"/>
+</svg>
