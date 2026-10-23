@@ -9,7 +9,8 @@
 | `requisitos/` | [Requisitos_RegrasDeNegocio.pdf](./requisitos/Requisitos_RegrasDeNegocio.pdf): RFs, RNFs, RNs, histórias de usuário e casos de uso | Biel & Túlio | KAN-26 |
 | `requisitos/diagramas/` | [casos_de_uso.svg](./requisitos/diagramas/casos_de_uso.svg): fonte editável do diagrama de casos de uso | Biel & Túlio | KAN-26 |
 | `arquitetura/` | [Arquivo de pesquisas - Tecnologias e BD.pdf](./arquitetura/Arquivo%20de%20pesquisas%20-%20Tecnologias%20e%20BD.pdf): comparativo e justificativa da stack | Pegador & Du | KAN-27 |
-| `arquitetura/` | [DER.sql](./arquitetura/DER.sql): script do banco (18 tabelas), pronto para o Supabase. A imagem DER.png entra quando for exportada do dbdiagram | Pegador & Du | KAN-23 e KAN-24 |
+| `arquitetura/` | [DER.png](./arquitetura/DER.png): diagrama do banco (16 tabelas e a view do ranking) | Pegador & Du | KAN-24 |
+| `arquitetura/` | [DER.sql](./arquitetura/DER.sql): script do banco, pronto para o Supabase | Pegador & Du | KAN-23 |
 | `arquitetura/` | [Secao_Hospedagem_Stack.docx](./arquitetura/Secao_Hospedagem_Stack.docx): hospedagem e distribuição (Supabase) | Pegador & Du | — |
 | `prototipo/` | [Guia_Teste_Prototipo_MatchPoint.pdf](./prototipo/Guia_Teste_Prototipo_MatchPoint.pdf): roteiro de teste do protótipo online | Luiz | — |
 | `apresentacoes/` | [Apresentacao_Etapa1_MatchPoint.pptx](./apresentacoes/Apresentacao_Etapa1_MatchPoint.pptx): slides da apresentação da Etapa 1 na FATEC | Luiz | KAN-9 |
@@ -21,5 +22,4 @@
 
 ## Pendentes da Etapa 1
 
-- **DER** (KAN-23 e KAN-24, Pegador & Du): o script está em `arquitetura/DER.sql`. Falta exportar a imagem `DER.png` no dbdiagram e decidir três pontos: Grupo ou Turma, se a tabela de solicitação de entrada fica (a RN01 diz entrada sem aprovação) e se o ranking é tabela ou calculado das partidas.
 - **Seção de stack** no arquivo de pesquisas: ainda cita Python no backend. A stack definida é Flutter + Supabase + TypeScript.
