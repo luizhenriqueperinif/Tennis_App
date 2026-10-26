@@ -3,6 +3,12 @@
 // A sessão fica no sessionStorage da aba, então dá para abrir o professor numa aba e o aluno em outra.
 'use strict';
 
+// Modo apresentação: com ?duo=1 a página mostra dois celulares lado a lado, cada um num iframe
+// (?f=professor e ?f=aluno) com login próprio. Fora disso, é o app normal.
+const PARAMS = new URLSearchParams(location.search);
+const QUADRO = ['professor', 'aluno'].includes(PARAMS.get('f')) ? PARAMS.get('f') : null;
+const DUO = PARAMS.has('duo') && !QUADRO;
+
 // URL e chave publicável do projeto: podem ficar no navegador, quem protege os dados é o RLS.
 const SUPABASE_URL = 'https://nytsdrjlrzyduraicqey.supabase.co';
 const SUPABASE_CHAVE = 'sb_publishable_5YLKhTVfZTefwNqPEf6RVA_0nIu9UL4';
@@ -38,7 +44,7 @@ const ui = {
 };
 
 function armazenamento() { try { sessionStorage.setItem('_t', '1'); sessionStorage.removeItem('_t'); return sessionStorage; } catch { return undefined; } }
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_CHAVE, { auth: { storage: armazenamento(), persistSession: true, autoRefreshToken: true } });
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_CHAVE, { auth: { storage: armazenamento(), persistSession: true, autoRefreshToken: true, ...(QUADRO ? { storageKey: 'mp-' + QUADRO } : {}) } });
 
 // ---------- utilidades ----------
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -341,8 +347,8 @@ function telaLogin() {
     '<label class="campo">Senha<input name="senha" type="password" autocomplete="current-password" required></label>' +
     '<button class="btn" type="submit">' + svg('seta', 18) + 'Entrar</button></form>' +
     '<div class="teste"><span class="muted">Usuários de teste (preenche o e-mail)</span>' +
-    '<button type="button" class="btn sec pequeno" data-acao="login-teste" data-email="professor@matchpoint.app">Professor (Carlos)</button>' +
-    '<button type="button" class="btn sec pequeno" data-acao="login-teste" data-email="aluno@matchpoint.app">Aluno (João)</button></div>' +
+    (QUADRO && QUADRO !== 'professor' ? '' : '<button type="button" class="btn sec pequeno" data-acao="login-teste" data-email="professor@matchpoint.app">Professor (Carlos)</button>') +
+    (QUADRO && QUADRO !== 'aluno' ? '' : '<button type="button" class="btn sec pequeno" data-acao="login-teste" data-email="aluno@matchpoint.app">Aluno (João)</button>') + '</div>' +
     '</div></div>';
 }
 
@@ -674,24 +680,45 @@ const PASSOS = {
   professor: [['#/prof', 'Início e presenças'], ['#/prof/alunos', 'Alunos e convite'], ['#/prof/aulas', 'Criar aula'], ['#/prof/partidas', 'Partidas e disputas']],
   aluno: [['#/aluno', 'Início e presença'], ['#/aluno/agenda', 'Agenda'], ['#/aluno/desempenho', 'Desempenho'], ['#/aluno/ranking', 'Ranking e desafios'], ['#/aluno/registrar', 'Registrar resultado'], ['#/aluno/convite', 'Entrar em turma']]
 };
+function cartaoModo() {
+  return '<a class="modo' + (DUO ? ' on' : '') + '" href="' + (DUO ? location.pathname : '?duo=1') + '" role="switch" aria-checked="' + DUO + '"><span class="chave" aria-hidden="true"></span>' +
+    '<span><strong>Modo apresentação</strong>' + (DUO ? 'Dois celulares lado a lado. Clique para voltar a um só.' : 'Mostra professor e aluno lado a lado, cada um com o próprio login.') + '</span></a>';
+}
 function painel(rota) {
   const papel = ui.estado ? ui.estado.usuario.papel : null;
-  let h = '<div class="marca-painel"><div class="marca-q">' + svg('bola', 28) + '</div><div><strong>MatchPoint</strong><span>Protótipo funcional · FATEC Olímpia</span></div></div>' +
+  const marca = '<div class="marca-painel"><div class="marca-q">' + svg('bola', 28) + '</div><div><strong>MatchPoint</strong><span>Protótipo funcional · FATEC Olímpia</span></div></div>';
+  if (DUO) {
+    return marca + '<span class="eyebrow" style="color:var(--cinza);margin:0 0 14px 14px">Como apresentar</span>' +
+      '<p class="dica texto">1. No celular da esquerda, entre como <strong>professor</strong>.</p><p class="dica texto">2. No da direita, entre como <strong>aluno</strong>.</p>' +
+      '<p class="dica texto">3. Confirme presença no aluno e mostre a lista do professor mudando na hora.</p>' + cartaoModo();
+  }
+  let h = marca +
     '<div class="papel" aria-label="Perfil"><span class="' + (papel === 'professor' ? 'on' : '') + '">Professor</span><span class="' + (papel === 'aluno' ? 'on' : '') + '">Aluno</span></div>';
   if (!papel) {
     return h + '<span class="eyebrow" style="color:var(--cinza);margin:0 0 14px 14px">Como testar</span>' +
       '<p class="dica texto">1. Entre como <strong>professor</strong> nesta janela.</p><p class="dica texto">2. Abra outra janela e entre como <strong>aluno</strong>.</p>' +
-      '<p class="dica texto">3. Confirme presença no aluno e veja a lista do professor mudar sozinha.</p>';
+      '<p class="dica texto">3. Confirme presença no aluno e veja a lista do professor mudar sozinha.</p>' + cartaoModo();
   }
   const passos = PASSOS[papel];
   const atual = passos.some(([r]) => r === rota) ? rota : rota.startsWith('#/prof/avaliar') ? '#/prof/alunos' : '';
   return h + '<span class="eyebrow" style="color:var(--cinza);margin:0 0 14px 14px">Fluxo ' + papel + '</span><div class="passos">' +
     passos.map(([r, rotulo], i) => (i ? '<div class="passo-linha"></div>' : '') + '<a class="passo' + (r === atual ? ' on' : '') + '" href="' + r + '"><span>' + String(i + 1).padStart(2, '0') + '</span><strong>' + rotulo + '</strong>' + svg('seta', 18) + '</a>').join('') +
-    '</div><p class="dica">Abra o professor e o aluno em duas janelas lado a lado: o que um faz aparece na tela do outro.</p>';
+    '</div><p class="dica">Abra o professor e o aluno em duas janelas lado a lado: o que um faz aparece na tela do outro.</p>' + cartaoModo();
 }
 
 // ---------- roteamento ----------
+function montarDuo() {
+  document.body.classList.add('duo');
+  document.getElementById('painel').innerHTML = painel('');
+  document.querySelector('.area-aparelho').innerHTML = '<div class="duo-grade">' + ['professor', 'aluno'].map((p) =>
+    '<div class="duo-col"><div class="cab-palco"><div><span class="eyebrow">Modo apresentação</span><h2>' + (p === 'professor' ? 'Professor' : 'Aluno') + '</h2></div><span class="vivo">Tempo real</span></div>' +
+    '<div class="aparelho"><div class="status-bar" aria-hidden="true"><span>9:41</span><div><i></i><i></i><i></i></div></div>' +
+    '<iframe title="Celular do ' + p + '" src="' + location.pathname + '?f=' + p + '"></iframe><div class="gesture-bar" aria-hidden="true"></div></div></div>'
+  ).join('') + '</div>';
+}
+
 function render() {
+  if (DUO) return;
   const app = document.getElementById('app');
   const rota = location.hash.replace(/^#/, '') || '/login';
   document.getElementById('painel').innerHTML = painel(location.hash || '#/login');
@@ -778,6 +805,7 @@ document.addEventListener('submit', async (ev) => {
 
 // Ao abrir a página: se a aba já tinha sessão, recupera o estado.
 (async () => {
+  if (DUO) { montarDuo(); return; }
   try {
     await atualizar(true);
     if (ui.estado) ouvirMudancas().catch(() => {});

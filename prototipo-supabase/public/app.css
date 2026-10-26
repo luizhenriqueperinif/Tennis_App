@@ -376,3 +376,18 @@ label.campo:focus-within { border-color: var(--verde); box-shadow: 0 0 0 1px var
 .auth, .convite-tela { scrollbar-width: none; }
 .auth::-webkit-scrollbar, .convite-tela::-webkit-scrollbar { display: none; }
 input:-webkit-autofill { -webkit-box-shadow: 0 0 0 40px #fff inset; -webkit-text-fill-color: var(--texto); }
+
+/* ---------- Modo apresentação: dois celulares lado a lado ---------- */
+.duo-grade { display: flex; gap: 32px; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
+.duo-col { display: flex; flex-direction: column; align-items: center; }
+.aparelho iframe { flex: 1; min-height: 0; width: 100%; border: 0; display: block; background: var(--superficie); }
+@media (max-width: 899px) { .duo-grade { flex-direction: column; gap: 0; } .duo-col { width: 100%; } }
+.modo { margin-top: auto; display: flex; gap: 12px; align-items: flex-start; padding: 14px; border-radius: 16px; border: 1px solid var(--borda); background: #fff; color: var(--texto); text-decoration: none; }
+.modo:hover { border-color: var(--verde); }
+.modo > span:last-child { display: flex; flex-direction: column; gap: 3px; font-size: 12px; color: var(--cinza); line-height: 1.4; }
+.modo strong { font-size: 14px; color: var(--texto); }
+.chave { flex: none; width: 40px; height: 24px; margin-top: 2px; border-radius: 12px; background: var(--superficie-3); position: relative; transition: background .2s; }
+.chave::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, .25); transition: left .2s; }
+.modo.on .chave { background: var(--verde); }
+.modo.on .chave::after { left: 19px; }
+.painel > :nth-last-child(2) { margin-bottom: 28px; }
