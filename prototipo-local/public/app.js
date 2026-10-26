@@ -8,6 +8,16 @@ const PARAMS = new URLSearchParams(location.search);
 const QUADRO = ['professor', 'aluno'].includes(PARAMS.get('f')) ? PARAMS.get('f') : null;
 const DUO = PARAMS.has('duo') && !QUADRO;
 
+// Painel lateral escondido ou não: preferência de quem está apresentando, guardada neste navegador.
+function painelFechado() { try { return localStorage.getItem('mp-painel') === 'fechado'; } catch { return false; } }
+function mostrarPainel(fechado) {
+  document.body.classList.toggle('sem-painel', fechado);
+  const b = document.querySelector('.recolher');
+  if (b) { b.setAttribute('aria-expanded', String(!fechado)); b.setAttribute('aria-label', fechado ? 'Mostrar painel lateral' : 'Esconder painel lateral'); b.title = fechado ? 'Mostrar painel' : 'Esconder painel'; }
+  try { localStorage.setItem('mp-painel', fechado ? 'fechado' : 'aberto'); } catch { /* sem storage: vale só até recarregar */ }
+}
+if (!QUADRO && painelFechado()) mostrarPainel(true);
+
 const HORA = 3600 * 1000;
 const FUNDAMENTOS = [['saque', 'Saque'], ['forehand', 'Forehand'], ['backhand', 'Backhand'], ['voleio', 'Voleio'], ['movimentacao', 'Movimentação']];
 // Ícones do protótipo do Gabriel (traço de 1.8, estilo Material).
@@ -295,9 +305,10 @@ function profDashboard() {
     h += secao('Próxima aula', '#/prof/aulas', 'Ver aulas') +
       '<div class="aula-card"><div class="hora"><strong>' + hora(prox.inicio) + '</strong><span>' + diaCurto(prox.inicio) + '</span></div>' +
       '<div class="aula-info"><strong>' + esc(t.nome) + '</strong><span>' + esc(prox.quadra) + (prox.tema ? ' · ' + esc(prox.tema) : '') + '</span></div>' +
-      '<span class="selo ' + (conf ? 'ok' : 'pend') + '">' + conf + '/' + prox.vagas + '</span></div>' +
-      '<section class="card"><div class="linha"><h3 style="font-size:15px">Presenças confirmadas</h3><strong>' + conf + ' de ' + prox.vagas + '</strong></div>' +
-      '<div class="barra"><span style="width:' + Math.round(conf / prox.vagas * 100) + '%"></span></div>' +
+      '<span class="selo ' + (conf ? 'ok' : 'pend') + '">' + conf + '/' + t.membros.length + '</span></div>' +
+      '<section class="card"><div class="linha"><h3 style="font-size:15px">' + conf + ' de ' + t.membros.length + ' alunos confirmaram</h3></div>' +
+      '<div class="barra"><span style="width:' + (t.membros.length ? Math.round(conf / t.membros.length * 100) : 0) + '%"></span></div>' +
+      '<span class="muted" style="font-size:12px;margin-top:-4px">Aula com ' + prox.vagas + ' vagas · ' + esc(t.nome) + ' tem ' + t.membros.length + (t.membros.length === 1 ? ' aluno' : ' alunos') + '</span>' +
       '<ul class="lista">' + t.membros.map((m) => {
         const p = prox.presencas[m];
         return '<li>' + avatar(m, nome(m), 'mini') + '<div class="nome"><strong>' + esc(nome(m)) + '</strong><span>' + seloPresenca(p, prox) + '</span>' + (p && p.motivo ? '<span class="muted">Motivo: ' + esc(p.motivo) + '</span>' : '') + '</div>' +
@@ -373,12 +384,13 @@ function profAulas() {
 }
 function cardAulaProf(a, passada) {
   const t = ui.estado.turmas.find((x) => x.id === a.turmaId);
-  const vals = Object.values(a.presencas);
-  const conf = vals.filter((p) => (passada ? p.status === 'presente' : ocupaVaga(p))).length;
+  const membros = t ? t.membros : [];
+  // Aula passada: quem esteve presente. Próxima aula: quem da turma já ocupa vaga.
+  const conf = passada ? Object.values(a.presencas).filter((p) => p.status === 'presente').length : membros.filter((m) => ocupaVaga(a.presencas[m])).length;
   return '<div class="aula-card"><div class="hora"><strong>' + hora(a.inicio) + '</strong><span>' + diaCurto(a.inicio) + '</span></div>' +
     '<div class="aula-info"><strong>' + esc(t ? t.nome : '') + '</strong><span>' + esc(a.quadra) + (a.tema ? ' · ' + esc(a.tema) : '') + '</span>' +
     (a.comentario ? '<span>Comentário: ' + esc(a.comentario) + '</span>' : '') + '</div>' +
-    '<span class="selo ' + (passada ? 'ok' : 'pend') + '">' + conf + (passada ? ' presentes' : '/' + a.vagas) + '</span></div>';
+    '<span class="selo ' + (passada ? 'ok' : 'pend') + '">' + conf + (passada ? ' presentes' : '/' + membros.length) + '</span></div>';
 }
 
 function profPartidas() {
@@ -669,6 +681,7 @@ document.addEventListener('click', (ev) => {
     case 'login-teste': entrar(d.email, d.senha); break;
     case 'reset': fetch('/api/reset', { method: 'POST' }).then(() => aviso('Dados da demonstração reiniciados.')); break;
     case 'sair': sair(); break;
+    case 'painel': mostrarPainel(!document.body.classList.contains('sem-painel')); break;
     case 'turma': ui.turmaSel = d.id; render(); break;
     case 'marcar': acao('marcar_presenca', { aulaId: d.aula, alunoId: d.aluno, status: d.status }); break;
     case 'gerar-codigo': acao('gerar_codigo', { turmaId: d.turma }); break;

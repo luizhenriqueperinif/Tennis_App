@@ -391,3 +391,16 @@ input:-webkit-autofill { -webkit-box-shadow: 0 0 0 40px #fff inset; -webkit-text
 .modo.on .chave { background: var(--verde); }
 .modo.on .chave::after { left: 19px; }
 .painel > :nth-last-child(2) { margin-bottom: 28px; }
+
+/* Setinha que esconde e mostra o painel lateral (só no computador) */
+.recolher { display: none; }
+@media (min-width: 900px) {
+  .recolher { display: grid; place-items: center; position: fixed; top: 24px; left: 342px; z-index: 5; width: 36px; height: 36px; padding: 0; border-radius: 50%; border: 1px solid var(--borda); background: #fff; color: var(--cinza); cursor: pointer; box-shadow: 0 2px 8px rgba(20, 45, 31, .12); transition: left .2s; }
+  .recolher:hover { color: var(--verde); border-color: var(--verde); }
+  .recolher svg { transition: transform .2s; }
+  .sem-painel .palco { grid-template-columns: 1fr; }
+  .sem-painel .painel { display: none; }
+  .sem-painel .recolher { left: 16px; }
+  .sem-painel .recolher svg { transform: rotate(180deg); }
+  .sem-painel .toast { left: 50%; }
+}
