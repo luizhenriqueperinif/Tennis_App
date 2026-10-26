@@ -6,7 +6,7 @@ O `prototipo-local/` continua funcionando como plano B, sem internet.
 
 **Link:** https://luizhenriqueperinif.github.io/Tennis_App/
 
-Para atualizar o site, copie o conteúdo de `public/` para a branch `gh-pages` e faça o push. O GitHub Pages publica sozinho.
+Para atualizar o site, copie o conteúdo de `public/` para a branch `gh-pages` e faça o push. O GitHub Pages publica sozinho. Quando mudar o `app.css` ou o `app.js`, troque também o número `?v=` no `index.html`, senão quem já abriu o site continua com a versão antiga guardada no navegador.
 
 ## Estrutura
 
