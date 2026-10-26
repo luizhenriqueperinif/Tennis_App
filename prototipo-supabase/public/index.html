@@ -3,13 +3,27 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1F6F43">
   <title>MatchPoint</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="app.css">
 </head>
 <body>
-  <div id="app" class="app" aria-live="polite"></div>
+  <div class="palco">
+    <aside id="painel" class="painel" aria-label="Fluxo do protótipo"></aside>
+    <section class="area-aparelho">
+      <div class="cab-palco">
+        <div><span class="eyebrow">Protótipo funcional</span><h2 id="jornada">MatchPoint</h2></div>
+        <span class="vivo">Tempo real</span>
+      </div>
+      <div class="aparelho">
+        <div class="status-bar" aria-hidden="true"><span>9:41</span><div><i></i><i></i><i></i></div></div>
+        <div id="app" class="app" aria-live="polite"></div>
+        <div class="gesture-bar" aria-hidden="true"></div>
+      </div>
+    </section>
+  </div>
   <div id="toast" class="toast" role="status" hidden></div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
   <script src="app.js"></script>

@@ -9,13 +9,24 @@ const SUPABASE_CHAVE = 'sb_publishable_5YLKhTVfZTefwNqPEf6RVA_0nIu9UL4';
 
 const HORA = 3600 * 1000;
 const FUNDAMENTOS = [['saque', 'Saque'], ['forehand', 'Forehand'], ['backhand', 'Backhand'], ['voleio', 'Voleio'], ['movimentacao', 'Movimentação']];
+// Ícones do protótipo do Gabriel (traço de 1.8, estilo Material).
 const ICONES = {
-  inicio: '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/>',
-  alunos: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7"/><path d="M18 14.5c2 .6 3.5 2.6 3.5 5.5"/>',
-  agenda: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
-  bola: '<circle cx="12" cy="12" r="9"/><path d="M5.6 5.6c3.2 3.2 3.2 9.6 0 12.8M18.4 5.6c-3.2 3.2-3.2 9.6 0 12.8"/>',
-  desempenho: '<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>',
-  ranking: '<path d="M3 21h18"/><path d="M9 21V9h6v12"/><path d="M3 21v-7h6M15 21v-4h6v4"/>'
+  inicio: '<path d="m3 11 9-7 9 7"/><path d="M5.5 10v10h13V10M10 20v-6h4v6"/>',
+  alunos: '<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3.5 19c.5-4 2.5-6 5.5-6s5 2 5.5 6m.5-5c2.8.2 4.5 1.8 5 4.5"/>',
+  agenda: '<rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M8 3v4m8-4v4M3.5 10h17"/>',
+  bola: '<circle cx="12" cy="12" r="9"/><path d="M5.5 6.2c3 1 4.4 3.3 4.4 5.8s-1.4 4.8-4.4 5.8M18.5 6.2c-3 1-4.4 3.3-4.4 5.8s1.4 4.8 4.4 5.8"/>',
+  desempenho: '<path d="M5 19V9m7 10V5m7 14v-7"/>',
+  ranking: '<path d="M8 20v-8h8v8M4 20v-5h4v5m8 0V8h4v12"/><path d="m12 3 .8 1.7 1.9.2-1.4 1.3.4 1.8-1.7-.9-1.7.9.4-1.8-1.4-1.3 1.9-.2Z"/>',
+  seta: '<path d="M5 12h13m-5-5 5 5-5 5"/>',
+  voltar: '<path d="m15 18-6-6 6-6"/>',
+  chevron: '<path d="m9 18 6-6-6-6"/>',
+  relogio: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  mais: '<path d="M12 5v14M5 12h14"/>',
+  check: '<path d="m5 12 4 4L19 6"/>',
+  sair: '<path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/><path d="m10 16-4-4 4-4M6 12h10"/>',
+  alerta: '<circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.01"/>',
+  convite: '<path d="M4 7h16v3a2 2 0 0 0 0 4v3H4v-3a2 2 0 0 0 0-4Z"/><path d="M14 8v8"/>',
+  coroa: '<path d="m4 8 4 4 4-7 4 7 4-4-2 10H6Z"/>'
 };
 
 const ui = {
@@ -59,7 +70,33 @@ function turmaAtual() {
   const ts = ui.estado.turmas;
   return ts.find((t) => t.id === ui.turmaSel) || ts[0];
 }
-function svg(nomeIcone) { return '<svg viewBox="0 0 24 24" aria-hidden="true">' + ICONES[nomeIcone] + '</svg>'; }
+function svg(nomeIcone, tam = 20) { return '<svg class="ic" width="' + tam + '" height="' + tam + '" viewBox="0 0 24 24" aria-hidden="true">' + ICONES[nomeIcone] + '</svg>'; }
+const hora = (iso) => new Date(iso).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+// "Hoje", "Amanhã" ou "Sex 24/10"
+function diaCurto(iso) {
+  const d = new Date(iso);
+  const hoje = new Date(agora());
+  const amanha = new Date(agora() + 24 * HORA);
+  if (d.toDateString() === hoje.toDateString()) return 'Hoje';
+  if (d.toDateString() === amanha.toDateString()) return 'Amanhã';
+  return SEMANA[d.getDay()] + ' ' + so_data(iso);
+}
+const decimal = (n) => n.toFixed(1).replace('.', ',');
+function media(fundamentos) {
+  const notas = FUNDAMENTOS.map(([k]) => fundamentos && fundamentos[k]).filter(Number.isFinite);
+  return notas.length ? notas.reduce((s, n) => s + n, 0) / notas.length : 0;
+}
+// Cor do avatar fixa por pessoa (as quatro cores do protótipo do Gabriel).
+function avatar(id, nomePessoa, extra = '') {
+  const cor = [...String(id)].reduce((s, c) => s + c.charCodeAt(0), 0) % 4 + 1;
+  return '<span class="avatar cor' + cor + (extra ? ' ' + extra : '') + '" aria-hidden="true">' + esc(iniciais(nomePessoa)) + '</span>';
+}
+const primeiroNome = (n) => n.replace(/^Prof\.\s*/, '').split(' ')[0];
+function setsGanhos(p) {
+  let a = 0, b = 0;
+  for (const [x, y] of p.sets) { if (x > y) a++; else if (y > x) b++; }
+  return [a, b];
+}
 
 // ---------- Supabase ----------
 const json = (estado) => JSON.stringify({ ...estado, agora: '' });
@@ -213,36 +250,50 @@ async function ouvirMudancas() {
 setInterval(() => { if (ui.estado) atualizar().catch(() => {}); }, 10000);
 
 // ---------- componentes ----------
-function topo(titulo, { sub, voltar, direita } = {}) {
-  return '<header class="topo"><div>' +
-    (sub ? '<div class="sub">' + sub + '</div>' : '') +
-    '<div class="topo-linha">' + (voltar ? '<a class="voltar" href="' + voltar + '" aria-label="Voltar">‹</a>' : '') +
-    '<h1>' + esc(titulo) + '</h1></div></div>' + (direita || '') + '</header>';
+function topo(titulo, { voltar } = {}) {
+  return '<header class="top-bar">' +
+    (voltar ? '<a class="icone-btn" href="' + voltar + '" aria-label="Voltar">' + svg('voltar') + '</a>' : '<span class="marca-mini" aria-hidden="true">' + svg('bola', 19) + '</span>') +
+    '<h1>' + esc(titulo) + '</h1>' +
+    '<button type="button" class="icone-btn" data-acao="sair" aria-label="Sair" title="Sair">' + svg('sair') + '</button></header>';
 }
 
 function nav(itens, atual) {
   return '<nav class="nav" aria-label="Navegação principal">' + itens.map(([rota, rotulo, icone]) =>
-    '<a href="' + rota + '"' + (rota === atual ? ' class="on" aria-current="page"' : '') + '><span class="ic">' + svg(icone) + '</span>' + rotulo + '</a>'
+    '<a href="' + rota + '"' + (rota === atual ? ' class="on" aria-current="page"' : '') + '><span class="nav-ic">' + svg(icone, 22) + '</span>' + rotulo + '</a>'
   ).join('') + '</nav>';
 }
 const NAV_PROF = [['#/prof', 'Início', 'inicio'], ['#/prof/alunos', 'Alunos', 'alunos'], ['#/prof/aulas', 'Aulas', 'agenda'], ['#/prof/partidas', 'Partidas', 'bola']];
 const NAV_ALUNO = [['#/aluno', 'Início', 'inicio'], ['#/aluno/agenda', 'Agenda', 'agenda'], ['#/aluno/desempenho', 'Desempenho', 'desempenho'], ['#/aluno/ranking', 'Ranking', 'ranking']];
+
+function secao(titulo, link, rotulo) {
+  return '<div class="secao"><h3>' + titulo + '</h3>' + (link ? '<a href="' + link + '">' + rotulo + '</a>' : '') + '</div>';
+}
+function atalho(rota, icone, rotulo) {
+  return '<a class="atalho" href="' + rota + '"><span>' + svg(icone) + '</span>' + rotulo + svg('seta', 16) + '</a>';
+}
+function metrica(valor, rotulo) { return '<div class="metrica"><strong>' + valor + '</strong><span>' + rotulo + '</span></div>'; }
+function aviso_card(icone, titulo, texto, tipo = '', rota) {
+  const tag = rota ? 'a' : 'div';
+  return '<' + tag + ' class="aviso-card ' + tipo + '"' + (rota ? ' href="' + rota + '"' : '') + '><span class="insight-ic">' + svg(icone) + '</span><span><strong>' + titulo + '</strong>' + texto + '</span>' + (rota ? svg('chevron', 18) : '') + '</' + tag + '>';
+}
 
 function chipsTurma() {
   const ts = ui.estado.turmas;
   if (ts.length < 2) return '';
   const atual = turmaAtual();
   return '<div class="chips" role="group" aria-label="Turma">' + ts.map((t) =>
-    '<button type="button" class="chip' + (t.id === atual.id ? ' on' : '') + '" data-acao="turma" data-id="' + t.id + '">' + esc(t.nome) + '</button>'
+    '<button type="button" class="chip' + (t.id === atual.id ? ' on' : '') + '" data-acao="turma" data-id="' + t.id + '"' + (t.id === atual.id ? ' aria-pressed="true"' : '') + '>' + esc(t.nome) + '</button>'
   ).join('') + '</div>';
 }
 
-function seloPresenca(p) {
+// Sem resposta: antes do prazo de 4h ainda dá para confirmar; depois, o status fica incerto (RN06).
+function seloPresenca(p, aula) {
   const s = p ? p.status : 'pendente';
   if (s === 'confirmado') return '<span class="selo ok">Confirmado</span>';
   if (s === 'presente') return '<span class="selo ok">Presente</span>';
   if (s === 'ausente') return '<span class="selo erro">Ausente</span>';
   if (s === 'cancelado') return '<span class="selo erro">Cancelou</span>';
+  if (aula && agora() < Date.parse(aula.inicio) - 4 * HORA) return '<span class="selo pend">A confirmar</span>';
   return '<span class="selo pend">Status incerto</span>';
 }
 
@@ -252,11 +303,19 @@ function seloPartida(p) {
   return '<span class="selo pend">Pendente</span>';
 }
 
+// Placar grande no estilo do protótipo do Gabriel: sets ganhos por jogador e o placar set a set embaixo.
+function placarBox(p) {
+  const [a, b] = setsGanhos(p);
+  return '<div class="placar-box"><div><span class="' + (a > b ? 'venc' : '') + '">' + esc(nome(p.a)) + '</span><strong>' + a + '</strong></div><span class="x">×</span>' +
+    '<div><span class="' + (b > a ? 'venc' : '') + '">' + esc(nome(p.b)) + '</span><strong>' + b + '</strong></div></div>' +
+    '<div class="sets-mini">' + placar(p) + '</div>';
+}
+
 function camposSets(nomeA, nomeB, sets = []) {
   let h = '<div class="sets"><span></span><span class="cab">' + esc(nomeA) + '</span><span class="cab">' + esc(nomeB) + '</span>';
   for (let i = 0; i < 3; i++) {
     const s = sets[i] || ['', ''];
-    h += '<span>Set ' + (i + 1) + (i === 2 ? ' (se houver)' : '') + '</span>' +
+    h += '<span class="set-nome">SET ' + (i + 1) + (i === 2 ? ' <span style="font-weight:400;letter-spacing:0">(se houver)</span>' : '') + '</span>' +
       '<input name="s' + i + 'a" inputmode="numeric" maxlength="1" value="' + s[0] + '" aria-label="Set ' + (i + 1) + ' ' + esc(nomeA) + '">' +
       '<input name="s' + i + 'b" inputmode="numeric" maxlength="1" value="' + s[1] + '" aria-label="Set ' + (i + 1) + ' ' + esc(nomeB) + '">';
   }
@@ -274,45 +333,62 @@ function lerSets(fd) {
 
 // ---------- telas ----------
 function telaLogin() {
-  return '<div class="login">' +
-    '<div class="marca"><div class="logo"><svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#D7F05A" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">' + ICONES.bola + '</svg></div>' +
-    '<div class="nome-app">MatchPoint</div><div class="muted" style="font-size:15px">Aulas, desafios e ranking do seu grupo de tênis</div></div>' +
-    '<form data-form="login" style="display:flex;flex-direction:column;gap:14px">' +
+  return '<div class="auth"><div class="auth-arte"><div class="marca-q">' + svg('bola', 32) + '</div>' +
+    '<div class="wordmark">MatchPoint</div><p>Aulas, desafios e ranking do seu grupo de tênis.</p></div>' +
+    '<div class="auth-form"><div><h2>Boas-vindas</h2><p class="muted" style="margin-top:4px">Entre para ver suas aulas e o ranking da turma.</p></div>' +
+    '<form data-form="login" style="display:flex;flex-direction:column;gap:12px">' +
     '<label class="campo">E-mail<input name="email" type="email" autocomplete="username" required></label>' +
     '<label class="campo">Senha<input name="senha" type="password" autocomplete="current-password" required></label>' +
-    '<button class="btn" type="submit">Entrar</button></form>' +
+    '<button class="btn" type="submit">' + svg('seta', 18) + 'Entrar</button></form>' +
     '<div class="teste"><span class="muted">Usuários de teste (preenche o e-mail)</span>' +
     '<button type="button" class="btn sec pequeno" data-acao="login-teste" data-email="professor@matchpoint.app">Professor (Carlos)</button>' +
     '<button type="button" class="btn sec pequeno" data-acao="login-teste" data-email="aluno@matchpoint.app">Aluno (João)</button></div>' +
-    '</div>';
+    '</div></div>';
 }
 
 // ----- Professor -----
 function profDashboard() {
   const e = ui.estado;
-  const prox = e.aulas.find((a) => Date.parse(a.inicio) > agora());
+  const futuras = e.aulas.filter((a) => Date.parse(a.inicio) > agora());
+  const prox = futuras[0];
   const disputas = e.partidas.filter((p) => p.status === 'disputa');
   const pendentes = e.partidas.filter((p) => p.status === 'pendente');
-  let h = topo('Olá, ' + e.usuario.nome, { sub: '<span class="ao-vivo">Atualiza sozinho</span>', direita: '<button class="sair" data-acao="sair">Sair</button>' }) + '<main class="conteudo">';
+  const hoje = new Date(agora());
+  const aulasHoje = futuras.filter((a) => new Date(a.inicio).toDateString() === hoje.toDateString()).length;
+  const totalAlunos = new Set(e.turmas.flatMap((t) => t.membros)).size;
+  const dataHoje = hoje.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'short' }).replace('-feira', '').replace('.', '');
+
+  let h = topo('Olá, ' + primeiroNome(e.usuario.nome)) + '<main class="conteudo">' +
+    '<section class="hero-card"><span class="eyebrow">' + esc(dataHoje) + '</span><h2>Pronto para a quadra?</h2>' +
+    '<p>' + (aulasHoje ? 'Você tem ' + aulasHoje + (aulasHoje > 1 ? ' aulas' : ' aula') + ' hoje.' : futuras.length + (futuras.length === 1 ? ' aula agendada.' : ' aulas agendadas.')) + '</p>' +
+    '<div class="hero-bola" aria-hidden="true">' + svg('bola', 56) + '</div></section>';
+
   if (prox) {
     const t = e.turmas.find((x) => x.id === prox.turmaId);
     const conf = t.membros.filter((m) => ocupaVaga(prox.presencas[m])).length;
-    h += '<section class="card"><div class="linha"><h2>Próxima aula</h2><span class="selo bola">' + dataHora(prox.inicio) + '</span></div>' +
-      '<span class="muted">' + esc(t.nome) + ' · ' + esc(prox.quadra) + (prox.tema ? ' · ' + esc(prox.tema) : '') + '</span>' +
-      '<div class="linha" style="font-size:13px"><span>Presenças confirmadas</span><strong>' + conf + ' de ' + prox.vagas + '</strong></div>' +
+    h += secao('Próxima aula', '#/prof/aulas', 'Ver aulas') +
+      '<div class="aula-card"><div class="hora"><strong>' + hora(prox.inicio) + '</strong><span>' + diaCurto(prox.inicio) + '</span></div>' +
+      '<div class="aula-info"><strong>' + esc(t.nome) + '</strong><span>' + esc(prox.quadra) + (prox.tema ? ' · ' + esc(prox.tema) : '') + '</span></div>' +
+      '<span class="selo ' + (conf ? 'ok' : 'pend') + '">' + conf + '/' + prox.vagas + '</span></div>' +
+      '<section class="card"><div class="linha"><h3 style="font-size:15px">Presenças confirmadas</h3><strong>' + conf + ' de ' + prox.vagas + '</strong></div>' +
       '<div class="barra"><span style="width:' + Math.round(conf / prox.vagas * 100) + '%"></span></div>' +
       '<ul class="lista">' + t.membros.map((m) => {
         const p = prox.presencas[m];
-        return '<li><div class="nome"><strong>' + esc(nome(m)) + '</strong>' + (p && p.motivo ? '<span class="muted">Motivo: ' + esc(p.motivo) + '</span>' : '') + '</div>' + seloPresenca(p) +
+        return '<li>' + avatar(m, nome(m), 'mini') + '<div class="nome"><strong>' + esc(nome(m)) + '</strong><span>' + seloPresenca(p, prox) + '</span>' + (p && p.motivo ? '<span class="muted">Motivo: ' + esc(p.motivo) + '</span>' : '') + '</div>' +
           '<button class="btn sec pequeno" data-acao="marcar" data-aula="' + prox.id + '" data-aluno="' + m + '" data-status="presente" aria-label="Marcar ' + esc(nome(m)) + ' presente">P</button>' +
           '<button class="btn perigo pequeno" data-acao="marcar" data-aula="' + prox.id + '" data-aluno="' + m + '" data-status="ausente" aria-label="Marcar ' + esc(nome(m)) + ' ausente">A</button></li>';
       }).join('') + '</ul><span class="muted">P = presente, A = ausente. Quem não confirmou até 4h antes aparece como "Status incerto".</span></section>';
   }
-  h += '<section class="card"><h2>Pendências</h2>' +
-    (disputas.length ? disputas.map((p) => '<a class="linha" href="#/prof/partidas" style="text-decoration:none;color:inherit;min-height:44px"><span><strong style="color:var(--erro);font-weight:500">Placar em disputa</strong><br><span class="muted">' + esc(nome(p.a)) + ' x ' + esc(nome(p.b)) + '</span></span><span aria-hidden="true">›</span></a>').join('') : '') +
-    (pendentes.length ? '<a class="linha" href="#/prof/partidas" style="text-decoration:none;color:inherit;min-height:44px"><span><strong style="font-weight:500">' + pendentes.length + ' placar(es) aguardando o adversário</strong><br><span class="muted">Confirmação automática em 24h</span></span><span aria-hidden="true">›</span></a>' : '') +
-    (!disputas.length && !pendentes.length ? '<span class="vazio">Nenhuma pendência.</span>' : '') +
-    '</section><a class="btn" href="#/prof/aulas">+ Nova aula</a>' +
+
+  h += '<div class="atalhos">' + atalho('#/prof/aulas', 'mais', 'Nova aula') + atalho('#/prof/alunos', 'alunos', 'Alunos e convite') +
+    atalho('#/prof/alunos', 'desempenho', 'Avaliar') + atalho('#/prof/partidas', 'bola', 'Partidas') + '</div>';
+
+  h += secao('Pendências') +
+    disputas.map((p) => aviso_card('alerta', 'Placar em disputa', esc(nome(p.a)) + ' x ' + esc(nome(p.b)) + ' · você decide o placar final', '', '#/prof/partidas')).join('') +
+    (pendentes.length ? aviso_card('relogio', pendentes.length + (pendentes.length > 1 ? ' placares aguardando' : ' placar aguardando') + ' o adversário', 'Confirmação automática em 24h', 'neutro', '#/prof/partidas') : '') +
+    (!disputas.length && !pendentes.length ? aviso_card('check', 'Tudo em dia', 'Nenhuma pendência no momento.', 'ok') : '');
+
+  h += secao('Resumo') + '<div class="metricas">' + metrica(e.turmas.length, e.turmas.length === 1 ? 'Turma' : 'Turmas') + metrica(totalAlunos, 'Alunos') + metrica(futuras.length, 'Aulas agendadas') + '</div>' +
     '<button type="button" class="link" data-acao="reset">Reiniciar dados da demonstração</button></main>' + nav(NAV_PROF, '#/prof');
   return h;
 }
@@ -321,32 +397,34 @@ function profAlunos() {
   const t = turmaAtual();
   const c = t.codigo;
   const ativo = c.ativo && Date.parse(c.expira) > agora();
-  let h = topo('Alunos') + '<main class="conteudo">' + chipsTurma() +
-    '<section class="card codigo"><span class="muted">Código de convite · ' + esc(t.nome) + '</span>' +
-    '<div class="valor" style="' + (ativo ? '' : 'text-decoration:line-through;opacity:.6') + '">' + esc(c.valor) + '</div>' +
+  return topo('Alunos') + '<main class="conteudo">' + chipsTurma() +
+    '<section class="convite-card"><span class="eyebrow">Código de convite · ' + esc(t.nome) + '</span>' +
+    '<div class="codigo" style="' + (ativo ? '' : 'text-decoration:line-through;opacity:.5') + '">' + esc(c.valor) + '</div>' +
     '<span class="muted">' + (ativo ? 'Válido até ' + so_data(c.expira) + ' às 23:00 · uso ilimitado · entrada direta' : 'Código revogado. Gere um novo para convidar alunos.') + '</span>' +
     '<div class="botoes"><button class="btn sec pequeno" data-acao="gerar-codigo" data-turma="' + t.id + '">Gerar novo</button>' +
     (ativo ? '<button class="btn sec pequeno" data-acao="revogar-codigo" data-turma="' + t.id + '">Revogar</button>' : '') + '</div></section>' +
-    '<section class="card"><h2>' + t.membros.length + ' alunos · toque para avaliar</h2><ul class="lista">' +
-    t.ranking.map((r) => '<li><a class="item" href="#/prof/avaliar/' + r.id + '"><span class="avatar">' + iniciais(r.nome) + '</span><span class="nome"><strong>' + esc(r.nome) + '</strong><span class="muted">' + esc(ui.estado.alunos[r.id].nivel) + ' · ' + r.pontos + ' pts · ' + r.v + 'V ' + r.d + 'D</span></span><span aria-hidden="true">›</span></a></li>').join('') +
-    '</ul></section></main>' + nav(NAV_PROF, '#/prof/alunos');
-  return h;
+    secao('Seus alunos · ' + t.membros.length) + '<p class="muted" style="margin-top:-10px">Toque em um aluno para avaliar.</p>' +
+    '<div class="lista">' + t.ranking.map((r) => '<a class="item" href="#/prof/avaliar/' + r.id + '">' + avatar(r.id, r.nome) +
+      '<span class="nome"><strong>' + esc(r.nome) + '</strong><span class="muted">' + esc(ui.estado.alunos[r.id].nivel) + ' · ' + r.pontos + ' pts · ' + r.v + 'V ' + r.d + 'D</span></span>' + svg('chevron') + '</a>').join('') +
+    '</div></main>' + nav(NAV_PROF, '#/prof/alunos');
 }
 
 function profAvaliar(alunoId) {
   const al = ui.estado.alunos[alunoId];
   if (!al) return profAlunos();
-  return topo('Avaliar aluno', { voltar: '#/prof/alunos' }) + '<main class="conteudo">' +
-    '<div class="linha" style="justify-content:flex-start"><span class="avatar" style="width:48px;height:48px;font-size:16px">' + iniciais(al.nome) + '</span><div class="nome"><strong style="font-size:18px">' + esc(al.nome) + '</strong>' +
-    '<span class="muted">' + (al.avaliadoEm ? 'Última avaliação em ' + so_data(al.avaliadoEm) : 'Ainda não avaliado') + '</span></div></div>' +
-    '<form data-form="avaliar" data-aluno="' + al.id + '" style="display:flex;flex-direction:column;gap:14px">' +
+  const m = media(al.fundamentos);
+  return topo('Avaliação', { voltar: '#/prof/alunos' }) + '<main class="conteudo">' +
+    '<div class="perfil">' + avatar(al.id, al.nome, 'grande') + '<div><h2>' + esc(al.nome) + '</h2><p>' + esc(al.nivel) + ' · ' + (al.avaliadoEm ? 'última avaliação em ' + so_data(al.avaliadoEm) : 'ainda não avaliado') + '</p></div></div>' +
+    '<section class="nota-card"><span>MÉDIA DOS FUNDAMENTOS</span><strong>' + (m ? decimal(m) : '–') + ' <small>de 5</small></strong>' +
+    '<div class="barra clara"><span style="width:' + Math.round(m * 20) + '%"></span></div><p>Média das notas de 1 a 5 abaixo.</p></section>' +
+    '<form data-form="avaliar" data-aluno="' + al.id + '" style="display:flex;flex-direction:column;gap:16px">' +
     '<label class="campo">Nível do aluno<select name="nivel">' + ['Iniciante', 'Intermediário', 'Avançado'].map((n) => '<option' + (n === al.nivel ? ' selected' : '') + '>' + n + '</option>').join('') + '</select></label>' +
-    '<section class="card"><h2>Fundamentos <span class="muted">(1 a 5)</span></h2>' +
-    FUNDAMENTOS.map(([k, rotulo]) => '<fieldset style="border:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px"><legend style="font-size:14px;font-weight:500;padding:0;margin-bottom:6px">' + rotulo + '</legend><div class="notas">' +
+    secao('Fundamentos') +
+    FUNDAMENTOS.map(([k, rotulo]) => '<fieldset class="fund-campo"><legend>' + rotulo + '</legend><div class="notas">' +
       [1, 2, 3, 4, 5].map((v) => '<input type="radio" id="' + k + v + '" name="' + k + '" value="' + v + '"' + (al.fundamentos[k] === v ? ' checked' : '') + '><label for="' + k + v + '">' + v + '</label>').join('') +
-      '</div></fieldset>').join('') + '</section>' +
+      '</div></fieldset>').join('') +
     '<label class="campo">Comentário para o aluno<textarea name="comentario" rows="3">' + esc(al.comentario) + '</textarea></label>' +
-    '<button class="btn" type="submit">Salvar avaliação</button></form></main>';
+    '<button class="btn" type="submit">' + svg('check', 18) + 'Salvar avaliação</button></form></main>';
 }
 
 function profAulas() {
@@ -355,25 +433,27 @@ function profAulas() {
   const futuras = e.aulas.filter((a) => Date.parse(a.inicio) > agora());
   const passadas = e.aulas.filter((a) => Date.parse(a.inicio) <= agora()).reverse();
   return topo('Aulas') + '<main class="conteudo">' +
-    '<form class="card" data-form="criar-aula"><h2>Nova aula</h2>' +
+    '<form data-form="criar-aula" style="display:flex;flex-direction:column;gap:12px">' +
+    '<div><span class="eyebrow">Nova aula</span><h2 style="margin-top:4px">Detalhes da aula</h2><p class="muted" style="margin-top:4px">Defina turma, data e local. Os alunos veem na agenda na hora.</p></div>' +
     '<label class="campo">Turma<select name="turmaId">' + e.turmas.map((t) => '<option value="' + t.id + '">' + esc(t.nome) + '</option>').join('') + '</select></label>' +
     '<div class="grade2"><label class="campo">Data<input name="data" type="date" value="' + amanha + '" required></label><label class="campo">Horário<input name="hora" type="time" value="18:00" required></label></div>' +
     '<div class="grade2"><label class="campo">Quadra<select name="quadra"><option>Quadra 1</option><option selected>Quadra 2</option><option>Quadra 3</option></select></label>' +
     '<label class="campo">Limite de alunos<input name="vagas" type="number" min="1" max="6" value="6" required></label></div>' +
-    '<span class="muted">Máximo de 6 alunos por quadra e horário.</span>' +
     '<label class="campo">Tema<input name="tema" value="Saque e devolução"></label>' +
-    '<button class="btn" type="submit">Salvar e avisar alunos</button></form>' +
-    '<h2 class="titulo-secao">Próximas aulas</h2>' + (futuras.length ? futuras.map((a) => cardAulaProf(a)).join('') : '<p class="vazio">Nenhuma aula agendada.</p>') +
-    '<h2 class="titulo-secao">Aulas realizadas</h2>' + passadas.map((a) => cardAulaProf(a, true)).join('') +
+    aviso_card('alunos', 'Até 6 alunos por aula', 'Limite por quadra e horário.', 'neutro') +
+    '<button class="btn" type="submit">' + svg('check', 18) + 'Salvar e avisar alunos</button></form>' +
+    secao('Próximas aulas') + (futuras.length ? futuras.map((a) => cardAulaProf(a)).join('') : '<p class="vazio">Nenhuma aula agendada.</p>') +
+    secao('Aulas realizadas') + (passadas.length ? passadas.map((a) => cardAulaProf(a, true)).join('') : '<p class="vazio">Nenhuma aula ainda.</p>') +
     '</main>' + nav(NAV_PROF, '#/prof/aulas');
 }
 function cardAulaProf(a, passada) {
   const t = ui.estado.turmas.find((x) => x.id === a.turmaId);
   const vals = Object.values(a.presencas);
-  const conf = vals.filter((p) => p.status === (passada ? 'presente' : 'confirmado')).length;
-  return '<div class="card"><div class="linha"><strong style="font-weight:500">' + dataHora(a.inicio) + '</strong><span class="selo ' + (passada ? 'ok' : 'pend') + '">' + conf + (passada ? ' presentes' : ' de ' + a.vagas + ' confirmados') + '</span></div>' +
-    '<span class="muted">' + esc(t ? t.nome : '') + ' · ' + esc(a.quadra) + (a.tema ? ' · ' + esc(a.tema) : '') + '</span>' +
-    (a.comentario ? '<span class="muted">Comentário: ' + esc(a.comentario) + '</span>' : '') + '</div>';
+  const conf = vals.filter((p) => (passada ? p.status === 'presente' : ocupaVaga(p))).length;
+  return '<div class="aula-card"><div class="hora"><strong>' + hora(a.inicio) + '</strong><span>' + diaCurto(a.inicio) + '</span></div>' +
+    '<div class="aula-info"><strong>' + esc(t ? t.nome : '') + '</strong><span>' + esc(a.quadra) + (a.tema ? ' · ' + esc(a.tema) : '') + '</span>' +
+    (a.comentario ? '<span>Comentário: ' + esc(a.comentario) + '</span>' : '') + '</div>' +
+    '<span class="selo ' + (passada ? 'ok' : 'pend') + '">' + conf + (passada ? ' presentes' : '/' + a.vagas) + '</span></div>';
 }
 
 function profPartidas() {
@@ -382,24 +462,26 @@ function profPartidas() {
   const pendentes = e.partidas.filter((p) => p.status === 'pendente');
   const confirmadas = e.partidas.filter((p) => p.status === 'confirmada').slice(0, 5);
   const t = turmaAtual();
-  let h = topo('Partidas') + '<main class="conteudo"><h2 class="titulo-secao">Em disputa</h2>';
+  let h = topo('Partidas') + '<main class="conteudo">' + secao('Em disputa');
   h += disputas.length ? disputas.map((p) => '<form class="card" data-form="validar" data-partida="' + p.id + '">' +
-    '<div class="linha"><h2>' + esc(nome(p.a)) + ' x ' + esc(nome(p.b)) + '</h2>' + seloPartida(p) + '</div>' +
-    '<span class="muted"><strong style="color:var(--texto);font-weight:500">' + esc(nome(p.registradoPor)) + ' registrou:</strong> ' + placar(p) + '</span>' +
-    '<span class="muted"><strong style="color:var(--texto);font-weight:500">Contestação:</strong> “' + esc(p.motivo) + '”</span>' +
-    '<span style="font-size:13px;font-weight:500">Placar final (set a set)</span>' + camposSets(nome(p.a), nome(p.b), p.sets) +
-    '<button class="btn" type="submit">Validar placar final</button></form>').join('') : '<p class="vazio">Nenhuma disputa.</p>';
-  h += '<h2 class="titulo-secao">Aguardando o adversário</h2>' + (pendentes.length ? pendentes.map((p) =>
-    '<div class="card"><div class="linha"><h2>' + esc(nome(p.a)) + ' x ' + esc(nome(p.b)) + '</h2>' + seloPartida(p) + '</div><span class="muted">' + esc(nome(p.registradoPor)) + ' registrou ' + placar(p) + '. Confirmação automática em ' + horasRestantes(p) + '.</span></div>'
+    '<div class="linha"><span class="eyebrow" style="color:var(--erro)">Contestação</span>' + seloPartida(p) + '</div>' + placarBox(p) +
+    '<span class="muted"><strong style="color:var(--texto)">' + esc(nome(p.registradoPor)) + '</strong> registrou o placar acima.</span>' +
+    '<span class="comentario" style="background:var(--coral-claro);color:var(--coral-texto)">“' + esc(p.motivo) + '”</span>' +
+    '<strong style="font-size:14px">Placar final (set a set)</strong>' + camposSets(nome(p.a), nome(p.b), p.sets) +
+    '<button class="btn" type="submit">' + svg('check', 18) + 'Validar placar final</button></form>').join('') : '<p class="vazio">Nenhuma disputa.</p>';
+  h += secao('Aguardando o adversário') + (pendentes.length ? pendentes.map((p) =>
+    '<div class="card"><div class="linha"><span class="eyebrow">Aguardando</span>' + seloPartida(p) + '</div>' + placarBox(p) +
+    '<span class="muted">' + esc(nome(p.registradoPor)) + ' registrou. Confirmação automática em ' + horasRestantes(p) + '.</span></div>'
   ).join('') : '<p class="vazio">Nada pendente.</p>');
-  h += '<form class="card" data-form="lancar"><h2>Lançar placar de treino</h2>' + chipsTurma() +
+  h += '<form class="card" data-form="lancar"><span class="eyebrow">Placar de treino</span><h2>Como foi o jogo?</h2>' + chipsTurma() +
     '<input type="hidden" name="turmaId" value="' + t.id + '">' +
     '<div class="grade2"><label class="campo">Jogador 1<select name="a">' + t.membros.map((m, i) => '<option value="' + m + '"' + (i === 0 ? ' selected' : '') + '>' + esc(nome(m)) + '</option>').join('') + '</select></label>' +
     '<label class="campo">Jogador 2<select name="b">' + t.membros.map((m, i) => '<option value="' + m + '"' + (i === 1 ? ' selected' : '') + '>' + esc(nome(m)) + '</option>').join('') + '</select></label></div>' +
-    camposSets('Jogador 1', 'Jogador 2') + '<button class="btn sec" type="submit">Lançar placar</button></form>';
-  h += '<h2 class="titulo-secao">Confirmadas recentes</h2>' + confirmadas.map((p) =>
-    '<div class="card"><div class="linha"><strong style="font-weight:500">' + esc(nome(p.a)) + ' x ' + esc(nome(p.b)) + '</strong>' + seloPartida(p) + '</div><span class="muted">' + placar(p) + ' · vencedor: ' + esc(nome(vencedor(p))) + '</span></div>'
-  ).join('');
+    camposSets('Jogador 1', 'Jogador 2') + '<span class="muted">O placar lançado pelo professor já vale para o ranking.</span><button class="btn" type="submit">' + svg('check', 18) + 'Lançar placar</button></form>';
+  h += secao('Confirmadas recentes') + (confirmadas.length ? '<div class="card" style="gap:6px"><ul class="lista">' + confirmadas.map((p) => {
+    const [a, b] = setsGanhos(p);
+    return '<li><span class="nome"><strong>' + esc(nome(p.a)) + ' ' + a + ' × ' + b + ' ' + esc(nome(p.b)) + '</strong><span class="muted">' + placar(p) + ' · vencedor: ' + esc(nome(vencedor(p))) + '</span></span>' + seloPartida(p) + '</li>';
+  }).join('') + '</ul></div>' : '<p class="vazio">Nenhuma partida confirmada.</p>');
   return h + '</main>' + nav(NAV_PROF, '#/prof/partidas');
 }
 
@@ -413,8 +495,9 @@ function alunoHome() {
   const e = ui.estado;
   const eu = e.usuario.id;
   if (!e.turmas.length) {
-    return topo('Olá, ' + e.usuario.nome.split(' ')[0], { direita: '<button class="sair" data-acao="sair">Sair</button>' }) +
-      '<main class="conteudo"><p class="vazio">Você ainda não está em nenhuma turma.</p><a class="btn" href="#/aluno/convite">Entrar com código de convite</a></main>' + nav(NAV_ALUNO, '#/aluno');
+    return topo('Olá, ' + primeiroNome(e.usuario.nome)) +
+      '<main class="conteudo"><section class="hero-card"><span class="eyebrow">Bem-vindo</span><h2>Seu jogo começa aqui.</h2><p>Você ainda não está em nenhuma turma.</p><div class="hero-bola" aria-hidden="true">' + svg('bola', 56) + '</div></section>' +
+      '<a class="btn" href="#/aluno/convite">' + svg('convite', 18) + 'Entrar com código de convite</a></main>' + nav(NAV_ALUNO, '#/aluno');
   }
   const t = e.turmas[0];
   const { pos, linha } = minhaPosicao(t);
@@ -424,10 +507,7 @@ function alunoHome() {
   const minhasDisputas = e.partidas.filter((p) => p.status === 'disputa' && (p.a === eu || p.b === eu));
   const desafios = e.desafios.filter((d) => d.para === eu || d.de === eu);
 
-  let h = topo('Olá, ' + e.usuario.nome.split(' ')[0], {
-    sub: esc(t.nome) + ' · ' + pos + 'º no ranking',
-    direita: '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px"><button class="sair" data-acao="sair">Sair</button><span class="pill-pts">' + linha.pontos + ' pts</span></div>'
-  }) + '<main class="conteudo">';
+  let h = topo('Olá, ' + primeiroNome(e.usuario.nome)) + '<main class="conteudo">';
 
   if (prox) {
     const minha = prox.presencas[eu];
@@ -436,45 +516,55 @@ function alunoHome() {
     const pode = agora() < limite;
     const hl = new Date(limite).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
     const conf = Object.values(prox.presencas).filter(ocupaVaga).length;
-    h += '<section class="card"><div class="linha"><h2>Próxima aula</h2><span class="selo bola">' + dataHora(prox.inicio) + '</span></div>' +
-      '<span class="muted">' + esc(prox.quadra) + (prox.tema ? ' · ' + esc(prox.tema) : '') + ' · ' + conf + ' de ' + prox.vagas + ' vagas</span>';
+    const d = new Date(prox.inicio);
+    const tp = e.turmas.find((x) => x.id === prox.turmaId);
+    h += '<section class="proxima"><span class="eyebrow">Próxima aula</span>' +
+      '<div class="dia"><strong>' + String(d.getDate()).padStart(2, '0') + '</strong><span>' + d.toLocaleDateString('pt-BR', { month: 'short' }).replace('.', '') + '<br>' + diaCurto(prox.inicio).split(' ')[0] + '</span></div>' +
+      '<h2>' + esc(prox.tema || (tp ? tp.nome : 'Aula')) + '</h2>' +
+      '<span class="info">' + svg('relogio', 17) + hora(prox.inicio) + ' · ' + esc(prox.quadra) + ' · ' + conf + ' de ' + prox.vagas + ' vagas</span>';
     if (status === 'confirmado' && !ui.cancelando) {
-      h += '<div class="botoes"><span class="selo ok" style="display:flex;align-items:center;justify-content:center;height:44px;border-radius:22px;font-size:14px">Presença confirmada</span>' +
-        '<button class="btn sec pequeno" style="height:44px" data-acao="cancelar-presenca"' + (pode ? '' : ' disabled') + '>Cancelar</button></div>';
-    } else if (ui.cancelando) {
-      h += '<form data-form="cancelar" data-aula="' + prox.id + '" style="display:flex;flex-direction:column;gap:10px"><label class="campo">Motivo (opcional)<input name="motivo" placeholder="Ex.: consulta médica"></label>' +
-        '<div class="botoes"><button type="button" class="btn sec pequeno" data-acao="desistir-cancelar">Voltar</button><button class="btn perigo pequeno" type="submit">Cancelar presença</button></div></form>';
-    } else {
-      h += '<button class="btn" data-acao="presenca" data-aula="' + prox.id + '"' + (pode ? '' : ' disabled') + '>' + (status === 'cancelado' ? 'Confirmar presença de novo' : 'Confirmar presença') + '</button>';
+      h += '<div class="botoes"><span class="confirmado">' + svg('check', 18) + 'Presença confirmada</span>' +
+        '<button class="btn claro pequeno" style="min-height:44px;flex:0 0 auto" data-acao="cancelar-presenca"' + (pode ? '' : ' disabled') + '>Cancelar</button></div>';
+    } else if (status === 'presente') {
+      h += '<span class="confirmado">' + svg('check', 18) + 'Presença registrada pelo professor</span>';
+    } else if (!ui.cancelando) {
+      h += '<button class="btn bola" data-acao="presenca" data-aula="' + prox.id + '"' + (pode ? '' : ' disabled') + '>' + svg('check', 18) + (status === 'cancelado' ? 'Confirmar presença de novo' : 'Confirmar presença') + '</button>';
     }
-    h += '<span class="muted">' + (pode ? 'Confirme ou cancele até ' + hl + ' (4h antes da aula).' : 'Prazo encerrado. O professor marca a presença no dia.') + '</span></section>';
+    h += '<span class="prazo">' + (status === 'presente' ? 'Bom treino!' : pode ? 'Confirme ou cancele até ' + hl + ' (4h antes da aula).' : 'Prazo encerrado. O professor marca a presença no dia.') + '</span></section>';
+    if (ui.cancelando) {
+      h += '<form class="card" data-form="cancelar" data-aula="' + prox.id + '"><h3>Cancelar presença</h3><label class="campo">Motivo (opcional)<input name="motivo" placeholder="Ex.: consulta médica"></label>' +
+        '<div class="botoes"><button type="button" class="btn sec pequeno" data-acao="desistir-cancelar">Voltar</button><button class="btn perigo pequeno" type="submit">Cancelar presença</button></div></form>';
+    }
   }
 
   for (const p of paraConfirmar) {
-    const reg = p.registradoPor;
-    h += '<section class="card"><div class="linha"><h2>Placar para confirmar</h2>' + seloPartida(p) + '</div>' +
-      '<span>' + esc(nome(reg)) + ' registrou: <strong>' + esc(nome(p.a)) + ' ' + placar(p) + ' ' + esc(nome(p.b)) + '</strong></span>' +
-      '<span class="muted">Vencedor: ' + esc(nome(vencedor(p))) + '. Restam ' + horasRestantes(p) + '; sem resposta, o placar é confirmado automaticamente.</span>';
+    h += '<section class="card"><div class="linha"><span class="eyebrow">Placar para confirmar</span>' + seloPartida(p) + '</div>' + placarBox(p) +
+      '<span class="muted">' + esc(nome(p.registradoPor)) + ' registrou. Restam ' + horasRestantes(p) + '; sem resposta, o placar é confirmado automaticamente.</span>';
     if (ui.contestando === p.id) {
       h += '<form data-form="contestar" data-partida="' + p.id + '" style="display:flex;flex-direction:column;gap:10px"><label class="campo">O que estava errado?<input name="motivo" required placeholder="Ex.: o segundo set foi 6-4 para mim"></label>' +
         '<div class="botoes"><button type="button" class="btn sec pequeno" data-acao="desistir-contestar">Voltar</button><button class="btn perigo pequeno" type="submit">Enviar contestação</button></div></form>';
     } else {
-      h += '<div class="botoes"><button class="btn perigo pequeno" style="height:44px" data-acao="contestar" data-id="' + p.id + '">Contestar</button><button class="btn pequeno" style="height:44px" data-acao="confirmar-placar" data-id="' + p.id + '">Confirmar</button></div>';
+      h += '<div class="botoes"><button class="btn perigo pequeno" style="min-height:44px" data-acao="contestar" data-id="' + p.id + '">Contestar</button><button class="btn pequeno" style="min-height:44px" data-acao="confirmar-placar" data-id="' + p.id + '">' + svg('check', 16) + 'Confirmar</button></div>';
     }
     h += '</section>';
   }
   for (const p of minhasDisputas) {
-    h += '<section class="card"><div class="linha"><h2>' + esc(nome(p.a)) + ' x ' + esc(nome(p.b)) + '</h2>' + seloPartida(p) + '</div><span class="muted">O professor vai decidir o placar final.</span></section>';
+    h += aviso_card('alerta', 'Placar em disputa', esc(nome(p.a)) + ' x ' + esc(nome(p.b)) + ' · o professor vai decidir o placar final.');
   }
   for (const p of aguardando) {
     const adv = p.a === eu ? p.b : p.a;
-    h += '<section class="card"><div class="linha"><h2>Você x ' + esc(nome(adv)) + '</h2>' + seloPartida(p) + '</div><span class="muted">' + placar(p) + ' · aguardando ' + esc(nome(adv)) + ' (' + horasRestantes(p) + ')</span></section>';
+    h += aviso_card('relogio', 'Aguardando ' + esc(nome(adv)), placar(p) + ' · confirmação automática em ' + horasRestantes(p) + '.', 'neutro');
   }
+
+  h += secao('Sua posição', '#/aluno/ranking', 'Ver ranking') +
+    '<div class="evolucao"><div><span>RANKING · ' + esc(t.nome).toUpperCase() + '</span><strong>' + pos + 'º</strong><small>' + linha.pontos + ' pts · ' + linha.v + 'V ' + linha.d + 'D</small></div>' +
+    '<div><span>FUNDAMENTOS</span><strong>' + (e.eu && media(e.eu.fundamentos) ? decimal(media(e.eu.fundamentos)) : '–') + '</strong><small>média de 1 a 5</small></div></div>';
+
   if (desafios.length) {
-    h += '<section class="card"><h2>Desafios</h2>' + desafios.map((d) => '<span class="muted">' + (d.de === eu ? 'Você desafiou ' + esc(nome(d.para)) : esc(nome(d.de)) + ' te desafiou') + ' · ' + so_data(d.criadoEm) + '</span>').join('') + '</section>';
+    h += secao('Desafios') + desafios.map((d) => aviso_card('bola', d.de === eu ? 'Você desafiou ' + esc(nome(d.para)) : esc(nome(d.de)) + ' te desafiou', 'Enviado em ' + so_data(d.criadoEm), 'ok')).join('');
   }
-  h += '<div class="atalhos"><a class="atalho cheio" href="#/aluno/ranking">Desafiar colega</a><a class="atalho vazio2" href="#/aluno/registrar">Registrar resultado</a></div>' +
-    '<a class="btn sec" href="#/aluno/convite">Entrar em outra turma</a></main>' + nav(NAV_ALUNO, '#/aluno');
+  h += secao('Atalhos') + '<div class="atalhos">' + atalho('#/aluno/ranking', 'ranking', 'Desafiar colega') + atalho('#/aluno/registrar', 'bola', 'Registrar resultado') +
+    atalho('#/aluno/agenda', 'agenda', 'Agenda') + atalho('#/aluno/convite', 'convite', 'Entrar em turma') + '</div></main>' + nav(NAV_ALUNO, '#/aluno');
   return h;
 }
 
@@ -483,15 +573,25 @@ function alunoAgenda() {
   const eu = e.usuario.id;
   const futuras = e.aulas.filter((a) => Date.parse(a.inicio) > agora());
   const passadas = e.aulas.filter((a) => Date.parse(a.inicio) <= agora()).reverse();
-  const card = (a) => {
+  // Semana atual com um ponto nos dias que têm aula.
+  const hoje = new Date(agora());
+  const inicioSemana = new Date(hoje); inicioSemana.setHours(0, 0, 0, 0); inicioSemana.setDate(hoje.getDate() - hoje.getDay());
+  const dias = Array.from({ length: 7 }, (_, i) => { const d = new Date(inicioSemana); d.setDate(inicioSemana.getDate() + i); return d; });
+  const temAula = (d) => e.aulas.some((a) => new Date(a.inicio).toDateString() === d.toDateString());
+  const mes = hoje.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' }).replace(' de ', ' ');
+  const item = (a, passada) => {
     const t = e.turmas.find((x) => x.id === a.turmaId);
-    return '<div class="card"><div class="linha"><strong style="font-weight:500">' + dataHora(a.inicio) + '</strong>' + seloPresenca(a.presencas[eu]) + '</div>' +
-      '<span class="muted">' + esc(t ? t.nome : '') + ' · ' + esc(a.quadra) + (a.tema ? ' · ' + esc(a.tema) : '') + '</span>' +
-      (a.comentario ? '<span class="muted" style="background:var(--fundo);border-radius:10px;padding:10px">Professor: “' + esc(a.comentario) + '”</span>' : '') + '</div>';
+    return '<div class="timeline"><span class="timeline-hora">' + hora(a.inicio) + '</span><div class="timeline-card' + (passada ? ' passada' : '') + '">' +
+      '<div class="linha"><span class="eyebrow">' + diaCurto(a.inicio) + ' · ' + esc(t ? t.nome : '') + '</span>' + seloPresenca(a.presencas[eu], a) + '</div>' +
+      '<strong>' + esc(a.tema || 'Aula') + '</strong><span class="muted">' + esc(a.quadra) + '</span>' +
+      (a.comentario ? '<span class="comentario">Professor: “' + esc(a.comentario) + '”</span>' : '') + '</div></div>';
   };
-  return topo('Agenda') + '<main class="conteudo"><h2 class="titulo-secao">Próximas aulas</h2>' +
-    (futuras.length ? futuras.map(card).join('') : '<p class="vazio">Nenhuma aula agendada.</p>') +
-    '<h2 class="titulo-secao">Aulas anteriores</h2>' + (passadas.length ? passadas.map(card).join('') : '<p class="vazio">Nenhuma aula ainda.</p>') +
+  return topo('Agenda') + '<main class="conteudo">' +
+    '<h2 class="mes">' + mes.charAt(0).toUpperCase() + mes.slice(1) + '</h2>' +
+    '<div class="semana">' + SEMANA.map((s) => '<span class="dia-nome">' + s.charAt(0) + '</span>').join('') +
+    dias.map((d) => '<span class="dia-num' + (d.toDateString() === hoje.toDateString() ? ' hoje' : '') + '">' + d.getDate() + (temAula(d) ? '<i></i>' : '') + '</span>').join('') + '</div>' +
+    secao('Próximas aulas') + (futuras.length ? futuras.map((a) => item(a)).join('') : '<p class="vazio">Nenhuma aula agendada.</p>') +
+    secao('Aulas anteriores') + (passadas.length ? passadas.map((a) => item(a, true)).join('') : '<p class="vazio">Nenhuma aula ainda.</p>') +
     '</main>' + nav(NAV_ALUNO, '#/aluno/agenda');
 }
 
@@ -499,19 +599,24 @@ function alunoDesempenho() {
   const e = ui.estado;
   const eu = e.usuario.id;
   const t = turmaAtual();
-  const { linha } = t ? minhaPosicao(t) : { linha: { pontos: 0, v: 0, d: 0 } };
+  const { pos, linha } = t ? minhaPosicao(t) : { pos: 0, linha: { pontos: 0, v: 0, d: 0 } };
   const minhas = e.partidas.filter((p) => p.status === 'confirmada' && (p.a === eu || p.b === eu)).slice(0, 6);
+  const jogos = linha.v + linha.d;
   return topo('Meu desempenho') + '<main class="conteudo">' + chipsTurma() +
-    '<div class="stats"><div class="stat"><strong style="color:var(--verde)">' + linha.pontos + '</strong><span>Pontos</span></div><div class="stat"><strong>' + linha.v + '</strong><span>Vitórias</span></div><div class="stat"><strong>' + linha.d + '</strong><span>Derrotas</span></div></div>' +
-    '<section class="card"><div class="linha"><h2>Avaliação por fundamentos</h2><span class="selo ok">' + esc(e.eu.nivel) + '</span></div>' +
-    FUNDAMENTOS.map(([k, rotulo]) => '<div class="fund"><span>' + rotulo + '</span><div class="barra"><span style="width:' + e.eu.fundamentos[k] * 20 + '%"></span></div><strong style="text-align:right">' + e.eu.fundamentos[k] + '</strong></div>').join('') +
-    (e.eu.comentario ? '<span class="muted" style="background:var(--fundo);border-radius:10px;padding:10px">Professor: “' + esc(e.eu.comentario) + '”</span>' : '') +
-    '<span class="muted">' + (e.eu.avaliadoEm ? 'Avaliado em ' + so_data(e.eu.avaliadoEm) : 'Ainda não avaliado') + '</span></section>' +
-    '<section class="card"><h2>Últimas partidas</h2><ul class="lista">' + (minhas.length ? minhas.map((p) => {
+    '<section class="desempenho-hero"><span>' + (t ? esc(t.nome).toUpperCase() : 'SEM TURMA') + '</span>' +
+    '<div><strong>' + linha.pontos + '</strong><small>pontos no ranking</small></div><div><strong>' + (pos ? pos + 'º' : '–') + '</strong><small>posição na turma</small></div></section>' +
+    '<div class="metricas">' + metrica(jogos, 'Partidas') + metrica(linha.v, 'Vitórias') + metrica(jogos ? Math.round(linha.v / jogos * 100) + '%' : '–', 'Aproveitamento') + '</div>' +
+    '<div class="secao"><h3>Fundamentos</h3><span class="selo ok">' + esc(e.eu.nivel) + '</span></div>' +
+    '<div class="habilidades">' + FUNDAMENTOS.map(([k, rotulo]) => {
+      const n = e.eu.fundamentos[k] || 0;
+      return '<div class="habilidade"><div><strong>' + rotulo + '</strong><span>' + n + ' de 5</span></div><div class="barra"><span style="width:' + n * 20 + '%"></span></div></div>';
+    }).join('') + '</div>' +
+    (e.eu.comentario ? aviso_card('desempenho', 'Comentário do professor', '“' + esc(e.eu.comentario) + '”' + (e.eu.avaliadoEm ? ' · ' + so_data(e.eu.avaliadoEm) : ''), 'ok') : '<p class="muted">' + (e.eu.avaliadoEm ? 'Avaliado em ' + so_data(e.eu.avaliadoEm) : 'Ainda não avaliado') + '</p>') +
+    secao('Últimas partidas') + '<div class="card" style="padding:8px 12px"><ul class="lista">' + (minhas.length ? minhas.map((p) => {
       const ganhei = vencedor(p) === eu;
       const adv = p.a === eu ? p.b : p.a;
-      return '<li><span class="avatar" style="' + (ganhei ? '' : 'background:var(--erro-claro);color:#8C1D18') + '">' + (ganhei ? 'V' : 'D') + '</span><span class="nome"><strong>vs ' + esc(nome(adv)) + '</strong><span class="muted">' + placar(p) + ' · ' + so_data(p.criadoEm) + '</span></span><span class="pts">' + (ganhei ? '+10' : '+0') + '</span></li>';
-    }).join('') : '<li class="vazio">Nenhuma partida confirmada.</li>') + '</ul></section></main>' + nav(NAV_ALUNO, '#/aluno/desempenho');
+      return '<li><span class="avatar mini ' + (ganhei ? 'v' : 'd') + '">' + (ganhei ? 'V' : 'D') + '</span><span class="nome"><strong>vs ' + esc(nome(adv)) + '</strong><span class="muted">' + placar(p) + ' · ' + so_data(p.criadoEm) + '</span></span><span class="pts">' + (ganhei ? '+10' : '+0') + '</span></li>';
+    }).join('') : '<li class="vazio">Nenhuma partida confirmada.</li>') + '</ul></div></main>' + nav(NAV_ALUNO, '#/aluno/desempenho');
 }
 
 function alunoRanking() {
@@ -520,23 +625,33 @@ function alunoRanking() {
   const t = turmaAtual();
   if (!t) return alunoHome();
   const desafiados = new Set(e.desafios.filter((d) => d.de === eu).map((d) => d.para));
+  const r = t.ranking;
+  const { pos, linha } = minhaPosicao(t);
+  const podioJogador = (i, classe) => r[i] ? '<div class="podio-jogador ' + classe + '">' + (i === 0 ? '<span class="coroa">' + svg('coroa', 18) + '</span>' : '') + avatar(r[i].id, r[i].nome) +
+    '<strong>' + (r[i].id === eu ? 'Você' : esc(primeiroNome(r[i].nome))) + '</strong><small>' + r[i].pontos + ' pts</small><i>' + (i + 1) + '</i></div>' : '';
+  const acima = pos > 1 ? r[pos - 2] : null;
+  const falta = acima ? acima.pontos - linha.pontos : 0;
   return topo('Ranking') + '<main class="conteudo">' + chipsTurma() +
-    '<p class="muted" style="margin:0">' + esc(t.nome) + ' · vitória +10 · derrota 0 · só contam partidas confirmadas</p>' +
-    '<section class="card" style="padding:8px 12px"><ul class="lista">' + t.ranking.map((r, i) =>
-      '<li class="' + (r.id === eu ? 'eu' : '') + '"><span class="pos' + (i === 0 ? ' primeiro' : '') + '">' + (i + 1) + '</span><span class="nome"><strong>' + esc(r.nome) + (r.id === eu ? ' (você)' : '') + '</strong><span class="muted">' + r.v + 'V · ' + r.d + 'D</span></span><span class="pts">' + r.pontos + ' pts</span>' +
-      (r.id === eu ? '' : desafiados.has(r.id) ? '<span class="selo ok">Enviado</span>' : '<button class="btn sec pequeno" data-acao="desafiar" data-id="' + r.id + '" data-turma="' + t.id + '" aria-label="Desafiar ' + esc(r.nome) + '">Desafiar</button>') + '</li>'
-    ).join('') + '</ul></section>' +
-    '<p class="muted" style="margin:0">Desafios só entre alunos da mesma turma.</p>' +
-    '<button class="link" data-acao="sair-turma" data-turma="' + t.id + '">Sair da turma ' + esc(t.nome) + '</button>' +
+    '<div class="podio">' + podioJogador(1, 'p2') + podioJogador(0, 'p1') + podioJogador(2, 'p3') + '</div>' +
+    '<ul class="ranking-lista">' + r.map((x, i) =>
+      '<li class="ranking-linha' + (x.id === eu ? ' eu' : '') + '"><span class="pos">' + (i + 1) + '</span>' + avatar(x.id, x.nome, 'mini') +
+      '<span class="nome"><strong>' + esc(x.nome) + (x.id === eu ? ' (você)' : '') + '</strong><span class="muted">' + x.v + 'V · ' + x.d + 'D</span></span><span class="pts">' + x.pontos + ' pts</span>' +
+      (x.id === eu ? '<span></span>' : desafiados.has(x.id) ? '<span class="selo ok">Enviado</span>' : '<button class="btn sec pequeno" data-acao="desafiar" data-id="' + x.id + '" data-turma="' + t.id + '" aria-label="Desafiar ' + esc(x.nome) + '">Desafiar</button>') + '</li>'
+    ).join('') + '</ul>' +
+    (acima ? aviso_card('ranking', falta > 0 ? 'Faltam ' + falta + ' pontos' : 'Empatado em pontos', falta > 0 ? 'para você alcançar o ' + (pos - 1) + 'º lugar. Uma vitória vale 10.' : 'com ' + esc(acima.nome) + '. A próxima vitória te leva para cima.') : pos === 1 ? aviso_card('coroa', 'Você lidera a turma', 'Continue vencendo para manter o 1º lugar.', 'ok') : '') +
+    '<p class="muted">' + esc(t.nome) + ' · vitória +10 · derrota 0 · só contam partidas confirmadas. Desafios só entre alunos da mesma turma.</p>' +
+    '<button class="link" style="align-self:center" data-acao="sair-turma" data-turma="' + t.id + '">Sair da turma ' + esc(t.nome) + '</button>' +
     '</main>' + nav(NAV_ALUNO, '#/aluno/ranking');
 }
 
 function alunoConvite() {
-  return topo('Entrar em uma turma', { voltar: '#/aluno' }) + '<main class="conteudo">' +
-    '<p style="margin:0;color:var(--cinza);line-height:1.45">Digite o código que seu professor compartilhou. Pelo código você entra direto, sem aprovação.</p>' +
-    '<form data-form="codigo" style="display:flex;flex-direction:column;gap:14px"><label class="campo">Código de convite<input name="codigo" maxlength="6" required style="font-size:24px;font-weight:700;letter-spacing:6px;text-transform:uppercase;height:56px" placeholder="ABC123"></label>' +
-    '<span class="muted">Para testar: INI456 (entra na turma Iniciante B) ou XYZ789 (código expirado).</span>' +
-    '<button class="btn" type="submit">Entrar na turma</button></form></main>' + nav(NAV_ALUNO, '');
+  return '<div class="convite-tela"><div class="quadra-arte"><div class="linhas-quadra"></div><div class="bola-flutuante" aria-hidden="true">' + svg('bola', 78) + '</div>' +
+    '<a class="icone-btn" href="#/aluno" aria-label="Voltar">' + svg('voltar') + '</a></div>' +
+    '<div class="convite-texto"><span class="eyebrow">Convite da turma</span><h2>Seu jogo começa aqui.</h2>' +
+    '<p class="muted">Digite o código que seu professor compartilhou. Pelo código você entra direto, sem aprovação.</p>' +
+    '<form data-form="codigo" style="display:flex;flex-direction:column;gap:12px"><label class="codigo-campo"><span>CÓDIGO DO CONVITE</span><input name="codigo" maxlength="6" required placeholder="ABC123" autocomplete="off"></label>' +
+    '<span class="muted" style="font-size:12px">Para testar: INI456 (entra na turma Iniciante B) ou XYZ789 (código expirado).</span>' +
+    '<button class="btn" type="submit">' + svg('seta', 18) + 'Entrar na turma</button></form></div></div>' + nav(NAV_ALUNO, '');
 }
 
 function alunoRegistrar() {
@@ -545,18 +660,42 @@ function alunoRegistrar() {
   const t = turmaAtual();
   if (!t) return alunoHome();
   const outros = t.membros.filter((m) => m !== eu);
-  return topo('Registrar resultado', { voltar: '#/aluno' }) + '<main class="conteudo">' + chipsTurma() +
-    '<form class="card" data-form="registrar"><input type="hidden" name="turmaId" value="' + t.id + '">' +
+  return topo('Registrar partida', { voltar: '#/aluno' }) + '<main class="conteudo">' +
+    '<div><span class="eyebrow">Nova partida</span><h2 style="margin-top:4px">Como foi o jogo?</h2><p class="muted" style="margin-top:4px">Registre o resultado. O adversário confirma e o ranking atualiza.</p></div>' + chipsTurma() +
+    '<form data-form="registrar" style="display:flex;flex-direction:column;gap:14px"><input type="hidden" name="turmaId" value="' + t.id + '">' +
     '<label class="campo">Adversário<select name="adversarioId">' + outros.map((m) => '<option value="' + m + '">' + esc(nome(m)) + '</option>').join('') + '</select></label>' +
-    camposSets('Você', 'Adversário') +
-    '<span class="muted">O adversário tem 24h para confirmar ou contestar. Sem resposta, o placar vale automaticamente.</span>' +
-    '<button class="btn" type="submit">Enviar para confirmação</button></form></main>' + nav(NAV_ALUNO, '');
+    '<div class="card">' + camposSets('Você', 'Adversário') + '</div>' +
+    aviso_card('relogio', '24h para confirmar', 'O adversário confirma ou contesta. Sem resposta, o placar vale automaticamente.', 'neutro') +
+    '<button class="btn" type="submit">' + svg('check', 18) + 'Enviar para confirmação</button></form></main>' + nav(NAV_ALUNO, '');
+}
+
+// Painel lateral (só aparece no computador): mostra o fluxo do perfil logado, como no protótipo do Gabriel.
+const PASSOS = {
+  professor: [['#/prof', 'Início e presenças'], ['#/prof/alunos', 'Alunos e convite'], ['#/prof/aulas', 'Criar aula'], ['#/prof/partidas', 'Partidas e disputas']],
+  aluno: [['#/aluno', 'Início e presença'], ['#/aluno/agenda', 'Agenda'], ['#/aluno/desempenho', 'Desempenho'], ['#/aluno/ranking', 'Ranking e desafios'], ['#/aluno/registrar', 'Registrar resultado'], ['#/aluno/convite', 'Entrar em turma']]
+};
+function painel(rota) {
+  const papel = ui.estado ? ui.estado.usuario.papel : null;
+  let h = '<div class="marca-painel"><div class="marca-q">' + svg('bola', 28) + '</div><div><strong>MatchPoint</strong><span>Protótipo funcional · FATEC Olímpia</span></div></div>' +
+    '<div class="papel" aria-label="Perfil"><span class="' + (papel === 'professor' ? 'on' : '') + '">Professor</span><span class="' + (papel === 'aluno' ? 'on' : '') + '">Aluno</span></div>';
+  if (!papel) {
+    return h + '<span class="eyebrow" style="color:var(--cinza);margin:0 0 14px 14px">Como testar</span>' +
+      '<p class="dica texto">1. Entre como <strong>professor</strong> nesta janela.</p><p class="dica texto">2. Abra outra janela e entre como <strong>aluno</strong>.</p>' +
+      '<p class="dica texto">3. Confirme presença no aluno e veja a lista do professor mudar sozinha.</p>';
+  }
+  const passos = PASSOS[papel];
+  const atual = passos.some(([r]) => r === rota) ? rota : rota.startsWith('#/prof/avaliar') ? '#/prof/alunos' : '';
+  return h + '<span class="eyebrow" style="color:var(--cinza);margin:0 0 14px 14px">Fluxo ' + papel + '</span><div class="passos">' +
+    passos.map(([r, rotulo], i) => (i ? '<div class="passo-linha"></div>' : '') + '<a class="passo' + (r === atual ? ' on' : '') + '" href="' + r + '"><span>' + String(i + 1).padStart(2, '0') + '</span><strong>' + rotulo + '</strong>' + svg('seta', 18) + '</a>').join('') +
+    '</div><p class="dica">Abra o professor e o aluno em duas janelas lado a lado: o que um faz aparece na tela do outro.</p>';
 }
 
 // ---------- roteamento ----------
 function render() {
   const app = document.getElementById('app');
   const rota = location.hash.replace(/^#/, '') || '/login';
+  document.getElementById('painel').innerHTML = painel(location.hash || '#/login');
+  document.getElementById('jornada').textContent = !ui.estado ? 'Entrar' : ui.estado.usuario.papel === 'professor' ? 'Jornada do professor' : 'Jornada do aluno';
   if (!ui.estado) { app.innerHTML = telaLogin(); return; }
   const papel = ui.estado.usuario.papel;
   if (papel === 'professor' && !rota.startsWith('/prof')) { location.hash = '#/prof'; return; }
