@@ -1,0 +1,14 @@
+{
+  // Botão "Run" do VS Code (F5): roda o app já com o config.json do Supabase.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "MatchPoint",
+      "type": "dart",
+      "request": "launch",
+      "cwd": "app",
+      "program": "lib/main.dart",
+      "toolArgs": ["--dart-define-from-file=config.json"]
+    }
+  ]
+}

@@ -2,14 +2,24 @@
 
 Código do aplicativo (Flutter + Supabase). O passo a passo completo de instalação e de como rodar entra com o KAN-37.
 
+## Configurar o Supabase
+
+Os dados de conexão não ficam no código. Na pasta `app/`, copie o `config.example.json` para `config.json` e preencha com a URL do projeto e a chave **publishable** (peça ao Luiz). O `config.json` está no `.gitignore` e nunca vai para o GitHub.
+
+> ⚠️ Só a chave **publishable** (`sb_publishable_...`) vai no app. A chave `service_role` nunca.
+
 ## Rodar
 
 ```bash
 cd app
 flutter pub get
-flutter run            # no emulador ou celular conectado
-flutter run -d chrome  # no navegador, para quem não tem emulador
+flutter run --dart-define-from-file=config.json            # emulador ou celular
+flutter run -d chrome --dart-define-from-file=config.json  # navegador
 ```
+
+No VS Code, o **Run (F5)** já passa o `config.json` sozinho (configuração em `.vscode/launch.json`).
+
+A tela provisória mostra se a conexão deu certo: **Supabase conectado**. Sem o `config.json`, o app abre e avisa que o Supabase não foi configurado.
 
 Antes de abrir um PR:
 
