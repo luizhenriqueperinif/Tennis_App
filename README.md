@@ -10,10 +10,10 @@ Duplas da Etapa 2:
 
 | Integrante | Papel / Responsabilidade |
 |:---|:---|
-| **👑 Luiz Henrique** | Coordenador Geral & Product Owner · Base do projeto |
-| **🗄️ Gabriel Castro (Pegador) & Eduardo (Du)** | Banco de dados e regras de acesso |
-| **🔐 Túlio & Weslei** | Login e cadastro |
-| **🎨 Gabriel Marini (Teto) & Gabriel Sousa (Cabeludo)** | Visual e navegação |
+| **Luiz Henrique** | Coordenador Geral & Product Owner · Base do projeto |
+| **Gabriel Castro & Eduardo** | Banco de dados e regras de acesso |
+| **Túlio & Weslei** | Login e cadastro |
+| **Gabriel Marini & Gabriel Sousa** | Visual e navegação |
 
 ---
 
@@ -23,6 +23,7 @@ Duplas da Etapa 2:
 - 🗺️ **Roadmap Geral:** [`Roadmap Completo — Projeto App de Tênis.pdf`](./docs/gestao/Roadmap%20Completo%20%E2%80%94%20Projeto%20App%20de%20T%C3%AAnis.pdf)
 - 📁 **Índice da documentação:** [`docs/README.md`](./docs/README.md)
 - 🤝 **Como contribuir (branches e PRs):** [`CONTRIBUTING.md`](./CONTRIBUTING.md)
+- 📱 **Como instalar e rodar o app:** [`app/README.md`](./app/README.md)
 
 ---
 
@@ -88,9 +89,3 @@ Recomendamos que a equipe use o seguinte padrão nas mensagens de commit:
 - `style:` Ajustes de layout, design ou formatação (ex.: `style(figma): atualiza cores da tela home`)
 - `fix:` Correção de bugs ou incoerências (ex.: `fix: corrige relacionamento 1:N no DER`)
 - `refactor:` Refatoração de código ou reestruturação de arquivos
-
----
-
-## 📞 Suporte e Contato
-
-Dúvidas ou decisões urgentes devem ser alinhadas diretamente com o coordenador **Luiz Henrique** ou através do canal do grupo.
