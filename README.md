@@ -89,9 +89,3 @@ Recomendamos que a equipe use o seguinte padrão nas mensagens de commit:
 - `style:` Ajustes de layout, design ou formatação (ex.: `style(figma): atualiza cores da tela home`)
 - `fix:` Correção de bugs ou incoerências (ex.: `fix: corrige relacionamento 1:N no DER`)
 - `refactor:` Refatoração de código ou reestruturação de arquivos
-
----
-
-## 📞 Suporte e Contato
-
-Dúvidas ou decisões urgentes devem ser alinhadas diretamente com o coordenador **Luiz Henrique** ou através do canal do grupo.
