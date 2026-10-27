@@ -1,0 +1,28 @@
+# Regras de análise do código Dart. O `flutter analyze` usa este arquivo,
+# e a verificação automática dos PRs (KAN-39) também.
+
+# Conjunto recomendado pelo time do Flutter.
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+  language:
+    strict-casts: true
+    strict-raw-types: true
+
+linter:
+  # Regras extras, para o código do time ficar com a mesma cara.
+  # Para ignorar uma regra numa linha específica: // ignore: nome_da_regra
+  rules:
+    - always_declare_return_types
+    - avoid_dynamic_calls
+    - prefer_const_constructors
+    - prefer_const_declarations
+    - prefer_final_locals
+    - prefer_single_quotes
+    - require_trailing_commas
+    - unawaited_futures
