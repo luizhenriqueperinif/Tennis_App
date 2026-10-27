@@ -6,12 +6,14 @@
 
 ## 👥 Equipe do Projeto
 
+Duplas da Etapa 2:
+
 | Integrante | Papel / Responsabilidade |
 |:---|:---|
-| **👑 Luiz Henrique** | Coordenador Geral & Product Owner |
-| **📋 Biel Cabeludo & Túlio** | Engenharia de Requisitos & Regras de Negócio |
-| **🎨 Wesley & Gabriel Marini (Teto)** | UI/UX Design & Prototipagem (Figma) |
-| **💻 Gabriel Loiro (Pegador) & Du (Eduardo)** | Arquitetura de Software & Banco de Dados |
+| **👑 Luiz Henrique** | Coordenador Geral & Product Owner · Base do projeto |
+| **🗄️ Gabriel Castro (Pegador) & Eduardo (Du)** | Banco de dados e regras de acesso |
+| **🔐 Túlio & Weslei** | Login e cadastro |
+| **🎨 Gabriel Marini (Teto) & Gabriel Sousa (Cabeludo)** | Visual e navegação |
 
 ---
 
@@ -44,6 +46,9 @@ Tennis_App/
 ├── .gitignore
 ├── .github/                      ← Modelo de PR (e, depois, a verificação automática)
 │
+├── app/                          ← Código do aplicativo em Flutter (Etapa 2 em diante)
+│                                    Pastas e como rodar: app/README.md
+│
 ├── docs/                         ← Documentação do projeto (índice em docs/README.md)
 │   ├── gestao/                   ← [Luiz] Roadmap e checagem cruzada dos entregáveis
 │   ├── requisitos/               ← [Biel & Túlio] RFs, RNs, histórias de usuário e diagrama de casos de uso
@@ -62,14 +67,12 @@ Tennis_App/
 
 > 🎾 **Protótipo online:** https://luizhenriqueperinif.github.io/Tennis_App/ (publicado a partir da branch `gh-pages`)
 
-> A pasta `src/`, com o código-fonte da aplicação, será criada na Etapa 2.
-
 ---
 
 ## 🚀 Etapas do Projeto
 
-1. **Etapa 1: Planejamento & Fundação (Fase Atual)** — Requisitos, protótipos e decisões técnicas.
-2. **Etapa 2: Estrutura & Base de Código** — Repositório configurado, banco criado, autenticação e rotas.
+1. **Etapa 1: Planejamento & Fundação** ✅ — Requisitos, protótipos e decisões técnicas.
+2. **Etapa 2: Estrutura & Base de Código (Fase Atual, até 27/11)** — Repositório configurado, banco criado, autenticação e rotas.
 3. **Etapa 3: MVP — Funcionalidades Essenciais** — Aulas, presença, avaliação de desempenho e convites.
 4. **Etapa 4: Ranking, Desafios & Comunidade** — Sistema de pontos, ranking por grupo e desafios.
 5. **Etapa 5: Polimento, Testes & Entrega** — Testes de usabilidade, correções e apresentação FATEC.
