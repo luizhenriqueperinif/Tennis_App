@@ -44,7 +44,7 @@ Tennis_App/
 ├── README.md                     ← Este arquivo
 ├── CONTRIBUTING.md               ← Como trabalhar: branches, PRs e revisão
 ├── .gitignore
-├── .github/                      ← Modelo de PR (e, depois, a verificação automática)
+├── .github/                      ← Modelo de PR e verificação automática (análise e testes)
 │
 ├── app/                          ← Código do aplicativo em Flutter (Etapa 2 em diante)
 │                                    Pastas e como rodar: app/README.md

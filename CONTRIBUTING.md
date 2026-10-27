@@ -47,7 +47,7 @@ Uma branch por card. Se o card for grande, divida em mais de um PR, cada um com 
 - **Título:** começa com o número do card, como `KAN-45: tela de login`.
 - **Tamanho:** pequeno. Um PR por subtarefa é mais fácil de revisar.
 - **Revisão:** pelo menos 1 aprovação de alguém de **outra dupla**.
-- **Verificação automática:** precisa estar verde (`flutter analyze` e `flutter test`). Ela começa a rodar com o KAN-39.
+- **Verificação automática:** o GitHub roda `flutter analyze` e `flutter test` em todo PR (aba **Checks**). Precisa estar verde. Se ficar vermelha, clique em **Details** para ver o erro, corrija e faça um novo commit na mesma branch.
 - **Merge:** quem abriu o PR faz o merge depois da aprovação.
 
 ---

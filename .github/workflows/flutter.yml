@@ -1,0 +1,41 @@
+# Verificação automática: roda a análise e os testes do app em todo PR para a main.
+# Se falhar, o PR não pode entrar (a regra fica na proteção da main, KAN-38).
+name: Flutter
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+# Um push novo no mesmo PR cancela a verificação anterior, que ficou velha.
+concurrency:
+  group: flutter-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analise-e-testes:
+    name: analise-e-testes
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+
+      # Mesma versão que o time usa (flutter --version).
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.47.8
+          cache: true
+
+      - name: Baixar pacotes
+        run: flutter pub get
+
+      - name: Analisar o código
+        run: flutter analyze
+
+      - name: Rodar os testes
+        run: flutter test
