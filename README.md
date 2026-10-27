@@ -23,6 +23,7 @@ Duplas da Etapa 2:
 - 🗺️ **Roadmap Geral:** [`Roadmap Completo — Projeto App de Tênis.pdf`](./docs/gestao/Roadmap%20Completo%20%E2%80%94%20Projeto%20App%20de%20T%C3%AAnis.pdf)
 - 📁 **Índice da documentação:** [`docs/README.md`](./docs/README.md)
 - 🤝 **Como contribuir (branches e PRs):** [`CONTRIBUTING.md`](./CONTRIBUTING.md)
+- 📱 **Como instalar e rodar o app:** [`app/README.md`](./app/README.md)
 
 ---
 
