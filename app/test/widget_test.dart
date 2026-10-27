@@ -9,4 +9,14 @@ void main() {
     expect(find.text('MatchPoint'), findsOneWidget);
     expect(find.text('Etapa 2 em construção'), findsOneWidget);
   });
+
+  testWidgets('sem config.json, avisa que o Supabase não foi configurado',
+      (tester) async {
+    await tester.pumpWidget(const MatchPointApp());
+
+    expect(
+      find.text('Supabase não configurado (veja app/README.md)'),
+      findsOneWidget,
+    );
+  });
 }

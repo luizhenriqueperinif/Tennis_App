@@ -46,3 +46,6 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# Chaves do Supabase (KAN-35): cada um tem o seu, a partir do config.example.json
+config.json
