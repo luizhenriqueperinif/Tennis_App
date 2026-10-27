@@ -20,6 +20,7 @@
 - 📋 **Quadro de Tarefas (Jira):** [tennisappfatec.atlassian.net — projeto KAN](https://tennisappfatec.atlassian.net/jira/software/projects/KAN/boards/1)
 - 🗺️ **Roadmap Geral:** [`Roadmap Completo — Projeto App de Tênis.pdf`](./docs/gestao/Roadmap%20Completo%20%E2%80%94%20Projeto%20App%20de%20T%C3%AAnis.pdf)
 - 📁 **Índice da documentação:** [`docs/README.md`](./docs/README.md)
+- 🤝 **Como contribuir (branches e PRs):** [`CONTRIBUTING.md`](./CONTRIBUTING.md)
 
 ---
 
@@ -39,7 +40,9 @@
 ```text
 Tennis_App/
 ├── README.md                     ← Este arquivo
+├── CONTRIBUTING.md               ← Como trabalhar: branches, PRs e revisão
 ├── .gitignore
+├── .github/                      ← Modelo de PR (e, depois, a verificação automática)
 │
 ├── docs/                         ← Documentação do projeto (índice em docs/README.md)
 │   ├── gestao/                   ← [Luiz] Roadmap e checagem cruzada dos entregáveis
