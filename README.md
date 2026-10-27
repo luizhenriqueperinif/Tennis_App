@@ -10,10 +10,10 @@ Duplas da Etapa 2:
 
 | Integrante | Papel / Responsabilidade |
 |:---|:---|
-| **👑 Luiz Henrique** | Coordenador Geral & Product Owner · Base do projeto |
-| **🗄️ Gabriel Castro (Pegador) & Eduardo (Du)** | Banco de dados e regras de acesso |
-| **🔐 Túlio & Weslei** | Login e cadastro |
-| **🎨 Gabriel Marini (Teto) & Gabriel Sousa (Cabeludo)** | Visual e navegação |
+| **Luiz Henrique** | Coordenador Geral & Product Owner · Base do projeto |
+| **Gabriel Castro & Eduardo** | Banco de dados e regras de acesso |
+| **Túlio & Weslei** | Login e cadastro |
+| **Gabriel Marini & Gabriel Sousa** | Visual e navegação |
 
 ---
 
