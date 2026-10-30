@@ -18,6 +18,7 @@
 | `apresentacoes/` | [Roteiro_Apresentacao_Etapa1.docx](./apresentacoes/Roteiro_Apresentacao_Etapa1.docx): quem fala o quê, dados do tênis e perguntas da banca | Luiz | KAN-9 |
 | `apresentacoes/` | [Guia_Apresentacao_Prototipo_MatchPoint.pdf](./apresentacoes/Guia_Apresentacao_Prototipo_MatchPoint.pdf): roteiro da demonstração, perguntas da banca e glossário | Luiz | KAN-9 |
 | `reunioes/` | [Reuniao_Alinhamento_Etapa1_09_Out_26.pdf](./reunioes/Reuniao_Alinhamento_Etapa1_09_Out_26.pdf) | Luiz | — |
+| `reunioes/` | [Reuniao_Inicio_Etapa2_27_Out_26.docx](./reunioes/Reuniao_Inicio_Etapa2_27_Out_26.docx): pauta, duplas e subtarefas, ordem de trabalho e ideias para as próximas etapas | Luiz | KAN-28 a KAN-32 |
 
 > 🔒 O repositório é público. As senhas dos usuários de teste **não** ficam aqui: peça ao Luiz.
 
